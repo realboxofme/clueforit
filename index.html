@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CLUEFORIT - Manage Services & Digital Business</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Custom unique styles for elaboration */
+    .hero-bg { background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%); position: relative; }
+    .hero-overlay { background: rgba(0, 0, 0, 0.3); }
+    .animate-fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+    .in-view { opacity: 1; transform: translateY(0); }
+    .shape-svg { position: absolute; top: 10%; left: 5%; width: 200px; height: 200px; animation: float 4s ease-in-out infinite; z-index: 1; }
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+    .btn-primary { background: linear-gradient(90deg, #007bff 0%, #ff6b00 100%); color: white; padding: 12px 24px; border-radius: 50px; box-shadow: 0 4px 15px rgba(0, 123, 255, 0.4); transition: transform 0.3s ease; }
+    .btn-primary:hover { transform: scale(1.05); }
+    .card-hover { transition: box-shadow 0.3s ease, transform 0.3s ease; }
+    .card-hover:hover { box-shadow: 0 10px 30px rgba(0, 123, 255, 0.3); transform: translateY(-10px); }
+    .portfolio-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+  </style>
+</head>
+<body class="bg-gray-50 font-sans text-gray-800">
+  <!-- Header with Navigation -->
+  <header class="sticky top-0 bg-white shadow-lg z-10">
+    <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+      <div class="flex items-center space-x-4">
+        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/a07cd967-508d-4a76-b28c-75e9df5807d5.png" alt="CLUEFORIT logo featuring a stylized 'C' with interconnected digital nodes representing tech connectivity and innovation in a blue and orange gradient" class="rounded-full w-12 h-12">
+        <h1 class="text-2xl font-bold text-blue-600">CLUEFORIT</h1>
+      </div>
+      <nav class="hidden md:flex space-x-6">
+        <a href="#about" class="text-gray-700 hover:text-blue-500">About</a>
+        <a href="#services" class="text-gray-700 hover:text-blue-500">Services</a>
+        <a href="#portfolio" class="text-gray-700 hover:text-blue-500">Portfolio</a>
+        <a href="#contact" class="text-gray-700 hover:text-blue-500">Contact</a>
+      </nav>
+      <div class="md:hidden">
+        <button id="menu-toggle" class="text-blue-600 focus:outline-none">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+        </button>
+      </div>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden bg-gray-100 px-6 py-4">
+      <a href="#about" class="block py-2 text-gray-700">About</a>
+      <a href="#services" class="block py-2 text-gray-700">Services</a>
+      <a href="#portfolio" class="block py-2 text-gray-700">Portfolio</a>
+      <a href="#contact" class="block py-2 text-gray-700">Contact</a>
+    </div>
+  </header>
+
+  <!-- Hero Section with Unique Shape Overlay -->
+  <section class="hero-bg text-white relative overflow-hidden" style="height: 80vh;">
+    <svg class="shape-svg" viewBox="0 0 200 200">
+      <polygon points="100,20 150,70 100,180 50,70" fill="rgba(255, 107, 0, 0.2)" />
+    </svg>
+    <div class="hero-overlay h-full flex items-center justify-center px-6">
+      <div class="max-w-4xl text-center animate-fade-in">
+        <h2 class="text-5xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-orange-400 bg-clip-text text-transparent">Innovating Digital Solutions</h2>
+        <p class="text-xl mb-8 leading-relaxed">CLUEFORIT specializes in managing services and digital business solutions, delivering cutting-edge IT infrastructure and applications tailored to your needs.</p>
+        <a href="#contact" class="btn-primary inline-block font-semibold">Get in Touch</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="py-16 bg-white">
+    <div class="container mx-auto px-6">
+      <div class="max-w-3xl mx-auto text-center">
+        <h3 class="text-3xl font-bold text-gray-800 mb-6">About CLUEFORIT</h3>
+        <p class="text-lg leading-relaxed text-gray-600 mb-8">Founded on the principles of technology and innovation, CLUEFORIT is your go-to partner for comprehensive manage services and digital business solutions. We empower businesses with robust IT systems, secure networking, and bespoke applications. Our experts ensure seamless operations, from infrastructure setup to advanced digital tools, all while maintaining affordability and reliability.</p>
+        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/d0c9138d-9d91-40de-8939-fccf710e0a45.png" alt="Abstract digital network illustration showing interconnected nodes and flowing data streams in various shades of blue, representing CLUEFORIT's integrated IT services and connectivity solutions" class="mx-auto rounded-lg shadow-lg w-full card-hover">
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Section -->
+  <section id="services" class="py-16 bg-gray-100">
+    <div class="container mx-auto px-6">
+      <h3 class="text-3xl font-bold text-center text-gray-800 mb-12">Our Services & Products</h3>
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="bg-white p-6 rounded-lg shadow-md card-hover">
+          <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/f9bb7dcc-9f73-472b-a741-902781b17f07.png" alt="Detailed architectural diagram of IT infrastructure components including servers, routers, and cloud networks in a sleek blue and white design" class="mx-auto mb-4 rounded">
+          <h4 class="text-xl font-semibold mb-3">IT Infrastructure</h4>
+          <p>Scalable and secure setups for your business needs.</p>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow-md card-hover">
+          <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/72d44ce7-0e4c-44ac-848d-a31bc1853d38.png" alt="Modern web application interface mockup with responsive design, dashboards, and interactive elements in orange and dark theme" class="mx-auto mb-4 rounded">
+          <h4 class="text-xl font-semibold mb-3">Web Applications</h4>
+          <p>Custom web apps to streamline your operations.</p>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow-md card-hover">
+          <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/1cbe85ca-16d3-4a06-a6a4-caca5570f8b0.png" alt="Security camera installation setup with multiple angles and network connection indicators in dark blue and white" class="mx-auto mb-4 rounded">
+          <h4 class="text-xl font-semibold mb-3">CCTV</h4>
+          <p>Advanced surveillance systems for safety.</p>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow-md card-hover">
+          <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/34083e93-d159-4080-82a6-3cc96abaedb0.png" alt="Digital attendance machine interface displaying timeclock and user verification in neutral gray tones" class="mx-auto mb-4 rounded">
+          <h4 class="text-xl font-semibold mb-3">Mesin Absensi</h4>
+          <p>Efficient attendance tracking solutions.</p>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow-md card-hover">
+          <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/a55186cc-a437-4961-9b06-ac48b7c76f40.png" alt="Pharmacy application screenshot showing inventory, prescriptions, and billing in green and white" class="mx-auto mb-4 rounded">
+          <h4 class="text-xl font-semibold mb-3">Aplikasi Apotik</h4>
+          <p>Tailored apps for pharmacy management.</p>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow-md card-hover">
+          <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/d2c23a4c-56f1-48f1-b17a-28e614a4fec2.png" alt="Car showroom application UI with vehicle listings, search filters, and 3D models in dark red and white" class="mx-auto mb-4 rounded">
+          <h4 class="text-xl font-semibold mb-3">Aplikasi Showroom Mobil</h4>
+          <p>Interactive apps for car sales showrooms.</p>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow-md card-hover">
+          <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/f4a91112-fb6b-4ded-a560-dafc495b3da9.png" alt="Computer network diagram with routers, switches, and cable layouts in olive green and white" class="mx-auto mb-4 rounded">
+          <h4 class="text-xl font-semibold mb-3">Jaringan Komputer</h4>
+          <p>Reliable networking setups and maintenance.</p>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow-md card-hover">
+          <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/66b83a2e-ac5e-4272-b8c8-6f3f6d3741b5.png" alt="High-speed internet service illustration with fiber optic cables and connection symbols in blue-purple tones" class="mx-auto mb-4 rounded">
+          <h4 class="text-xl font-semibold mb-3">Internet Service</h4>
+          <p>Stable and fast internet solutions.</p>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow-md card-hover">
+          <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/c4ccabf5-f34d-4ed4-9748-539c71ad6c0f.png" alt="Email service platform dashboard with inbox, templates, and security icons in teal green and white" class="mx-auto mb-4 rounded">
+          <h4 class="text-xl font-semibold mb-3">Email Services</h4>
+          <p>Secure and managed email platforms.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Portfolio Section -->
+  <section id="portfolio" class="py-16 bg-white">
+    <div class="container mx-auto px-6">
+      <h3 class="text-3xl font-bold text-center text-gray-800 mb-12">Our Portfolio</h3>
+      <div class="portfolio-grid">
+        <div class="bg-gray-100 p-6 rounded-lg shadow-md card-hover">
+          <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/e5b6c8fe-8eba-4887-8ce0-5002d8e393dd.png" alt="Before-and-after screenshot of IT infrastructure upgrade project showing improved server configurations and network stability visualized in blue and white" class="mb-4 rounded">
+          <h4 class="text-xl font-semibold mb-3">IT Infrastructure Upgrade</h4>
+          <p>Enhanced scalability for a local business, reducing downtime by 40%.</p>
+        </div>
+        <div class="bg-gray-100 p-6 rounded-lg shadow-md card-hover">
+          <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/27ae2297-7210-4b59-816c-23c805185e83.png" alt="Interactive web application prototype for e-commerce with shopping cart, payment integration, and user-friendly interface in orange and black" class="mb-4 rounded">
+          <h4 class="text-xl font-semibold mb-3">E-Commerce Web App</h4>
+          <p>Custom solution boosting online sales by 60% for a retail client.</p>
+        </div>
+        <div class="bg-gray-100 p-6 rounded-lg shadow-md card-hover">
+          <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/22731ec5-8dd4-4bd2-b75e-14b036e499d6.png" alt="Surveillance system installation blueprint with camera placements and monitoring dashboard in dark blue and white" class="mb-4 rounded">
+          <h4 class="text-xl font-semibold mb-3">CCTV Security Setup</h4>
+          <p>Complete installation for a warehouse, ensuring 24/7 security.</p>
+        </div>
+        <div class="bg-gray-100 p-6 rounded-lg shadow-md card-hover">
+          <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/017a7f29-395b-41f2-8f33-6552906a6d94.png" alt="Pharmacy management app workflow diagram showing automated inventory and prescription tracking in neutral gray" class="mb-4 rounded">
+          <h4 class="text-xl font-semibold mb-3">Apotek Management App</h4>
+          <p>Streamlined operations for multiple pharmacies, improving efficiency.</p>
+        </div>
+        <div class="bg-gray-100 p-6 rounded-lg shadow-md card-hover">
+          <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/17267d98-11f0-4747-8c60-77278d7a1393.png" alt="Car showroom app mockup with vehicle comparison tool, booking system, and virtual tours in green and white" class="mb-4 rounded">
+          <h4 class="text-xl font-semibold mb-3">Mobil Showroom Digital Platform</h4>
+          <p>Innovative app increasing showroom conversions by 50%.</p>
+        </div>
+        <div class="bg-gray-100 p-6 rounded-lg shadow-md card-hover">
+          <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/922887f1-b511-40b7-ade3-a1e39145c89d.png" alt="Network optimization report graphics depicting faster speeds and reduced latency in dark red and white" class="mb-4 rounded">
+          <h4 class="text-xl font-semibold mb-3">Network Optimization</h4>
+          <p>Upgraded corporate network, enhancing productivity.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="py-16 bg-gray-100">
+    <div class="container mx-auto px-6">
+      <h3 class="text-3xl font-bold text-center text-gray-800 mb-12">Contact Us</h3>
+      <div class="max-w-lg mx-auto bg-white p-8 rounded-lg shadow-md">
+        <form>
+          <div class="mb-4">
+            <label for="name" class="block text-gray-700">Name</label>
+            <input type="text" id="name" class="w-full px-4 py-2 border rounded-lg">
+          </div>
+          <div class="mb-4">
+            <label for="email" class="block text-gray-700">Email</label>
+            <input type="email" id="email" class="w-full px-4 py-2 border rounded-lg">
+          </div>
+          <div class="mb-4">
+            <label for="message" class="block text-gray-700">Message</label>
+            <textarea id="message" rows="4" class="w-full px-4 py-2 border rounded-lg"></textarea>
+          </div>
+          <button type="submit" class="btn-primary w-full font-semibold">Send Message</button>
+        </form>
+        <div class="mt-6 text-center">
+          <p><strong>Phone:</strong> 08972325030</p>
+          <p><strong>Email:</strong> clueforit@gmail.com</p>
+          <p><strong>Address:</strong> Tangerang Raya Gading Serpong Business Center</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-blue-600 text-white py-6">
+    <div class="container mx-auto px-6 text-center">
+      <p>© 2023 CLUEFORIT. All rights reserved. Innovating with technology for a digital future.</p>
+    </div>
+  </footer>
+
+  <!-- JavaScript for Interactivity -->
+  <script>
+    // Toggle mobile menu
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    menuToggle.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    // Fade-in animation on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+        }
+      });
+    });
+    document.querySelectorAll('.animate-fade-in').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
+</content>
+</create_file>
