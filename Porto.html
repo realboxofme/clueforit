@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Henry Suryaman - IT Specialist</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 60px 0;
+            color: white;
+        }
+
+        .profile-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .profile-avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            font-weight: bold;
+            color: white;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .profile-info h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .profile-info .title {
+            font-size: 1.5rem;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+
+        .contact-info {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.1);
+            padding: 8px 16px;
+            border-radius: 25px;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease;
+        }
+
+        .contact-item:hover {
+            transform: translateY(-2px);
+            background: rgba(255,255,255,0.2);
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            backdrop-filter: blur(20px);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 30px 80px rgba(0,0,0,0.15);
+        }
+
+        .card h2 {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: #2d3748;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .experience-item {
+            margin-bottom: 30px;
+            padding: 25px;
+            background: linear-gradient(145deg, #f8fafc, #e2e8f0);
+            border-radius: 15px;
+            border-left: 4px solid #667eea;
+            transition: transform 0.2s ease;
+        }
+
+        .experience-item:hover {
+            transform: translateX(5px);
+        }
+
+        .experience-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .job-title {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #2d3748;
+        }
+
+        .company {
+            color: #667eea;
+            font-weight: 600;
+            margin: 5px 0;
+        }
+
+        .duration {
+            background: #667eea;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .description {
+            color: #4a5568;
+            line-height: 1.6;
+            margin-top: 10px;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+        }
+
+        .skill-item {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 600;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .skill-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .cert-item {
+            background: linear-gradient(145deg, #fff, #f1f5f9);
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: border-color 0.3s ease;
+        }
+
+        .cert-item:hover {
+            border-color: #667eea;
+        }
+
+        .cert-name {
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 8px;
+        }
+
+        .cert-year {
+            color: #667eea;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .summary-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #4a5568;
+            text-align: justify;
+        }
+
+        .achievements {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+
+        .achievements h3 {
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .profile-section {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .profile-info h1 {
+                font-size: 2.5rem;
+            }
+            
+            .contact-info {
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+            }
+            
+            .card {
+                padding: 25px;
+            }
+            
+            .experience-header {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+
+        .floating-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            animation: float 20s infinite linear;
+        }
+
+        .shape:nth-child(1) { width: 80px; height: 80px; left: 10%; animation-delay: 0s; }
+        .shape:nth-child(2) { width: 60px; height: 60px; left: 20%; animation-delay: 2s; }
+        .shape:nth-child(3) { width: 100px; height: 100px; left: 35%; animation-delay: 4s; }
+        .shape:nth-child(4) { width: 120px; height: 120px; left: 50%; animation-delay: 6s; }
+        .shape:nth-child(5) { width: 90px; height: 90px; left: 70%; animation-delay: 8s; }
+        .shape:nth-child(6) { width: 110px; height: 110px; left: 85%; animation-delay: 10s; }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
+    <div class="container">
+        <header class="header">
+            <div class="profile-section">
+                <div class="profile-avatar">HS</div>
+                <div class="profile-info">
+                    <h1>Henry Suryaman</h1>
+                    <div class="title">IT Specialist & Digital Business Expert</div>
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <span>📱</span>
+                            <span>08515-861-2271</span>
+                        </div>
+                        <div class="contact-item">
+                            <span>✉️</span>
+                            <span>henry.suryaman@gmail.com</span>
+                        </div>
+                        <div class="contact-item">
+                            <span>💼</span>
+                            <span>LinkedIn</span>
+                        </div>
+                        <div class="contact-item">
+                            <span>📍</span>
+                            <span>Tangerang, Indonesia</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <div class="card full-width">
+                <h2><div class="card-icon">👨‍💼</div>Professional Summary</h2>
+                <div class="summary-text">
+                    Experienced IT Manager and Digital Business Specialist with over 20 years in IT management, network engineering, and digital transformation. Proven expertise in cloud management, cybersecurity, and IT infrastructure, complemented by strong leadership skills in managing teams and complex projects.
+                </div>
+                <div class="achievements">
+                    <h3>🏆 Key Achievements</h3>
+                    <p>Successfully led IT infrastructure improvements and managed digital transformation projects that significantly increased operational efficiency across multiple organizations.</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2><div class="card-icon">🚀</div>Experience</h2>
+                <div class="experience-item">
+                    <div class="experience-header">
+                        <div>
+                            <div class="job-title">IT Specialist</div>
+                            <div class="company">Clueforit.vercel.app</div>
+                        </div>
+                        <div class="duration">2020 - Present</div>
+                    </div>
+                    <div class="description">
+                        IT consulting and managed services provider specializing in digital business solutions and IT infrastructure management for various clients.
+                    </div>
+                </div>
+
+                <div class="experience-item">
+                    <div class="experience-header">
+                        <div>
+                            <div class="job-title">Manager IT and Business Digital</div>
+                            <div class="company">Perum PNRI</div>
+                        </div>
+                        <div class="duration">2019 - 2020</div>
+                    </div>
+                    <div class="description">
+                        Led IT and digital business initiatives at Indonesia's state printing company, managing infrastructure and digital transformation projects.
+                    </div>
+                </div>
+
+                <div class="experience-item">
+                    <div class="experience-header">
+                        <div>
+                            <div class="job-title">Manager IT</div>
+                            <div class="company">PT. Cardig International Support</div>
+                        </div>
+                        <div class="duration">2017 - 2019</div>
+                    </div>
+                    <div class="description">
+                        Oversaw IT operations and support services, implementing network and system improvements.
+                    </div>
+                </div>
+
+                <div class="experience-item">
+                    <div class="experience-header">
+                        <div>
+                            <div class="job-title">Assistant Manager</div>
+                            <div class="company">PT. Cardig International</div>
+                        </div>
+                        <div class="duration">2011 - 2017</div>
+                    </div>
+                    <div class="description">
+                        Assisted in managing IT department and projects, coordinating technical teams and system administration.
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2><div class="card-icon">🛠️</div>Technical Skills</h2>
+                <div class="skills-grid">
+                    <div class="skill-item">Active Directory</div>
+                    <div class="skill-item">Apache</div>
+                    <div class="skill-item">CCNA</div>
+                    <div class="skill-item">Cisco</div>
+                    <div class="skill-item">Cybersecurity</div>
+                    <div class="skill-item">DNS</div>
+                    <div class="skill-item">Fortinet</div>
+                    <div class="skill-item">HTML</div>
+                    <div class="skill-item">Linux</div>
+                    <div class="skill-item">Microsoft Office</div>
+                    <div class="skill-item">MikroTik</div>
+                    <div class="skill-item">PHP</div>
+                    <div class="skill-item">PostgreSQL</div>
+                    <div class="skill-item">Windows Server</div>
+                    <div class="skill-item">Wi-Fi</div>
+                    <div class="skill-item">Vercel</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2><div class="card-icon">🏅</div>Certifications & Training</h2>
+                <div class="cert-item">
+                    <div class="cert-name">Fortinet Webinar</div>
+                    <div class="cert-year">2021</div>
+                </div>
+                <div class="cert-item">
+                    <div class="cert-name">Data Privacy Certification</div>
+                    <div class="cert-year">2021</div>
+                </div>
+                <div class="cert-item">
+                    <div class="cert-name">CCNA Certification</div>
+                    <div class="cert-year">2018</div>
+                </div>
+                <div class="cert-item">
+                    <div class="cert-name">Internal Auditor IT</div>
+                    <div class="cert-year">2018</div>
+                </div>
+                <div class="cert-item">
+                    <div class="cert-name">Open Source and e-Government Conference</div>
+                    <div class="cert-year">2015</div>
+                </div>
+                <div class="cert-item">
+                    <div class="cert-name">X-ray Machine Training</div>
+                    <div class="cert-year">2013 - Shanghai, China</div>
+                </div>
+                <div class="cert-item">
+                    <div class="cert-name">Data Center Management</div>
+                    <div class="cert-year">2009</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2><div class="card-icon">🎓</div>Education</h2>
+                <div class="cert-item">
+                    <div class="cert-name">Bachelor's Degree</div>
+                    <div class="cert-year">Institute Teknologi Indonesia (2007-2010)</div>
+                </div>
+                <div class="cert-item">
+                    <div class="cert-name">Associate's Degree</div>
+                    <div class="cert-year">STMIK Bekasi (1999-2002)</div>
+                </div>
+                <div class="cert-item">
+                    <div class="cert-name">Transfer Student</div>
+                    <div class="cert-year">Universitas Gunadarma (1998-1999)</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2><div class="card-icon">🌐</div>Languages</h2>
+                <div class="cert-item">
+                    <div class="cert-name">Indonesian</div>
+                    <div class="cert-year">Native</div>
+                </div>
+                <div class="cert-item">
+                    <div class="cert-name">English</div>
+                    <div class="cert-year">Advanced</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
