@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClueForIt - IT Solutions</title>
+    <meta name="description" content="Transformasi digital dengan teknologi AI, Cloud Computing, dan Cybersecurity terdepan untuk bisnis masa depan.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        :root {
+            --background: #000000;
+            --foreground: #ffffff;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #000000;
+            color: #ffffff;
+            overflow-x: auto;
+            min-width: 320px; /* Ensure minimum width for mobile */
+        }
+        
+        /* Added smooth scrolling behavior */
+        html {
+            scroll-behavior: smooth;
+            overflow-x: auto;
+        }
+        
+        .font-orbitron {
+            font-family: 'Orbitron', monospace;
+        }
+        
+        .font-inter {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .cyber-bg {
+            background: linear-gradient(135deg, #000000 0%, #0f0f23 25%, #0d1b2a 50%, #0a2647 75%, #2d1b69 100%);
+            position: relative;
+            overflow: visible;
+            min-height: 100vh;
+            width: 100%;
+            min-width: 320px;
+            /* Added transition for smooth gradient changes */
+            transition: background 2s ease-in-out;
+        }
+        
+        .cyber-bg::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: radial-gradient(circle at 25% 25%, #00ffff15 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, #ff00ff15 0%, transparent 50%),
+                linear-gradient(45deg, transparent 40%, #00ffff08 50%, transparent 60%);
+            animation: cyber-pulse 4s ease-in-out infinite;
+        }
+        
+        @keyframes cyber-pulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.7; }
+        }
+        
+        .neon-text {
+            text-shadow: 0 0 5px currentColor, 0 0 10px currentColor, 0 0 15px currentColor;
+        }
+        
+        .glass-card {
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+        
+        .nav-glass {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav-item {
+            position: relative;
+            transition: all 0.3s ease;
+            color: #ffffff;
+        }
+        
+        .nav-item::after {
+            content: "";
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #00ffff, #ff00ff);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-item.active::after {
+            width: 100%;
+        }
+        
+        .logo-cyber {
+            background: linear-gradient(45deg, #00ffff, #ff00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 900;
+        }
+        
+        .konsultasi-btn {
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid #00ffff;
+            color: #00ffff;
+            transition: all 0.3s ease;
+        }
+        
+        .konsultasi-btn:hover {
+            background: #00ffff;
+            color: #000000;
+        }
+        
+        .floating-icon {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .service-card {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5));
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 255, 255, 0.2);
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.1), rgba(255, 0, 255, 0.1));
+        }
+        
+        .page {
+            display: none;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease-in-out;
+        }
+        
+        .page.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Added mobile navigation styles */
+        .mobile-menu {
+            display: none;
+        }
+        
+        .mobile-menu.active {
+            display: block;
+        }
+        
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+        
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: #ffffff;
+            margin: 3px 0;
+            transition: 0.3s;
+        }
+        
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(-45deg) translate(-5px, 6px);
+        }
+        
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(45deg) translate(-5px, -6px);
+        }
+        
+        /* Mobile responsive breakpoints */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+            
+            .desktop-nav {
+                display: none;
+            }
+            
+            .mobile-menu {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(0, 0, 0, 0.95);
+                backdrop-filter: blur(15px);
+                border-top: 1px solid rgba(255, 255, 255, 0.1);
+                padding: 1rem;
+                width: 100%;
+                min-width: 280px;
+            }
+            
+            .mobile-nav-item {
+                display: block;
+                padding: 1rem;
+                text-align: center;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                color: #ffffff;
+                text-decoration: none;
+                transition: all 0.3s ease;
+            }
+            
+            .mobile-nav-item:hover,
+            .mobile-nav-item.active {
+                color: #00ffff;
+                background: rgba(0, 255, 255, 0.1);
+            }
+            
+            .konsultasi-btn {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .cyber-bg::before {
+                background-size: 200% 200%;
+            }
+            
+            body {
+                min-width: 280px;
+            }
+            
+            .responsive-container {
+                padding: 0 0.5rem;
+            }
+        }
+        
+        /* Added responsive container to prevent content overflow */
+        .responsive-container {
+            width: 100%;
+            max-width: 100vw;
+            overflow-x: auto;
+            padding: 0 1rem;
+        }
+        
+        /* Ensure all sections have proper minimum width */
+        section {
+            min-width: 320px;
+            width: 100%;
+        }
+
+        /* Added WhatsApp floating button styles */
+        .whatsapp-float {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            bottom: 40px;
+            right: 40px;
+            background: #25d366;
+            color: white;
+            border-radius: 50px;
+            text-align: center;
+            font-size: 30px;
+            box-shadow: 2px 2px 3px #999;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        
+        .whatsapp-float:hover {
+            background: #128c7e;
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(37, 211, 102, 0.5);
+        }
+        
+        .whatsapp-float i {
+            margin-top: 16px;
+        }
+        
+        @media (max-width: 768px) {
+            .whatsapp-float {
+                width: 50px;
+                height: 50px;
+                bottom: 20px;
+                right: 20px;
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body class="cyber-bg">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 nav-glass">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-lg flex items-center justify-center">
+                        <span class="text-white font-bold text-lg drop-shadow-lg">C</span>
+                    </div>
+                    <span class="text-lg sm:text-xl font-orbitron logo-cyber">ClueForIt</span>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <!-- Updated navigation to use anchor links for smooth scrolling -->
+                <div class="desktop-nav hidden md:flex space-x-8">
+                    <a href="#home" class="nav-item font-medium text-white hover:text-cyan-400 active">HOME</a>
+                    <a href="#about" class="nav-item font-medium text-white hover:text-cyan-400">ABOUT</a>
+                    <a href="#services" class="nav-item font-medium text-white hover:text-cyan-400">SERVICES</a>
+                    <a href="#portfolio" class="nav-item font-medium text-white hover:text-cyan-400">PORTFOLIO</a>
+                    <a href="#contact" class="nav-item font-medium text-white hover:text-cyan-400">CONTACT</a>
+                </div>
+
+                <!-- Mobile Hamburger Menu -->
+                <div class="hamburger" onclick="toggleMobileMenu()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+
+                <button class="konsultasi-btn hidden md:block px-4 py-2 rounded-lg font-medium" onclick="openWhatsApp()">KONSULTASI</button>
+            </div>
+            
+            <!-- Mobile Navigation Menu -->
+            <!-- Updated mobile navigation to use anchor links -->
+            <div class="mobile-menu" id="mobileMenu">
+                <a href="#home" class="mobile-nav-item active" onclick="closeMobileMenu();">HOME</a>
+                <a href="#about" class="mobile-nav-item" onclick="closeMobileMenu();">ABOUT</a>
+                <a href="#services" class="mobile-nav-item" onclick="closeMobileMenu();">SERVICES</a>
+                <a href="#portfolio" class="mobile-nav-item" onclick="closeMobileMenu();">PORTFOLIO</a>
+                <a href="#contact" class="mobile-nav-item" onclick="closeMobileMenu();">CONTACT</a>
+                <!-- Updated mobile konsultasi to use WhatsApp function -->
+                <a href="#" class="mobile-nav-item konsultasi-mobile" onclick="closeMobileMenu(); openWhatsApp();">KONSULTASI</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Wrapped all sections in responsive container -->
+    <div class="responsive-container">
+        <!-- Home Section -->
+        <section id="home" class="min-h-screen flex items-center pt-16">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+                <div class="text-center lg:text-left">
+                    <div class="inline-block glass-card px-3 sm:px-4 py-2 rounded-full mb-4 sm:mb-6">
+                        <span class="text-cyan-400 font-medium text-sm sm:text-base">🚀 DIGITAL TRANSFORMATION</span>
+                    </div>
+
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-orbitron font-black mb-4 sm:mb-6 leading-tight">
+                        <span class="neon-text text-cyan-300">FUTURE</span><br>
+                        <span class="text-white">IS NOW</span>
+                    </h1>
+
+                    <p class="text-lg sm:text-xl text-gray-100 mb-6 sm:mb-8 leading-relaxed">
+                        Transformasi digital dengan teknologi AI, Cloud Computing, dan Cybersecurity terdepan untuk bisnis masa depan.
+                    </p>
+
+                    <div class="flex flex-col sm:flex-row gap-4 mb-8 sm:mb-12">
+                        <button class="bg-gradient-to-r from-cyan-500 to-purple-500 px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold hover:scale-105 transition-transform text-white">
+                            START PROJECT
+                        </button>
+                        <button class="glass-card px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold hover:scale-105 transition-transform text-white border border-white/20">
+                            WATCH DEMO
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-4 sm:gap-8">
+                        <div class="text-center">
+                            <div class="text-2xl sm:text-3xl font-orbitron font-bold text-cyan-400">500+</div>
+                            <div class="text-xs sm:text-sm text-gray-300">PROJECTS</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl sm:text-3xl font-orbitron font-bold text-purple-400">99.9%</div>
+                            <div class="text-xs sm:text-sm text-gray-300">UPTIME</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl sm:text-3xl font-orbitron font-bold text-yellow-400">24/7</div>
+                            <div class="text-xs sm:text-sm text-gray-300">SUPPORT</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative mt-8 lg:mt-0">
+                    <div class="glass-card p-6 sm:p-8 rounded-3xl">
+                        <div class="grid grid-cols-2 gap-3 sm:gap-4">
+                            <div class="glass-card p-3 sm:p-4 rounded-xl text-center floating-icon">
+                                <i class="fas fa-robot text-2xl sm:text-3xl text-cyan-400 mb-2"></i>
+                                <div class="text-xs sm:text-sm text-white">AI SOLUTIONS</div>
+                            </div>
+                            <div class="glass-card p-3 sm:p-4 rounded-xl text-center floating-icon" style="animation-delay: 0.5s;">
+                                <i class="fas fa-cloud text-2xl sm:text-3xl text-purple-400 mb-2"></i>
+                                <div class="text-xs sm:text-sm text-white">CLOUD TECH</div>
+                            </div>
+                            <div class="glass-card p-3 sm:p-4 rounded-xl text-center floating-icon" style="animation-delay: 1s;">
+                                <i class="fas fa-shield-alt text-2xl sm:text-3xl text-green-400 mb-2"></i>
+                                <div class="text-xs sm:text-sm text-white">CYBERSECURITY</div>
+                            </div>
+                            <div class="glass-card p-3 sm:p-4 rounded-xl text-center floating-icon" style="animation-delay: 1.5s;">
+                                <i class="fas fa-mobile-alt text-2xl sm:text-3xl text-yellow-400 mb-2"></i>
+                                <div class="text-xs sm:text-sm text-white">MOBILE APPS</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="min-h-screen py-12 sm:py-20 pt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="text-center mb-12 sm:mb-16">
+                <h2 class="text-4xl sm:text-5xl font-orbitron font-bold mb-4 sm:mb-6">
+                    <span class="neon-text text-cyan-300">ABOUT</span> <span class="text-white">US</span>
+                </h2>
+                <p class="text-lg sm:text-xl text-gray-100 max-w-3xl mx-auto">
+                    Kami adalah tim ahli teknologi yang berdedikasi untuk menghadirkan solusi digital terdepan bagi bisnis modern.
+                </p>
+            </div>
+
+            <!-- Made about section responsive with mobile-first approach -->
+            <div class="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center mb-12 sm:mb-20">
+                <div>
+                    <h3 class="text-2xl sm:text-3xl font-orbitron font-bold text-white mb-4 sm:mb-6">Visi Kami</h3>
+                    <p class="text-base sm:text-lg text-gray-100 mb-4 sm:mb-6 leading-relaxed">
+                        Menjadi perusahaan teknologi terdepan yang mengubah cara bisnis beroperasi melalui inovasi digital yang berkelanjutan.
+                    </p>
+                    <div class="space-y-3 sm:space-y-4">
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-check-circle text-cyan-400"></i>
+                            <span class="text-white">Inovasi Berkelanjutan</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-check-circle text-cyan-400"></i>
+                            <span class="text-white">Kualitas Terjamin</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-check-circle text-cyan-400"></i>
+                            <span class="text-white">Support 24/7</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass-card p-6 sm:p-8 rounded-3xl">
+                    <div class="grid grid-cols-2 gap-4 sm:gap-6">
+                        <div class="text-center">
+                            <div class="text-3xl sm:text-4xl font-orbitron font-bold text-cyan-400 mb-2">10+</div>
+                            <div class="text-xs sm:text-sm text-gray-300">TAHUN PENGALAMAN</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl sm:text-4xl font-orbitron font-bold text-purple-400 mb-2">50+</div>
+                            <div class="text-xs sm:text-sm text-gray-300">TIM AHLI</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl sm:text-4xl font-orbitron font-bold text-green-400 mb-2">500+</div>
+                            <div class="text-xs sm:text-sm text-gray-300">KLIEN PUAS</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl sm:text-4xl font-orbitron font-bold text-yellow-400 mb-2">1000+</div>
+                            <div class="text-xs sm:text-sm text-gray-300">PROYEK SELESAI</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="min-h-screen py-12 sm:py-20 pt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="text-center mb-12 sm:mb-16">
+                <h2 class="text-4xl sm:text-5xl font-orbitron font-bold mb-4 sm:mb-6">
+                    <span class="text-white">OUR</span> <span class="neon-text text-cyan-300">SERVICES</span>
+                </h2>
+                <p class="text-lg sm:text-xl text-gray-100 max-w-3xl mx-auto">
+                    Solusi teknologi komprehensif untuk mengakselerasi transformasi digital bisnis Anda.
+                </p>
+            </div>
+
+            <!-- Made services grid responsive for all screen sizes -->
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+                <div class="service-card p-6 sm:p-8 rounded-2xl">
+                    <div class="text-center">
+                        <i class="fas fa-robot text-4xl sm:text-5xl text-cyan-400 mb-4 sm:mb-6"></i>
+                        <h3 class="text-xl sm:text-2xl font-orbitron font-bold text-white mb-3 sm:mb-4">AI Solutions</h3>
+                        <p class="text-gray-100 mb-4 sm:mb-6 text-sm sm:text-base">Implementasi kecerdasan buatan untuk otomatisasi dan optimasi proses bisnis.</p>
+                        <ul class="text-left space-y-2 text-gray-300 text-sm">
+                            <li>• Machine Learning</li>
+                            <li>• Natural Language Processing</li>
+                            <li>• Computer Vision</li>
+                            <li>• Predictive Analytics</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="service-card p-6 sm:p-8 rounded-2xl">
+                    <div class="text-center">
+                        <i class="fas fa-cloud text-4xl sm:text-5xl text-purple-400 mb-4 sm:mb-6"></i>
+                        <h3 class="text-xl sm:text-2xl font-orbitron font-bold text-white mb-3 sm:mb-4">Cloud Computing</h3>
+                        <p class="text-gray-100 mb-4 sm:mb-6 text-sm sm:text-base">Migrasi dan optimasi infrastruktur cloud untuk skalabilitas maksimal.</p>
+                        <ul class="text-left space-y-2 text-gray-300 text-sm">
+                            <li>• AWS/Azure/GCP</li>
+                            <li>• Kubernetes</li>
+                            <li>• Microservices</li>
+                            <li>• DevOps</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="service-card p-6 sm:p-8 rounded-2xl">
+                    <div class="text-center">
+                        <i class="fas fa-shield-alt text-4xl sm:text-5xl text-green-400 mb-4 sm:mb-6"></i>
+                        <h3 class="text-xl sm:text-2xl font-orbitron font-bold text-white mb-3 sm:mb-4">Cybersecurity</h3>
+                        <p class="text-gray-100 mb-4 sm:mb-6 text-sm sm:text-base">Perlindungan komprehensif terhadap ancaman siber modern.</p>
+                        <ul class="text-left space-y-2 text-gray-300 text-sm">
+                            <li>• Penetration Testing</li>
+                            <li>• Security Audit</li>
+                            <li>• Incident Response</li>
+                            <li>• Compliance</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="service-card p-6 sm:p-8 rounded-2xl">
+                    <div class="text-center">
+                        <i class="fas fa-mobile-alt text-4xl sm:text-5xl text-yellow-400 mb-4 sm:mb-6"></i>
+                        <h3 class="text-xl sm:text-2xl font-orbitron font-bold text-white mb-3 sm:mb-4">Mobile Development</h3>
+                        <p class="text-gray-100 mb-4 sm:mb-6 text-sm sm:text-base">Aplikasi mobile native dan cross-platform yang powerful.</p>
+                        <ul class="text-left space-y-2 text-gray-300 text-sm">
+                            <li>• iOS & Android</li>
+                            <li>• React Native</li>
+                            <li>• Flutter</li>
+                            <li>• Progressive Web Apps</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="service-card p-6 sm:p-8 rounded-2xl">
+                    <div class="text-center">
+                        <i class="fas fa-globe text-4xl sm:text-5xl text-red-400 mb-4 sm:mb-6"></i>
+                        <h3 class="text-xl sm:text-2xl font-orbitron font-bold text-white mb-3 sm:mb-4">Web Development</h3>
+                        <p class="text-gray-100 mb-4 sm:mb-6 text-sm sm:text-base">Website dan aplikasi web modern dengan performa tinggi.</p>
+                        <ul class="text-left space-y-2 text-gray-300 text-sm">
+                            <li>• React/Vue/Angular</li>
+                            <li>• Node.js/Python</li>
+                            <li>• E-commerce</li>
+                            <li>• CMS Solutions</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="service-card p-6 sm:p-8 rounded-2xl">
+                    <div class="text-center">
+                        <i class="fas fa-database text-4xl sm:text-5xl text-indigo-400 mb-4 sm:mb-6"></i>
+                        <h3 class="text-xl sm:text-2xl font-orbitron font-bold text-white mb-3 sm:mb-4">Data Analytics</h3>
+                        <p class="text-gray-100 mb-4 sm:mb-6 text-sm sm:text-base">Transformasi data menjadi insight bisnis yang actionable.</p>
+                        <ul class="text-left space-y-2 text-gray-300 text-sm">
+                            <li>• Business Intelligence</li>
+                            <li>• Data Visualization</li>
+                            <li>• Big Data Processing</li>
+                            <li>• Real-time Analytics</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="min-h-screen py-12 sm:py-20 pt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="text-center mb-12 sm:mb-16">
+                <h2 class="text-4xl sm:text-5xl font-orbitron font-bold mb-4 sm:mb-6">
+                    <span class="text-white">OUR</span> <span class="neon-text text-cyan-300">PORTFOLIO</span>
+                </h2>
+                <p class="text-lg sm:text-xl text-gray-100 max-w-3xl mx-auto">
+                    Showcase proyek-proyek terbaik yang telah kami kerjakan untuk berbagai industri.
+                </p>
+            </div>
+
+            <!-- Made portfolio grid responsive -->
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+                <div class="glass-card rounded-2xl overflow-hidden group hover:scale-105 transition-transform">
+                    <div class="h-40 sm:h-48 bg-gradient-to-br from-cyan-500 to-purple-600 flex items-center justify-center">
+                        <i class="fas fa-shopping-cart text-4xl sm:text-6xl text-white"></i>
+                    </div>
+                    <div class="p-4 sm:p-6">
+                        <h3 class="text-lg sm:text-xl font-orbitron font-bold text-white mb-2">E-Commerce Platform</h3>
+                        <p class="text-gray-300 mb-3 sm:mb-4 text-sm sm:text-base">Platform e-commerce dengan AI recommendation engine untuk meningkatkan konversi penjualan.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-2 sm:px-3 py-1 bg-cyan-500/20 text-cyan-400 rounded-full text-xs sm:text-sm">React</span>
+                            <span class="px-2 sm:px-3 py-1 bg-purple-500/20 text-purple-400 rounded-full text-xs sm:text-sm">Node.js</span>
+                            <span class="px-2 sm:px-3 py-1 bg-green-500/20 text-green-400 rounded-full text-xs sm:text-sm">MongoDB</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-2xl overflow-hidden group hover:scale-105 transition-transform">
+                    <div class="h-40 sm:h-48 bg-gradient-to-br from-green-500 to-blue-600 flex items-center justify-center">
+                        <i class="fas fa-hospital text-4xl sm:text-6xl text-white"></i>
+                    </div>
+                    <div class="p-4 sm:p-6">
+                        <h3 class="text-lg sm:text-xl font-orbitron font-bold text-white mb-2">Healthcare Management</h3>
+                        <p class="text-gray-300 mb-3 sm:mb-4 text-sm sm:text-base">Sistem manajemen rumah sakit dengan integrasi IoT untuk monitoring pasien real-time.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-2 sm:px-3 py-1 bg-cyan-500/20 text-cyan-400 rounded-full text-xs sm:text-sm">Vue.js</span>
+                            <span class="px-2 sm:px-3 py-1 bg-purple-500/20 text-purple-400 rounded-full text-xs sm:text-sm">Python</span>
+                            <span class="px-2 sm:px-3 py-1 bg-yellow-500/20 text-yellow-400 rounded-full text-xs sm:text-sm">IoT</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-2xl overflow-hidden group hover:scale-105 transition-transform">
+                    <div class="h-40 sm:h-48 bg-gradient-to-br from-yellow-500 to-red-600 flex items-center justify-center">
+                        <i class="fas fa-chart-line text-4xl sm:text-6xl text-white"></i>
+                    </div>
+                    <div class="p-4 sm:p-6">
+                        <h3 class="text-lg sm:text-xl font-orbitron font-bold text-white mb-2">Financial Analytics</h3>
+                        <p class="text-gray-300 mb-3 sm:mb-4 text-sm sm:text-base">Dashboard analytics untuk institusi keuangan dengan machine learning untuk fraud detection.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-2 sm:px-3 py-1 bg-cyan-500/20 text-cyan-400 rounded-full text-xs sm:text-sm">Angular</span>
+                            <span class="px-2 sm:px-3 py-1 bg-purple-500/20 text-purple-400 rounded-full text-xs sm:text-sm">Java</span>
+                            <span class="px-2 sm:px-3 py-1 bg-red-500/20 text-red-400 rounded-full text-xs sm:text-sm">ML</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-2xl overflow-hidden group hover:scale-105 transition-transform">
+                    <div class="h-40 sm:h-48 bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center">
+                        <i class="fas fa-graduation-cap text-4xl sm:text-6xl text-white"></i>
+                    </div>
+                    <div class="p-4 sm:p-6">
+                        <h3 class="text-lg sm:text-xl font-orbitron font-bold text-white mb-2">EdTech Platform</h3>
+                        <p class="text-gray-300 mb-3 sm:mb-4 text-sm sm:text-base">Platform pembelajaran online dengan AI tutor dan adaptive learning system.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-2 sm:px-3 py-1 bg-cyan-500/20 text-cyan-400 rounded-full text-xs sm:text-sm">React</span>
+                            <span class="px-2 sm:px-3 py-1 bg-purple-500/20 text-purple-400 rounded-full text-xs sm:text-sm">GraphQL</span>
+                            <span class="px-2 sm:px-3 py-1 bg-green-500/20 text-green-400 rounded-full text-xs sm:text-sm">AI</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-2xl overflow-hidden group hover:scale-105 transition-transform">
+                    <div class="h-40 sm:h-48 bg-gradient-to-br from-indigo-500 to-cyan-600 flex items-center justify-center">
+                        <i class="fas fa-truck text-4xl sm:text-6xl text-white"></i>
+                    </div>
+                    <div class="p-4 sm:p-6">
+                        <h3 class="text-lg sm:text-xl font-orbitron font-bold text-white mb-2">Logistics Management</h3>
+                        <p class="text-gray-300 mb-3 sm:mb-4 text-sm sm:text-base">Sistem manajemen logistik dengan GPS tracking dan route optimization.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-2 sm:px-3 py-1 bg-cyan-500/20 text-cyan-400 rounded-full text-xs sm:text-sm">Flutter</span>
+                            <span class="px-2 sm:px-3 py-1 bg-purple-500/20 text-purple-400 rounded-full text-xs sm:text-sm">Firebase</span>
+                            <span class="px-2 sm:px-3 py-1 bg-yellow-500/20 text-yellow-400 rounded-full text-xs sm:text-sm">Maps API</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-2xl overflow-hidden group hover:scale-105 transition-transform">
+                    <div class="h-40 sm:h-48 bg-gradient-to-br from-red-500 to-orange-600 flex items-center justify-center">
+                        <i class="fas fa-shield-alt text-4xl sm:text-6xl text-white"></i>
+                    </div>
+                    <div class="p-4 sm:p-6">
+                        <h3 class="text-lg sm:text-xl font-orbitron font-bold text-white mb-2">Security Operations</h3>
+                        <p class="text-gray-300 mb-3 sm:mb-4 text-sm sm:text-base">SOC (Security Operations Center) dengan AI-powered threat detection dan response.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-2 sm:px-3 py-1 bg-cyan-500/20 text-cyan-400 rounded-full text-xs sm:text-sm">Elasticsearch</span>
+                            <span class="px-2 sm:px-3 py-1 bg-purple-500/20 text-purple-400 rounded-full text-xs sm:text-sm">Kibana</span>
+                            <span class="px-2 sm:px-3 py-1 bg-red-500/20 text-red-400 rounded-full text-xs sm:text-sm">SIEM</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="min-h-screen py-12 sm:py-20 pt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="text-center mb-12 sm:mb-16">
+                <h2 class="text-4xl sm:text-5xl font-orbitron font-bold mb-4 sm:mb-6">
+                    <span class="neon-text text-cyan-300">CONTACT</span> <span class="text-white">US</span>
+                </h2>
+                <p class="text-lg sm:text-xl text-gray-100 max-w-3xl mx-auto">
+                    Siap untuk memulai transformasi digital? Mari diskusikan kebutuhan teknologi bisnis Anda.
+                </p>
+            </div>
+
+            <!-- Made contact section responsive with mobile-first layout -->
+            <div class="grid lg:grid-cols-2 gap-8 lg:gap-16">
+                <div>
+                    <div class="glass-card p-6 sm:p-8 rounded-2xl mb-6 sm:mb-8">
+                        <h3 class="text-xl sm:text-2xl font-orbitron font-bold text-white mb-4 sm:mb-6">Get In Touch</h3>
+                        <div class="space-y-4 sm:space-y-6">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-10 sm:w-12 h-10 sm:h-12 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-map-marker-alt text-white text-sm sm:text-base"></i>
+                                </div>
+                                <div>
+                                    <div class="text-white font-semibold text-sm sm:text-base">Address</div>
+                                    <div class="text-gray-300 text-sm sm:text-base">Gading Serpong, Tangerang - Indonesia </div>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <div class="w-10 sm:w-12 h-10 sm:h-12 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-phone text-white text-sm sm:text-base"></i>
+                                </div>
+                                <div>
+                                    <div class="text-white font-semibold text-sm sm:text-base">Phone</div>
+                                    <div class="text-gray-300 text-sm sm:text-base">+62 897 232 5030</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <div class="w-10 sm:w-12 h-10 sm:h-12 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-envelope text-white text-sm sm:text-base"></i>
+                                </div>
+                                <div>
+                                    <div class="text-white font-semibold text-sm sm:text-base">Email</div>
+                                    <div class="text-gray-300 text-sm sm:text-base">realboxofme@gmail.com</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-card p-6 sm:p-8 rounded-2xl">
+                        <h3 class="text-xl sm:text-2xl font-orbitron font-bold text-white mb-4 sm:mb-6">Follow Us</h3>
+                        <div class="flex space-x-4">
+                            <a href="#" class="w-10 sm:w-12 h-10 sm:h-12 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-lg flex items-center justify-center hover:scale-110 transition-transform">
+                                <i class="fab fa-linkedin text-white text-sm sm:text-base"></i>
+                            </a>
+                            <a href="#" class="w-10 sm:w-12 h-10 sm:h-12 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-lg flex items-center justify-center hover:scale-110 transition-transform">
+                                <i class="fab fa-twitter text-white text-sm sm:text-base"></i>
+                            </a>
+                            <a href="#" class="w-10 sm:w-12 h-10 sm:h-12 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-lg flex items-center justify-center hover:scale-110 transition-transform">
+                                <i class="fab fa-instagram text-white text-sm sm:text-base"></i>
+                            </a>
+                            <a href="#" class="w-10 sm:w-12 h-10 sm:h-12 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-lg flex items-center justify-center hover:scale-110 transition-transform">
+                                <i class="fab fa-github text-white text-sm sm:text-base"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card p-6 sm:p-8 rounded-2xl">
+                    <h3 class="text-xl sm:text-2xl font-orbitron font-bold text-white mb-4 sm:mb-6">Send Message</h3>
+                    <form id="contactForm" class="space-y-4 sm:space-y-6">
+                        <div class="grid sm:grid-cols-2 gap-4 sm:gap-6">
+                            <div>
+                                <label class="block text-white font-medium mb-2 text-sm sm:text-base">Name</label>
+                                <input type="text" id="name" class="w-full px-3 sm:px-4 py-2 sm:py-3 bg-black/50 border border-white/20 rounded-lg text-white focus:border-cyan-400 focus:outline-none text-sm sm:text-base" required>
+                            </div>
+                            <div>
+                                <label class="block text-white font-medium mb-2 text-sm sm:text-base">Email</label>
+                                <input type="email" id="email" class="w-full px-3 sm:px-4 py-2 sm:py-3 bg-black/50 border border-white/20 rounded-lg text-white focus:border-cyan-400 focus:outline-none text-sm sm:text-base" required>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-white font-medium mb-2 text-sm sm:text-base">Subject</label>
+                            <input type="text" id="subject" class="w-full px-3 sm:px-4 py-2 sm:py-3 bg-black/50 border border-white/20 rounded-lg text-white focus:border-cyan-400 focus:outline-none text-sm sm:text-base" required>
+                        </div>
+                        <div>
+                            <label class="block text-white font-medium mb-2 text-sm sm:text-base">Message</label>
+                            <textarea id="message" rows="5" class="w-full px-3 sm:px-4 py-2 sm:py-3 bg-black/50 border border-white/20 rounded-lg text-white focus:border-cyan-400 focus:outline-none resize-none text-sm sm:text-base" required></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-gradient-to-r from-cyan-500 to-purple-500 px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold hover:scale-105 transition-transform text-white">
+                            SEND MESSAGE
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    </div>
+
+    <!-- Added floating WhatsApp button -->
+    <a href="#" class="whatsapp-float" onclick="openWhatsApp()" title="Konsultasi WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <script>
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            const hamburger = document.querySelector('.hamburger');
+            
+            mobileMenu.classList.toggle('active');
+            hamburger.classList.toggle('active');
+        }
+        
+        function closeMobileMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            const hamburger = document.querySelector('.hamburger');
+            
+            mobileMenu.classList.remove('active');
+            hamburger.classList.remove('active');
+        }
+
+        // Contact form functionality
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const subject = document.getElementById('subject').value;
+            const message = document.getElementById('message').value;
+            
+            // Simple form validation
+            if (name && email && subject && message) {
+                alert('Terima kasih! Pesan Anda telah dikirim. Tim kami akan segera menghubungi Anda.');
+                this.reset();
+            } else {
+                alert('Mohon lengkapi semua field yang diperlukan.');
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize gradient changer
+            initGradientChanger();
+            
+            // Smooth scrolling for navigation links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+
+            // Update active navigation item based on scroll position
+            const sections = document.querySelectorAll('section[id]');
+            const navItems = document.querySelectorAll('.nav-item, .mobile-nav-item');
+
+            function updateActiveNav() {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop - 100;
+                    const sectionHeight = section.offsetHeight;
+                    if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navItems.forEach(item => {
+                    item.classList.remove('active', 'text-cyan-400');
+                    if (item.getAttribute('href') === `#${current}`) {
+                        item.classList.add('active', 'text-cyan-400');
+                    }
+                });
+            }
+
+            window.addEventListener('scroll', updateActiveNav);
+            updateActiveNav(); // Initial call
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(e) {
+            const mobileMenu = document.getElementById('mobileMenu');
+            const hamburger = document.querySelector('.hamburger');
+            const nav = document.querySelector('nav');
+            
+            if (!nav.contains(e.target) && mobileMenu.classList.contains('active')) {
+                closeMobileMenu();
+            }
+        });
+
+        function openWhatsApp() {
+            const phoneNumber = '+628972325030';
+            const message = 'Halo ClueForIt! Saya tertarik untuk konsultasi mengenai layanan IT Solutions Anda.';
+            const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+        }
+
+        function initGradientChanger() {
+            const gradients = [
+                'linear-gradient(135deg, #000000 0%, #0f0f23 25%, #0d1b2a 50%, #0a2647 75%, #2d1b69 100%)', // Original cyber blue
+                'linear-gradient(135deg, #000000 0%, #1a0f23 25%, #2a0d1b 50%, #470a26 75%, #691b2d 100%)', // Cyber purple-red
+                'linear-gradient(135deg, #000000 0%, #0f2318 25%, #0d2a1b 50%, #0a4726 75%, #1b6935 100%)', // Cyber green
+                'linear-gradient(135deg, #000000 0%, #23190f 25%, #2a1f0d 50%, #47350a 75%, #69521b 100%)', // Cyber orange
+                'linear-gradient(135deg, #000000 0%, #1f0f23 25%, #2a0d2a 50%, #470a47 75%, #691b69 100%)', // Cyber magenta
+                'linear-gradient(135deg, #000000 0%, #0f1f23 25%, #0d1f2a 50%, #0a3547 75%, #1b5269 100%)', // Cyber teal
+            ];
+            
+            let currentGradientIndex = 0;
+            const cyberBg = document.querySelector('.cyber-bg');
+            
+            function changeGradient() {
+                currentGradientIndex = (currentGradientIndex + 1) % gradients.length;
+                cyberBg.style.background = gradients[currentGradientIndex];
+                
+                console.log(`[v0] Gradient changed to index ${currentGradientIndex}`);
+            }
+            
+            // Change gradient every 60 seconds (1 minute)
+            setInterval(changeGradient, 10000);
+            
+            console.log('[v0] Gradient changer initialized - will change every 60 seconds');
+        }
+    </script>
+</body>
+</html>
