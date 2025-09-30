@@ -1,0 +1,2735 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClueForIT - IT Managed Services & Digital Business</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+<script>
+// Ambil info dari HTML
+function getInfoFromHTML() {
+    // Kontak
+    const kontakSection = document.querySelector('#contact');
+    let email = '', telp = '', alamat = '';
+    if (kontakSection) {
+        const kontakItems = kontakSection.querySelectorAll('.morph-text.text-gray-700');
+        if (kontakItems.length > 0) email = kontakItems[0].textContent.trim();
+        if (kontakItems.length > 1) telp = kontakItems[1].textContent.trim();
+        if (kontakItems.length > 2) alamat = kontakItems[2].textContent.trim();
+    }
+
+    // Produk & Portfolio (contoh: cari judul produk/portfolio di seluruh halaman)
+    const produk = Array.from(document.querySelectorAll('h3, h4')).map(e => e.textContent.trim()).filter(t => t.length > 3);
+    // Blok info lain (misal: section judul, deskripsi)
+    const blokInfo = Array.from(document.querySelectorAll('section, .container')).map(e => e.textContent.trim()).filter(t => t.length > 10);
+
+    return { email, telp, alamat, produk, blokInfo };
+}
+
+// Fungsi chatbot baru
+function findBestResponse(message) {
+    const info = getInfoFromHTML();
+    const lowerMessage = message.toLowerCase();
+
+    // Kontak
+    if (lowerMessage.includes('kontak') || lowerMessage.includes('hubungi') || lowerMessage.includes('email') || lowerMessage.includes('telepon') || lowerMessage.includes('alamat')) {
+        return `Kontak kami:\nEmail: ${info.email}\nTelp: ${info.telp}\nAlamat: ${info.alamat}`;
+    }
+    // Produk
+    if (lowerMessage.includes('produk') || lowerMessage.includes('product')) {
+        return `Produk/layanan kami:\n- ${info.produk.join('\n- ')}`;
+    }
+    // Portfolio
+    if (lowerMessage.includes('portfolio') || lowerMessage.includes('proyek') || lowerMessage.includes('project')) {
+        return `Portfolio/proyek kami:\n- ${info.produk.join('\n- ')}`;
+    }
+    // Blok info lain
+    if (lowerMessage.includes('info') || lowerMessage.includes('tentang') || lowerMessage.includes('deskripsi')) {
+        return `Informasi tentang kami:\n${info.blokInfo.slice(0,3).join('\n---\n')}`;
+    }
+
+    // Fallback
+    return `Maaf, saya tidak menemukan jawaban atas pertanyaan Anda. Silakan hubungi kami di:\nEmail: ${info.email}\nTelp: ${info.telp}`;
+}
+</script>
+    <style>
+        body {
+            box-sizing: border-box;
+        }
+        
+        @keyframes morphFloat {
+            0%, 100% { transform: translateY(0px) scale(1) rotate(0deg); border-radius: 20px; }
+            25% { transform: translateY(-10px) scale(1.05) rotate(2deg); border-radius: 30px; }
+            50% { transform: translateY(-5px) scale(1.02) rotate(-1deg); border-radius: 40px; }
+            75% { transform: translateY(-15px) scale(1.03) rotate(1deg); border-radius: 25px; }
+        }
+        
+        @keyframes morphPulse {
+            0%, 100% { transform: scale(1); border-radius: 10px; }
+            50% { transform: scale(1.1); border-radius: 25px; }
+        }
+        
+        @keyframes morphRotate {
+            0% { transform: rotate(0deg) scale(1); border-radius: 20px; }
+            25% { transform: rotate(90deg) scale(1.1); border-radius: 50%; }
+            50% { transform: rotate(180deg) scale(0.9); border-radius: 30px; }
+            75% { transform: rotate(270deg) scale(1.05); border-radius: 40px; }
+            100% { transform: rotate(360deg) scale(1); border-radius: 20px; }
+        }
+        
+        @keyframes morphWave {
+            0%, 100% { transform: translateX(0) skewX(0deg); border-radius: 15px; }
+            25% { transform: translateX(5px) skewX(5deg); border-radius: 25px; }
+            50% { transform: translateX(-3px) skewX(-3deg); border-radius: 35px; }
+            75% { transform: translateX(2px) skewX(2deg); border-radius: 20px; }
+        }
+        
+        @keyframes morphProgress {
+            0% { width: 0%; border-radius: 0px; }
+            100% { border-radius: 10px; }
+        }
+        
+        .morph-float {
+            animation: morphFloat 4s ease-in-out infinite;
+        }
+        
+        .morph-pulse {
+            animation: morphPulse 2s ease-in-out infinite;
+        }
+        
+        .morph-rotate {
+            animation: morphRotate 6s linear infinite;
+        }
+        
+        .morph-wave {
+            animation: morphWave 3s ease-in-out infinite;
+        }
+        
+        .morph-hover {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .morph-hover:hover {
+            transform: scale(1.05) rotate(2deg);
+            border-radius: 25px;
+        }
+        
+        .morph-button {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 15px;
+        }
+        
+        .morph-button:hover {
+            transform: scale(1.1) translateY(-3px);
+            border-radius: 25px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        
+        .morph-card {
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 20px;
+        }
+        
+        .morph-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-radius: 30px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+        }
+        
+        .morph-text {
+            transition: all 0.3s ease;
+        }
+        
+        .morph-text:hover {
+            transform: scale(1.05);
+            text-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .morph-icon {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .morph-icon:hover {
+            transform: scale(1.2) rotate(15deg);
+        }
+        
+        .progress-bar {
+            animation: morphProgress 2s ease-out forwards;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        
+        .animate-scroll {
+            animation: scroll 30s linear infinite;
+        }
+        
+        .animate-scroll:hover {
+            animation-play-state: paused;
+        }
+        
+        @keyframes floatingBubbles {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100px) scale(1); opacity: 0; }
+        }
+        
+        @keyframes circuitPulse {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.1); }
+        }
+        
+        @keyframes dataFlow {
+            0% { transform: translateX(-100px) translateY(0px); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateX(100vw) translateY(-20px); opacity: 0; }
+        }
+        
+        @keyframes geometricRotate {
+            0% { transform: rotate(0deg) scale(1); }
+            25% { transform: rotate(90deg) scale(1.2); }
+            50% { transform: rotate(180deg) scale(0.8); }
+            75% { transform: rotate(270deg) scale(1.1); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+        
+        @keyframes hexagonFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-30px) rotate(120deg); }
+            66% { transform: translateY(-15px) rotate(240deg); }
+        }
+        
+        .hero-animated-bg {
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(99, 102, 241, 0.4) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(139, 92, 246, 0.4) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(59, 130, 246, 0.3) 0%, transparent 50%),
+                linear-gradient(135deg, #0f172a 0%, #1e293b 25%, #334155 50%, #475569 75%, #64748b 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-overlay {
+            background: 
+                linear-gradient(45deg, transparent 0%, rgba(99, 102, 241, 0.1) 25%, transparent 50%, rgba(139, 92, 246, 0.1) 75%, transparent 100%),
+                radial-gradient(ellipse at center, transparent 0%, rgba(15, 23, 42, 0.8) 100%);
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1;
+        }
+        
+        .circuit-line {
+            position: absolute;
+            background: linear-gradient(90deg, transparent, #60a5fa, transparent);
+            height: 2px;
+            animation: dataFlow linear infinite;
+            z-index: 2;
+        }
+        
+        .geometric-shape {
+            position: absolute;
+            border: 2px solid rgba(99, 102, 241, 0.3);
+            animation: geometricRotate linear infinite;
+            z-index: 2;
+        }
+        
+        .hexagon {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: rgba(139, 92, 246, 0.1);
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            animation: hexagonFloat ease-in-out infinite;
+            z-index: 2;
+        }
+        
+        .circuit-node {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #60a5fa;
+            border-radius: 50%;
+            animation: circuitPulse ease-in-out infinite;
+            z-index: 2;
+        }
+        
+        .floating-bubble {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            animation: floatingBubbles linear infinite;
+            z-index: 2;
+        }
+        
+        .floating-particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            animation: particleFloat 6s ease-in-out infinite;
+        }
+        
+        /* Loading Screen */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes loadingProgress {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Loading Screen -->
+    <div id="loadingScreen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #0f172a 0%, #1e293b 25%, #334155 50%, #475569 75%, #64748b 100%); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; transition: opacity 0.5s ease-out;">
+        <div style="width: 80px; height: 80px; border: 4px solid rgba(99, 102, 241, 0.3); border-top: 4px solid #6366f1; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px;"></div>
+        <div style="color: white; font-size: 18px; font-weight: 600; margin-bottom: 10px;">ClueForIT</div>
+        <div style="width: 200px; height: 4px; background: rgba(255, 255, 255, 0.2); border-radius: 2px; overflow: hidden;">
+            <div style="height: 100%; background: linear-gradient(90deg, #6366f1, #8b5cf6); border-radius: 2px; animation: loadingProgress 2s ease-out forwards;"></div>
+        </div>
+        <div style="color: white; font-size: 14px; margin-top: 16px; opacity: 0.75;">Memuat pengalaman digital terbaik...</div>
+    </div>
+    
+    <!-- Breadcrumb Navigation -->
+    <div id="breadcrumb" style="position: fixed; top: 80px; left: 50%; transform: translateX(-50%); background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(10px); padding: 8px 20px; border-radius: 20px; z-index: 40; transition: all 0.3s ease; opacity: 0; visibility: hidden;">
+        <span id="breadcrumbText" style="color: rgba(255, 255, 255, 0.7); font-size: 14px; transition: color 0.3s ease;">Beranda</span>
+    </div>
+    
+    <!-- Back to Top Button -->
+    <button id="backToTop" onclick="scrollToTop()" style="position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; background: linear-gradient(135deg, #6366f1, #8b5cf6); border: none; border-radius: 50%; color: white; font-size: 20px; cursor: pointer; z-index: 50; transition: all 0.3s ease; opacity: 0; visibility: hidden; transform: translateY(20px);">
+        ↑
+    </button>
+    
+    <!-- Search Overlay -->
+    <div id="searchOverlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(10px); z-index: 60; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: all 0.3s ease;">
+        <div id="searchContainer" style="background: white; border-radius: 20px; padding: 30px; width: 90%; max-width: 600px; transform: translateY(-50px); transition: transform 0.3s ease; position: relative;">
+            <button onclick="closeSearch()" style="position: absolute; top: 20px; right: 20px; background: none; border: none; font-size: 24px; cursor: pointer; color: #6b7280;">×</button>
+            <h3 style="font-size: 20px; font-weight: bold; margin-bottom: 16px;">Cari Layanan & Portfolio</h3>
+            <input 
+                type="text" 
+                id="searchInput" 
+                placeholder="Ketik untuk mencari layanan, portfolio, atau informasi... (Ctrl+K)"
+                style="width: 100%; padding: 15px 20px; border: 2px solid #e5e7eb; border-radius: 15px; font-size: 16px; outline: none; transition: border-color 0.3s ease;"
+                oninput="performSearch()"
+            >
+            <div id="searchResults" style="max-height: 300px; overflow-y: auto; margin-top: 20px;"></div>
+        </div>
+    </div>
+
+    <!-- Blog Modal -->
+    <div id="blogModal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(10px); z-index: 70; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: all 0.3s ease;">
+        <div id="blogModalContainer" style="background: white; border-radius: 20px; padding: 0; width: 90%; max-width: 800px; max-height: 90vh; overflow-y: auto; transform: translateY(-50px); transition: transform 0.3s ease; position: relative;">
+            <div style="position: sticky; top: 0; background: white; padding: 20px; border-bottom: 1px solid #e5e7eb; border-radius: 20px 20px 0 0; z-index: 1;">
+                <button onclick="closeBlogModal()" style="position: absolute; top: 20px; right: 20px; background: none; border: none; font-size: 24px; cursor: pointer; color: #6b7280;">×</button>
+                <h3 id="blogModalTitle" style="font-size: 24px; font-weight: bold; margin: 0; padding-right: 40px;">Blog Title</h3>
+            </div>
+            <div id="blogModalContent" style="padding: 30px;">
+                <!-- Blog content will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Live Chat Widget -->
+    <div id="liveChatWidget" style="position: fixed; bottom: 100px; right: 30px; z-index: 55;">
+        <!-- Chat Toggle Button -->
+        <button id="chatToggleBtn" onclick="toggleLiveChat()" style="width: 60px; height: 60px; background: linear-gradient(135deg, #667eea, #764ba2); border: none; border-radius: 50%; color: white; font-size: 24px; cursor: pointer; box-shadow: 0 4px 20px rgba(0,0,0,0.3); transition: all 0.3s ease; position: relative;">
+            <span id="chatIcon">💬</span>
+            <div id="chatNotification" style="position: absolute; top: -5px; right: -5px; width: 20px; height: 20px; background: #ef4444; border-radius: 50%; color: white; font-size: 12px; display: flex; align-items: center; justify-content: center; font-weight: bold;">3</div>
+        </button>
+        
+        <!-- Chat Window -->
+        <div id="liveChatWindow" style="position: absolute; bottom: 80px; right: 0; width: 350px; height: 500px; background: white; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); opacity: 0; visibility: hidden; transform: translateY(20px) scale(0.9); transition: all 0.3s ease; overflow: hidden;">
+            <!-- Chat Header -->
+            <div style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 20px; position: relative;">
+                <div style="display: flex; align-items: center;">
+                    <div style="width: 40px; height: 40px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 12px;">
+                        <span style="font-size: 20px;">👨‍💻</span>
+                    </div>
+                    <div>
+                        <div style="font-weight: bold; font-size: 16px;">Tim Support ClueForIT</div>
+                        <div style="font-size: 12px; opacity: 0.9; display: flex; align-items: center;">
+                            <div style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; margin-right: 6px;"></div>
+                            Online - Biasanya membalas dalam beberapa menit
+                        </div>
+                    </div>
+                </div>
+                <button onclick="toggleLiveChat()" style="position: absolute; top: 15px; right: 15px; background: none; border: none; color: white; font-size: 20px; cursor: pointer; opacity: 0.8; hover:opacity: 1;">×</button>
+            </div>
+            
+            <!-- Chat Messages -->
+            <div id="liveChatMessages" style="height: 320px; overflow-y: auto; padding: 20px; background: #f9fafb;">
+                <!-- Welcome Message -->
+                <div style="display: flex; align-items: start; margin-bottom: 16px;">
+                    <div style="width: 32px; height: 32px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 10px; flex-shrink: 0;">
+                        <span style="color: white; font-size: 14px;">👨‍💻</span>
+                    </div>
+                    <div style="background: white; padding: 12px 16px; border-radius: 18px; max-width: 80%; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                        <div style="font-size: 14px; color: #374151; line-height: 1.4;">
+                            Halo! Selamat datang di ClueForIT! 👋<br><br>
+                            Saya Andi dari tim support. Ada yang bisa saya bantu hari ini?
+                        </div>
+                        <div style="font-size: 11px; color: #9ca3af; margin-top: 6px;">Baru saja</div>
+                    </div>
+                </div>
+                
+                <!-- Quick Actions -->
+                <div style="display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0; padding-left: 42px;">
+                    <button onclick="sendLiveChatMessage('Saya ingin konsultasi tentang layanan IT')" style="background: #e5e7eb; border: none; padding: 8px 12px; border-radius: 20px; font-size: 12px; cursor: pointer; transition: background-color 0.3s;">
+                        💼 Konsultasi IT
+                    </button>
+                    <button onclick="sendLiveChatMessage('Berapa harga untuk setup server?')" style="background: #e5e7eb; border: none; padding: 8px 12px; border-radius: 20px; font-size: 12px; cursor: pointer; transition: background-color 0.3s;">
+                        💰 Tanya Harga
+                    </button>
+                    <button onclick="sendLiveChatMessage('Saya butuh support teknis')" style="background: #e5e7eb; border: none; padding: 8px 12px; border-radius: 20px; font-size: 12px; cursor: pointer; transition: background-color 0.3s;">
+                        🔧 Support
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Chat Input -->
+            <div style="padding: 16px; border-top: 1px solid #e5e7eb; background: white;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <input 
+                        type="text" 
+                        id="liveChatInput" 
+                        placeholder="Ketik pesan Anda..."
+                        style="flex: 1; padding: 12px 16px; border: 1px solid #d1d5db; border-radius: 25px; font-size: 14px; outline: none; transition: border-color 0.3s;"
+                        onkeypress="handleLiveChatKeyPress(event)"
+                    >
+                    <button onclick="sendLiveChatMessage()" style="width: 40px; height: 40px; background: linear-gradient(135deg, #667eea, #764ba2); border: none; border-radius: 50%; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: transform 0.2s;">
+                        <span style="font-size: 16px;">📤</span>
+                    </button>
+                </div>
+                <div style="font-size: 11px; color: #9ca3af; margin-top: 8px; text-align: center;">
+                    Powered by ClueForIT Live Support
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 bg-gray-900/95 backdrop-blur-md shadow-lg morph-wave">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center">
+                    <!-- Extended Horizontal Logo -->
+                    <div class="morph-text">
+                        <svg width="180" height="40" viewBox="0 0 140 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Background rounded rectangle -->
+                            <rect x="0" y="4" width="140" height="24" rx="12" fill="url(#extendedLogoGradient)" stroke="url(#extendedLogoBorder)" stroke-width="1"/>
+                            
+                            <!-- Left side tech icon -->
+                            <circle cx="16" cy="16" r="8" fill="rgba(255,255,255,0.2)" stroke="white" stroke-width="1"/>
+                            <path d="M16 10C13.5 10 12 11.5 12 14V18C12 20.5 13.5 22 16 22" stroke="white" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+                            <circle cx="19" cy="12" r="1" fill="white"/>
+                            <circle cx="19" cy="16" r="1" fill="white"/>
+                            <circle cx="19" cy="20" r="1" fill="white"/>
+                            
+                            <!-- Company name text -->
+                            <text x="32" y="20" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white">ClueForIT</text>
+                            
+                            <!-- Right side decorative elements -->
+                            <rect x="100" y="12" width="6" height="8" rx="1" fill="white" opacity="0.8"/>
+                            <rect x="108" y="10" width="4" height="12" rx="1" fill="white" opacity="0.6"/>
+                            <rect x="114" y="14" width="4" height="4" rx="1" fill="white" opacity="0.9"/>
+                            
+                            <!-- Connection lines -->
+                            <path d="M120 14H130M120 18H128" stroke="white" stroke-width="1" opacity="0.7"/>
+                            <circle cx="130" cy="14" r="1.5" fill="white"/>
+                            <circle cx="128" cy="18" r="1.5" fill="white"/>
+                            
+                            <!-- Bottom accent line -->
+                            <path d="M8 26H132" stroke="white" stroke-width="0.5" opacity="0.5"/>
+                            
+                            <defs>
+                                <linearGradient id="extendedLogoGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" style="stop-color:#667eea"/>
+                                    <stop offset="30%" style="stop-color:#764ba2"/>
+                                    <stop offset="70%" style="stop-color:#f093fb"/>
+                                    <stop offset="100%" style="stop-color:#667eea"/>
+                                </linearGradient>
+                                <linearGradient id="extendedLogoBorder" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" style="stop-color:#4f46e5"/>
+                                    <stop offset="100%" style="stop-color:#7c3aed"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                </div>
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="#home" class="morph-text text-gray-300 hover:text-blue-400">Beranda</a>
+                    <a href="#services" class="morph-text text-gray-300 hover:text-blue-400">Layanan</a>
+                    <a href="#portfolio" class="morph-text text-gray-300 hover:text-blue-400">Portfolio</a>
+                    <a href="#blog" class="morph-text text-gray-300 hover:text-blue-400">Blog</a>
+                    <a href="#about" class="morph-text text-gray-300 hover:text-blue-400">Tentang</a>
+                    <a href="#contact" class="morph-text text-gray-300 hover:text-blue-400">Kontak</a>
+                    <button onclick="openSearch()" class="morph-icon text-gray-300 hover:text-blue-400 ml-4 p-2 rounded-lg hover:bg-gray-800 transition-colors" title="Cari (Ctrl+K)">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </button>
+                </div>
+                <button id="mobileMenuToggle" class="md:hidden morph-icon text-white" onclick="toggleMobileMenu()">
+                    <svg id="hamburgerIcon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                    <svg id="closeIcon" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Mobile Menu -->
+            <div id="mobileMenu" class="md:hidden hidden bg-gray-900/98 backdrop-blur-md border-t border-gray-700">
+                <div class="px-6 py-4 space-y-4">
+                    <a href="#home" class="block morph-text text-gray-300 hover:text-blue-400 py-2" onclick="closeMobileMenu()">Beranda</a>
+                    <a href="#services" class="block morph-text text-gray-300 hover:text-blue-400 py-2" onclick="closeMobileMenu()">Layanan</a>
+                    <a href="#portfolio" class="block morph-text text-gray-300 hover:text-blue-400 py-2" onclick="closeMobileMenu()">Portfolio</a>
+                    <a href="#blog" class="block morph-text text-gray-300 hover:text-blue-400 py-2" onclick="closeMobileMenu()">Blog</a>
+                    <a href="#about" class="block morph-text text-gray-300 hover:text-blue-400 py-2" onclick="closeMobileMenu()">Tentang</a>
+                    <a href="#contact" class="block morph-text text-gray-300 hover:text-blue-400 py-2" onclick="closeMobileMenu()">Kontak</a>
+                    <button onclick="openSearch()" class="block morph-text text-gray-300 hover:text-blue-400 py-2 text-left">🔍 Cari</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="min-h-screen hero-animated-bg flex items-center pt-20">
+        <!-- Hero Overlay -->
+        <div class="hero-overlay"></div>
+        
+        <!-- Tech-themed Animated Background Elements -->
+        
+        <!-- Circuit Lines -->
+        <div class="circuit-line" style="top: 15%; width: 200px; animation-duration: 8s; animation-delay: 0s;"></div>
+        <div class="circuit-line" style="top: 35%; width: 150px; animation-duration: 6s; animation-delay: 2s;"></div>
+        <div class="circuit-line" style="top: 55%; width: 180px; animation-duration: 7s; animation-delay: 1s;"></div>
+        <div class="circuit-line" style="top: 75%; width: 120px; animation-duration: 5s; animation-delay: 3s;"></div>
+        <div class="circuit-line" style="top: 85%; width: 160px; animation-duration: 9s; animation-delay: 4s;"></div>
+        
+        <!-- Geometric Shapes -->
+        <div class="geometric-shape" style="left: 10%; top: 20%; width: 40px; height: 40px; animation-duration: 20s; animation-delay: 0s;"></div>
+        <div class="geometric-shape" style="left: 80%; top: 30%; width: 30px; height: 30px; border-radius: 50%; animation-duration: 15s; animation-delay: 2s;"></div>
+        <div class="geometric-shape" style="left: 15%; top: 70%; width: 25px; height: 25px; animation-duration: 18s; animation-delay: 1s;"></div>
+        <div class="geometric-shape" style="left: 85%; top: 80%; width: 35px; height: 35px; border-radius: 50%; animation-duration: 22s; animation-delay: 3s;"></div>
+        
+        <!-- Hexagons -->
+        <div class="hexagon" style="left: 5%; top: 40%; animation-duration: 12s; animation-delay: 0s;"></div>
+        <div class="hexagon" style="left: 90%; top: 15%; animation-duration: 14s; animation-delay: 2s;"></div>
+        <div class="hexagon" style="left: 25%; top: 85%; animation-duration: 16s; animation-delay: 1s;"></div>
+        <div class="hexagon" style="left: 75%; top: 60%; animation-duration: 13s; animation-delay: 4s;"></div>
+        
+        <!-- Circuit Nodes -->
+        <div class="circuit-node" style="left: 12%; top: 25%; animation-duration: 3s; animation-delay: 0s;"></div>
+        <div class="circuit-node" style="left: 88%; top: 45%; animation-duration: 2.5s; animation-delay: 1s;"></div>
+        <div class="circuit-node" style="left: 30%; top: 15%; animation-duration: 4s; animation-delay: 2s;"></div>
+        <div class="circuit-node" style="left: 70%; top: 75%; animation-duration: 3.5s; animation-delay: 0.5s;"></div>
+        <div class="circuit-node" style="left: 45%; top: 90%; animation-duration: 2.8s; animation-delay: 1.5s;"></div>
+        <div class="circuit-node" style="left: 60%; top: 10%; animation-duration: 3.2s; animation-delay: 2.5s;"></div>
+        <div class="circuit-node" style="left: 20%; top: 60%; animation-duration: 4.2s; animation-delay: 3s;"></div>
+        <div class="circuit-node" style="left: 95%; top: 85%; animation-duration: 2.2s; animation-delay: 1.8s;"></div>
+        
+        <div class="container mx-auto px-6 relative z-20">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="text-white">
+                    <h1 class="text-3xl md:text-4xl font-bold mb-6 morph-text">
+                        Your Partner for Implementing Technology
+                    </h1>
+                    <p class="text-xl mb-8 morph-text opacity-90">
+                        Solusi teknologi informasi terdepan untuk transformasi digital perusahaan dan institusi pendidikan dengan layanan profesional yang komprehensif dan terpercaya.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="#contact" class="morph-button bg-white text-purple-600 px-8 py-4 font-semibold inline-block text-center">
+                            Konsultasi Gratis
+                        </a>
+                        <a href="#portfolio" class="morph-button border-2 border-white text-white px-8 py-4 font-semibold inline-block text-center">
+                            Lihat Portfolio
+                        </a>
+                        <button onclick="downloadBrochure()" class="morph-button bg-gradient-to-r from-purple-600 to-blue-600 text-white px-8 py-4 font-semibold inline-block text-center">
+                            📄 Download Brochure
+                        </button>
+                    </div>
+                </div>
+                <div class="relative">
+                    <!-- Modern Dashboard Style Card -->
+                    <div class="morph-float bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl">
+                        <!-- Header Stats -->
+                        <div class="grid grid-cols-2 gap-6 mb-8">
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-white mb-1">10+</div>
+                                <div class="text-xs text-white/70">Tahun Pengalaman</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-white mb-1">24/7</div>
+                                <div class="text-xs text-white/70">Support</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Main Visual -->
+                        <div class="relative mb-6">
+                            <div class="w-full h-48 bg-gradient-to-br from-white/10 to-white/5 rounded-2xl border border-white/10 flex items-center justify-center overflow-hidden">
+                                <!-- Tech Circuit Pattern -->
+                                <svg class="absolute inset-0 w-full h-full opacity-20" viewBox="0 0 400 200">
+                                    <!-- Circuit lines -->
+                                    <path d="M50 50 L150 50 L150 100 L250 100 L250 150 L350 150" stroke="white" stroke-width="2" fill="none" opacity="0.6"/>
+                                    <path d="M50 150 L100 150 L100 75 L200 75 L200 125 L350 125" stroke="white" stroke-width="2" fill="none" opacity="0.4"/>
+                                    
+                                    <!-- Circuit nodes -->
+                                    <circle cx="50" cy="50" r="4" fill="white" opacity="0.8"/>
+                                    <circle cx="150" cy="100" r="4" fill="white" opacity="0.8"/>
+                                    <circle cx="250" cy="150" r="4" fill="white" opacity="0.8"/>
+                                    <circle cx="350" cy="150" r="4" fill="white" opacity="0.8"/>
+                                    <circle cx="100" cy="75" r="4" fill="white" opacity="0.6"/>
+                                    <circle cx="200" cy="125" r="4" fill="white" opacity="0.6"/>
+                                    
+                                    <!-- Tech icons -->
+                                    <rect x="140" y="90" width="20" height="20" rx="4" fill="white" opacity="0.3"/>
+                                    <rect x="240" y="140" width="20" height="20" rx="4" fill="white" opacity="0.3"/>
+                                </svg>
+                                
+                                <!-- Center Content -->
+                                <div class="relative z-10 text-center text-white">
+                                    <div class="w-16 h-16 mx-auto mb-4 bg-white/20 rounded-2xl flex items-center justify-center backdrop-blur-sm border border-white/20">
+                                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M12 2L2 7v10c0 5.55 3.84 9.74 9 11 5.16-1.26 9-5.45 9-11V7l-10-5z"/>
+                                            <path d="M9 12l2 2 4-4" stroke="white" stroke-width="2" fill="none"/>
+                                        </svg>
+                                    </div>
+                                    <div class="text-lg font-bold mb-2">IT Solutions</div>
+                                    <div class="text-sm opacity-80">Enterprise Grade Security</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Service Indicators -->
+                        <div class="grid grid-cols-3 gap-3">
+                            <div class="bg-white/10 backdrop-blur-sm rounded-xl p-3 text-center border border-white/10">
+                                <div class="text-lg mb-1">🖥️</div>
+                                <div class="text-xs text-white/80">Managed IT</div>
+                            </div>
+                            <div class="bg-white/10 backdrop-blur-sm rounded-xl p-3 text-center border border-white/10">
+                                <div class="text-lg mb-1">🚀</div>
+                                <div class="text-xs text-white/80">Digital Transform</div>
+                            </div>
+                            <div class="bg-white/10 backdrop-blur-sm rounded-xl p-3 text-center border border-white/10">
+                                <div class="text-lg mb-1">🔒</div>
+                                <div class="text-xs text-white/80">Cyber Security</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Status Indicator -->
+                        <div class="mt-6 flex items-center justify-center">
+                            <div class="flex items-center bg-green-500/20 backdrop-blur-sm rounded-full px-4 py-2 border border-green-500/30">
+                                <div class="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></div>
+                                <span class="text-xs text-green-300 font-medium">24/7 Support Active</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4 morph-text">Layanan Kami</h2>
+                <p class="text-gray-600 text-lg morph-text">Solusi komprehensif untuk kebutuhan teknologi bisnis Anda</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="morph-card bg-white p-8 shadow-xl border border-gray-200 hover:shadow-2xl">
+                    <div class="morph-icon text-4xl mb-4">🖥️</div>
+                    <h3 class="text-2xl font-bold mb-4 morph-text text-gray-900">IT Managed Services</h3>
+                    <p class="text-gray-600 mb-6">Pengelolaan infrastruktur IT yang proaktif dan komprehensif untuk memastikan operasional bisnis yang lancar.</p>
+                    <div class="space-y-2">
+                        <div class="flex items-center">
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="progress-bar bg-blue-500 h-2 rounded-full" style="width: 95%"></div>
+                            </div>
+                            <span class="ml-2 text-sm text-gray-600">95%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="morph-card bg-white p-8 shadow-xl border border-gray-200 hover:shadow-2xl">
+                    <div class="morph-icon text-4xl mb-4">🚀</div>
+                    <h3 class="text-2xl font-bold mb-4 morph-text text-gray-900">Digital Transformation</h3>
+                    <p class="text-gray-600 mb-6">Transformasi digital end-to-end untuk memodernisasi proses bisnis dan meningkatkan efisiensi operasional.</p>
+                    <div class="space-y-2">
+                        <div class="flex items-center">
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="progress-bar bg-emerald-500 h-2 rounded-full" style="width: 88%"></div>
+                            </div>
+                            <span class="ml-2 text-sm text-gray-600">88%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="morph-card bg-white p-8 shadow-xl border border-gray-200 hover:shadow-2xl">
+                    <div class="morph-icon text-4xl mb-4">🔒</div>
+                    <h3 class="text-2xl font-bold mb-4 morph-text text-gray-900">Cyber Security</h3>
+                    <p class="text-gray-600 mb-6">Perlindungan data dan sistem yang robust dengan teknologi keamanan terdepan dan monitoring 24/7.</p>
+                    <div class="space-y-2">
+                        <div class="flex items-center">
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="progress-bar bg-violet-500 h-2 rounded-full" style="width: 92%"></div>
+                            </div>
+                            <span class="ml-2 text-sm text-gray-600">92%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="py-20 bg-gray-100">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4 morph-text">Portfolio Kami</h2>
+                <p class="text-gray-600 text-lg morph-text">Berbagai proyek sukses yang telah kami kerjakan untuk klien</p>
+            </div>
+            
+            <!-- Portfolio Filter -->
+            <div class="flex flex-wrap justify-center gap-4 mb-12">
+                <button onclick="filterPortfolio('all')" class="portfolio-filter-btn active morph-button bg-blue-600 text-white px-6 py-3 rounded-full font-semibold transition-all">
+                    Semua
+                </button>
+                <button onclick="filterPortfolio('pendidikan')" class="portfolio-filter-btn morph-button bg-gray-200 text-gray-700 px-6 py-3 rounded-full font-semibold transition-all hover:bg-gray-300">
+                    Pendidikan
+                </button>
+                <button onclick="filterPortfolio('enterprise')" class="portfolio-filter-btn morph-button bg-gray-200 text-gray-700 px-6 py-3 rounded-full font-semibold transition-all hover:bg-gray-300">
+                    Enterprise
+                </button>
+                <button onclick="filterPortfolio('mobile')" class="portfolio-filter-btn morph-button bg-gray-200 text-gray-700 px-6 py-3 rounded-full font-semibold transition-all hover:bg-gray-300">
+                    Mobile Apps
+                </button>
+                <button onclick="filterPortfolio('infrastructure')" class="portfolio-filter-btn morph-button bg-gray-200 text-gray-700 px-6 py-3 rounded-full font-semibold transition-all hover:bg-gray-300">
+                    Infrastructure
+                </button>
+            </div>
+            
+            <div id="portfolioGrid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Portfolio items will be populated by JavaScript -->
+            </div>
+            
+            <!-- Hidden Portfolio Items -->
+            <div id="hiddenPortfolio" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8 hidden">
+                <div class="morph-card bg-gradient-to-br from-slate-700 to-slate-600 p-6 shadow-lg border border-slate-500/30">
+                    <div class="morph-icon text-4xl mb-4">📦</div>
+                    <h3 class="text-xl font-bold mb-3 morph-text text-white">Warehouse Management System</h3>
+                    <p class="text-slate-300 mb-4">Sistem manajemen gudang terintegrasi dengan fitur inventory tracking, barcode scanning, dan real-time stock monitoring.</p>
+                    <div class="flex items-center text-sm text-teal-400">
+                        <span class="morph-text">20+ Gudang</span>
+                        <span class="mx-2">•</span>
+                        <span class="morph-text">Real-time Tracking</span>
+                    </div>
+                </div>
+                
+                <div class="morph-card bg-gradient-to-br from-slate-700 to-slate-600 p-6 shadow-lg border border-slate-500/30">
+                    <div class="morph-icon text-4xl mb-4">🚚</div>
+                    <h3 class="text-xl font-bold mb-3 morph-text text-white">Logistics Services App</h3>
+                    <p class="text-slate-300 mb-4">Aplikasi layanan logistik lengkap dengan tracking pengiriman, manajemen armada, dan sistem pembayaran terintegrasi.</p>
+                    <div class="flex items-center text-sm text-yellow-400">
+                        <span class="morph-text">500+ Kendaraan</span>
+                        <span class="mx-2">•</span>
+                        <span class="morph-text">GPS Tracking</span>
+                    </div>
+                </div>
+                
+                <div class="morph-card bg-gradient-to-br from-slate-700 to-slate-600 p-6 shadow-lg border border-slate-500/30">
+                    <div class="morph-icon text-4xl mb-4">🛒</div>
+                    <h3 class="text-xl font-bold mb-3 morph-text text-white">E-commerce Platform</h3>
+                    <p class="text-slate-300 mb-4">Platform e-commerce multi-vendor dengan payment gateway, sistem review, dan dashboard analytics yang komprehensif.</p>
+                    <div class="flex items-center text-sm text-red-400">
+                        <span class="morph-text">100+ Merchants</span>
+                        <span class="mx-2">•</span>
+                        <span class="morph-text">Multi Payment</span>
+                    </div>
+                </div>
+                
+                <div class="morph-card bg-gradient-to-br from-slate-700 to-slate-600 p-6 shadow-lg border border-slate-500/30">
+                    <div class="morph-icon text-4xl mb-4">🏥</div>
+                    <h3 class="text-xl font-bold mb-3 morph-text text-white">Hospital Management System</h3>
+                    <p class="text-slate-300 mb-4">Sistem informasi rumah sakit terintegrasi dengan modul rekam medis, farmasi, laboratorium, dan billing system.</p>
+                    <div class="flex items-center text-sm text-indigo-400">
+                        <span class="morph-text">15+ Rumah Sakit</span>
+                        <span class="mx-2">•</span>
+                        <span class="morph-text">SIMRS Certified</span>
+                    </div>
+                </div>
+                
+
+                
+                <div class="morph-card bg-gradient-to-br from-slate-700 to-slate-600 p-6 shadow-lg border border-slate-500/30">
+                    <div class="morph-icon text-4xl mb-4">🎯</div>
+                    <h3 class="text-xl font-bold mb-3 morph-text text-white">CRM & Sales Management</h3>
+                    <p class="text-slate-300 mb-4">Sistem manajemen pelanggan dan penjualan dengan fitur lead tracking, sales pipeline, dan automated marketing.</p>
+                    <div class="flex items-center text-sm text-violet-400">
+                        <span class="morph-text">50+ Companies</span>
+                        <span class="mx-2">•</span>
+                        <span class="morph-text">AI Powered</span>
+                    </div>
+                </div>
+                
+                <div class="morph-card bg-gradient-to-br from-slate-700 to-slate-600 p-6 shadow-lg border border-slate-500/30">
+                    <div class="morph-icon text-4xl mb-4">📊</div>
+                    <h3 class="text-xl font-bold mb-3 morph-text text-white">Business Intelligence Dashboard</h3>
+                    <p class="text-slate-300 mb-4">Dashboard analitik bisnis dengan visualisasi data real-time, reporting otomatis, dan predictive analytics.</p>
+                    <div class="flex items-center text-sm text-rose-400">
+                        <span class="morph-text">Real-time Data</span>
+                        <span class="mx-2">•</span>
+                        <span class="morph-text">ML Analytics</span>
+                    </div>
+                </div>
+                
+                <div class="morph-card bg-gradient-to-br from-slate-700 to-slate-600 p-6 shadow-lg border border-slate-500/30">
+                    <div class="morph-icon text-4xl mb-4">🏭</div>
+                    <h3 class="text-xl font-bold mb-3 morph-text text-white">Manufacturing ERP</h3>
+                    <p class="text-slate-300 mb-4">Sistem ERP manufaktur dengan modul produksi, inventory, quality control, dan supply chain management.</p>
+                    <div class="flex items-center text-sm text-sky-400">
+                        <span class="morph-text">10+ Pabrik</span>
+                        <span class="mx-2">•</span>
+                        <span class="morph-text">ISO Compliant</span>
+                    </div>
+                </div>
+                
+                <div class="morph-card bg-gradient-to-br from-slate-700 to-slate-600 p-6 shadow-lg border border-slate-500/30">
+                    <div class="morph-icon text-4xl mb-4">🎓</div>
+                    <h3 class="text-xl font-bold mb-3 morph-text text-white">Learning Management System</h3>
+                    <p class="text-slate-300 mb-4">Platform pembelajaran online dengan fitur video conference, assignment tracking, dan assessment tools.</p>
+                    <div class="flex items-center text-sm text-amber-400">
+                        <span class="morph-text">100+ Institusi</span>
+                        <span class="mx-2">•</span>
+                        <span class="morph-text">10K+ Users</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <button id="togglePortfolio" class="morph-button gradient-bg text-white px-8 py-4 font-semibold" onclick="togglePortfolio()">
+                    Lihat Semua Portfolio
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Section -->
+    <section id="blog" class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4 morph-text">Blog & Artikel</h2>
+                <p class="text-gray-600 text-lg morph-text">Insights terbaru tentang teknologi dan transformasi digital</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Blog Article 1 -->
+                <article class="morph-card bg-white border border-gray-200 rounded-xl shadow-lg hover:shadow-xl overflow-hidden">
+                    <div class="h-48 bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                        <div class="text-white text-center">
+                            <div class="text-4xl mb-2">🤖</div>
+                            <div class="text-sm font-semibold">AI & Machine Learning</div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center text-sm text-gray-500 mb-3">
+                            <span>📅 15 Des 2024</span>
+                            <span class="mx-2">•</span>
+                            <span>⏱️ 5 min read</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 morph-text text-gray-900">Implementasi AI dalam Bisnis: Panduan Lengkap 2024</h3>
+                        <p class="text-gray-600 mb-4">Bagaimana artificial intelligence dapat meningkatkan efisiensi operasional dan memberikan competitive advantage untuk bisnis Anda.</p>
+                        <button onclick="openBlogModal('ai-bisnis')" class="morph-button text-blue-600 hover:text-blue-800 font-semibold">
+                            Baca Selengkapnya →
+                        </button>
+                    </div>
+                </article>
+                
+                <!-- Blog Article 2 -->
+                <article class="morph-card bg-white border border-gray-200 rounded-xl shadow-lg hover:shadow-xl overflow-hidden">
+                    <div class="h-48 bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center">
+                        <div class="text-white text-center">
+                            <div class="text-4xl mb-2">🔒</div>
+                            <div class="text-sm font-semibold">Cyber Security</div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center text-sm text-gray-500 mb-3">
+                            <span>📅 12 Des 2024</span>
+                            <span class="mx-2">•</span>
+                            <span>⏱️ 7 min read</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 morph-text text-gray-900">7 Langkah Penting Mengamankan Data Perusahaan</h3>
+                        <p class="text-gray-600 mb-4">Strategi komprehensif untuk melindungi aset digital perusahaan dari ancaman cyber yang semakin canggih.</p>
+                        <button onclick="openBlogModal('cyber-security')" class="morph-button text-blue-600 hover:text-blue-800 font-semibold">
+                            Baca Selengkapnya →
+                        </button>
+                    </div>
+                </article>
+                
+                <!-- Blog Article 3 -->
+                <article class="morph-card bg-white border border-gray-200 rounded-xl shadow-lg hover:shadow-xl overflow-hidden">
+                    <div class="h-48 bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center">
+                        <div class="text-white text-center">
+                            <div class="text-4xl mb-2">☁️</div>
+                            <div class="text-sm font-semibold">Cloud Computing</div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center text-sm text-gray-500 mb-3">
+                            <span>📅 10 Des 2024</span>
+                            <span class="mx-2">•</span>
+                            <span>⏱️ 6 min read</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 morph-text text-gray-900">Migrasi ke Cloud: Manfaat dan Tantangan</h3>
+                        <p class="text-gray-600 mb-4">Panduan praktis untuk memahami proses migrasi ke cloud computing dan bagaimana memaksimalkan ROI investasi IT.</p>
+                        <button onclick="openBlogModal('cloud-migration')" class="morph-button text-blue-600 hover:text-blue-800 font-semibold">
+                            Baca Selengkapnya →
+                        </button>
+                    </div>
+                </article>
+                
+                <!-- Blog Article 4 -->
+                <article class="morph-card bg-white border border-gray-200 rounded-xl shadow-lg hover:shadow-xl overflow-hidden">
+                    <div class="h-48 bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center">
+                        <div class="text-white text-center">
+                            <div class="text-4xl mb-2">📱</div>
+                            <div class="text-sm font-semibold">Mobile Development</div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center text-sm text-gray-500 mb-3">
+                            <span>📅 8 Des 2024</span>
+                            <span class="mx-2">•</span>
+                            <span>⏱️ 4 min read</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 morph-text text-gray-900">Tren Mobile App Development 2024</h3>
+                        <p class="text-gray-600 mb-4">Teknologi dan framework terbaru yang mendominasi pengembangan aplikasi mobile di tahun 2024.</p>
+                        <button onclick="openBlogModal('mobile-trends')" class="morph-button text-blue-600 hover:text-blue-800 font-semibold">
+                            Baca Selengkapnya →
+                        </button>
+                    </div>
+                </article>
+                
+                <!-- Blog Article 5 -->
+                <article class="morph-card bg-white border border-gray-200 rounded-xl shadow-lg hover:shadow-xl overflow-hidden">
+                    <div class="h-48 bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center">
+                        <div class="text-white text-center">
+                            <div class="text-4xl mb-2">🚀</div>
+                            <div class="text-sm font-semibold">Digital Transformation</div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center text-sm text-gray-500 mb-3">
+                            <span>📅 5 Des 2024</span>
+                            <span class="mx-2">•</span>
+                            <span>⏱️ 8 min read</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 morph-text text-gray-900">Roadmap Transformasi Digital untuk UKM</h3>
+                        <p class="text-gray-600 mb-4">Langkah-langkah praktis bagi usaha kecil menengah untuk memulai perjalanan transformasi digital mereka.</p>
+                        <button onclick="openBlogModal('digital-transformation')" class="morph-button text-blue-600 hover:text-blue-800 font-semibold">
+                            Baca Selengkapnya →
+                        </button>
+                    </div>
+                </article>
+                
+                <!-- Blog Article 6 -->
+                <article class="morph-card bg-white border border-gray-200 rounded-xl shadow-lg hover:shadow-xl overflow-hidden">
+                    <div class="h-48 bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
+                        <div class="text-white text-center">
+                            <div class="text-4xl mb-2">⚙️</div>
+                            <div class="text-sm font-semibold">IT Infrastructure</div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center text-sm text-gray-500 mb-3">
+                            <span>📅 3 Des 2024</span>
+                            <span class="mx-2">•</span>
+                            <span>⏱️ 6 min read</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 morph-text text-gray-900">Best Practices Setup Server Room Enterprise</h3>
+                        <p class="text-gray-600 mb-4">Panduan lengkap merancang dan membangun ruang server yang memenuhi standar enterprise dan compliance.</p>
+                        <button onclick="openBlogModal('server-room')" class="morph-button text-blue-600 hover:text-blue-800 font-semibold">
+                            Baca Selengkapnya →
+                        </button>
+                    </div>
+                </article>
+            </div>
+            
+            <div class="text-center mt-12">
+                <button class="morph-button gradient-bg text-white px-8 py-4 font-semibold">
+                    Lihat Semua Artikel
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-gray-100">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-4xl font-bold text-gray-900 mb-6 morph-text">Tentang ClueForIT</h2>
+                    <p class="text-gray-600 text-lg mb-6 morph-text">
+                        Dengan pengalaman lebih dari 10 tahun di industri teknologi, ClueForIT telah menjadi partner terpercaya untuk transformasi digital berbagai perusahaan di Indonesia.
+                    </p>
+                    <div class="space-y-4">
+                        <div class="flex items-center morph-hover">
+                            <div class="morph-icon bg-blue-500 text-white p-2 rounded-full mr-4">✓</div>
+                            <span class="morph-text text-gray-700">Tim ahli bersertifikat internasional</span>
+                        </div>
+                        <div class="flex items-center morph-hover">
+                            <div class="morph-icon bg-emerald-500 text-white p-2 rounded-full mr-4">✓</div>
+                            <span class="morph-text text-gray-700">Support 24/7 untuk semua klien</span>
+                        </div>
+                        <div class="flex items-center morph-hover">
+                            <div class="morph-icon bg-violet-500 text-white p-2 rounded-full mr-4">✓</div>
+                            <span class="morph-text text-gray-700">Teknologi terdepan dan inovatif</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="relative">
+                    <div class="morph-float">
+                        <div class="w-full h-80 bg-gradient-to-br from-purple-500 to-blue-600 rounded-3xl flex items-center justify-center morph-wave shadow-2xl">
+                            <div class="text-white text-center">
+                                <div class="text-5xl mb-4">👥</div>
+                                <div class="text-xl font-semibold">Professional Team</div>
+                                <div class="text-sm opacity-80 mt-2">IT Experts & Consultants</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Gallery Section -->
+    <section class="py-16 bg-gray-100">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <h3 class="text-3xl font-bold text-gray-900 mb-4 morph-text">Hasil Karya Kami</h3>
+                <p class="text-gray-600 morph-text">Dokumentasi nyata dari proyek-proyek yang telah berhasil kami selesaikan</p>
+            </div>
+            
+            <div class="grid md:grid-cols-4 gap-6">
+                <!-- Lab Komputer Sekolah -->
+                <div class="morph-card bg-white p-4 rounded-2xl border border-gray-200 shadow-lg hover:shadow-xl">
+                    <div class="w-full h-32 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center mb-3">
+                        <div class="text-white text-center">
+                            <div class="text-2xl mb-1">💻</div>
+                            <div class="text-xs">Lab Komputer</div>
+                        </div>
+                    </div>
+                    <div class="text-gray-900 text-center">
+                        <div class="text-sm font-semibold morph-text">Lab Komputer</div>
+                        <div class="text-xs text-gray-500">30+ Sekolah</div>
+                    </div>
+                </div>
+                
+                <!-- Server Room Setup -->
+                <div class="morph-card bg-white p-4 rounded-2xl border border-gray-200 shadow-lg hover:shadow-xl">
+                    <div class="w-full h-32 bg-gradient-to-br from-emerald-500 to-blue-600 rounded-lg flex items-center justify-center mb-3">
+                        <div class="text-white text-center">
+                            <div class="text-2xl mb-1">🏢</div>
+                            <div class="text-xs">Server Room</div>
+                        </div>
+                    </div>
+                    <div class="text-gray-900 text-center">
+                        <div class="text-sm font-semibold morph-text">Ruang Server</div>
+                        <div class="text-xs text-gray-500">Enterprise Grade</div>
+                    </div>
+                </div>
+                
+                <!-- Mobile App Development -->
+                <div class="morph-card bg-white p-4 rounded-2xl border border-gray-200 shadow-lg hover:shadow-xl">
+                    <div class="w-full h-32 bg-gradient-to-br from-violet-500 to-pink-600 rounded-lg flex items-center justify-center mb-3">
+                        <div class="text-white text-center">
+                            <div class="text-2xl mb-1">📱</div>
+                            <div class="text-xs">Mobile App</div>
+                        </div>
+                    </div>
+                    <div class="text-gray-900 text-center">
+                        <div class="text-sm font-semibold morph-text">Mobile Apps</div>
+                        <div class="text-xs text-gray-500">iOS & Android</div>
+                    </div>
+                </div>
+                
+                <!-- IT Training -->
+                <div class="morph-card bg-white p-4 rounded-2xl border border-gray-200 shadow-lg hover:shadow-xl">
+                    <div class="w-full h-32 bg-gradient-to-br from-orange-500 to-red-600 rounded-lg flex items-center justify-center mb-3">
+                        <div class="text-white text-center">
+                            <div class="text-2xl mb-1">🎓</div>
+                            <div class="text-xs">IT Training</div>
+                        </div>
+                    </div>
+                    <div class="text-gray-900 text-center">
+                        <div class="text-sm font-semibold morph-text">Pelatihan IT</div>
+                        <div class="text-xs text-gray-500">5000+ Siswa</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4 morph-text">Hubungi Kami</h2>
+                <p class="text-gray-600 text-lg morph-text">Siap membantu transformasi digital bisnis Anda</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-12">
+                <div class="morph-card bg-gray-50 p-8 border border-gray-200 rounded-xl">
+                    <h3 class="text-2xl font-bold mb-6 morph-text text-gray-900">Informasi Kontak</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center morph-hover">
+                            <div class="morph-icon text-2xl mr-4">📧</div>
+                            <span class="morph-text text-gray-700">realboxofme@gmail.com</span>
+                        </div>
+                        <div class="flex items-center morph-hover">
+                            <div class="morph-icon text-2xl mr-4">💬</div>
+                            <span class="morph-text text-gray-700">0897 232 5030</span>
+                        </div>
+                        <div class="flex items-center morph-hover">
+                            <div class="morph-icon text-2xl mr-4">📍</div>
+                            <span class="morph-text text-gray-700">Gading Serpong, Tangerang, Indonesia</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="morph-card bg-white border border-gray-200 rounded-xl shadow-lg overflow-hidden">
+                    <!-- Chatbot Header -->
+                    <div class="bg-gradient-to-r from-blue-600 to-purple-600 p-4 text-white">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center mr-3">
+                                <span class="text-xl">🤖</span>
+                            </div>
+                            <div>
+                                <h3 class="font-bold">ClueBot Assistant</h3>
+                                <p class="text-sm opacity-90">Tanya tentang layanan & portfolio kami</p>
+                            </div>
+                            <div class="ml-auto">
+                                <div class="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Chat Messages Container -->
+                    <div id="chatMessages" class="h-80 overflow-y-auto p-4 bg-gray-50 space-y-3">
+                        <!-- Welcome Message -->
+                        <div class="flex items-start space-x-2">
+                            <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm">🤖</div>
+                            <div class="bg-white p-3 rounded-lg shadow-sm max-w-xs">
+                                <p class="text-sm text-gray-800">Halo! Saya ClueBot, asisten virtual ClueForIT. Saya siap membantu Anda mengetahui lebih lanjut tentang layanan dan portfolio kami. Silakan pilih topik atau ketik pertanyaan Anda!</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Quick Action Buttons -->
+                        <div class="flex flex-wrap gap-2 ml-10">
+                            <button onclick="sendQuickMessage('Apa saja layanan ClueForIT?')" class="bg-blue-100 hover:bg-blue-200 text-blue-800 px-3 py-1 rounded-full text-xs transition-colors">
+                                Layanan Kami
+                            </button>
+                            <button onclick="sendQuickMessage('Ceritakan tentang portfolio ClueForIT')" class="bg-purple-100 hover:bg-purple-200 text-purple-800 px-3 py-1 rounded-full text-xs transition-colors">
+                                Portfolio
+                            </button>
+                            <button onclick="sendQuickMessage('Bagaimana cara menghubungi ClueForIT?')" class="bg-green-100 hover:bg-green-200 text-green-800 px-3 py-1 rounded-full text-xs transition-colors">
+                                Kontak
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Chat Input -->
+                    <div class="p-4 border-t border-gray-200 bg-white">
+                        <div class="flex space-x-2">
+                            <input 
+                                type="text" 
+                                id="chatInput" 
+                                placeholder="Ketik pertanyaan Anda..." 
+                                class="flex-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                                onkeypress="handleChatKeyPress(event)"
+                            >
+                            <button 
+                                onclick="sendChatMessage()" 
+                                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-lg transition-colors"
+                            >
+                                <span class="text-sm">📤</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust Building Section -->
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4 morph-text">Mengapa Memilih ClueForIT?</h2>
+                <p class="text-gray-600 text-lg morph-text">Kepercayaan klien adalah prioritas utama kami</p>
+            </div>
+            
+            <!-- Trust Stats -->
+            <div class="grid md:grid-cols-2 gap-8 mb-16">
+                <div class="text-center morph-card bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-xl border border-blue-200">
+                    <div class="text-4xl font-bold text-blue-600 mb-2 morph-text">10+</div>
+                    <div class="text-gray-700 font-semibold">Tahun Pengalaman</div>
+                </div>
+                <div class="text-center morph-card bg-gradient-to-br from-orange-50 to-orange-100 p-6 rounded-xl border border-orange-200">
+                    <div class="text-4xl font-bold text-orange-600 mb-2 morph-text">24/7</div>
+                    <div class="text-gray-700 font-semibold">Support</div>
+                </div>
+            </div>
+            
+            <!-- Team Photos Section -->
+            <div class="mb-20">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl font-bold text-gray-900 mb-4 morph-text">Tim Profesional Kami</h3>
+                    <p class="text-gray-600 morph-text">Bertemu dengan para ahli yang akan menangani proyek Anda</p>
+                </div>
+                
+                <div class="grid md:grid-cols-4 gap-8">
+                    <!-- Team Member 1 - CEO -->
+                    <div class="morph-card bg-white p-6 rounded-xl shadow-lg border border-gray-200 text-center hover:shadow-xl">
+                        <div class="w-24 h-24 mx-auto mb-4 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                            <div class="text-white text-center">
+                                <div class="text-2xl mb-1">👨‍💼</div>
+                                <div class="text-xs font-bold">CEO</div>
+                            </div>
+                        </div>
+                        <h4 class="font-bold text-gray-900 mb-1 morph-text">Andi Wijaya</h4>
+                        <p class="text-sm text-gray-600 mb-2">Chief Executive Officer</p>
+                        <div class="text-xs text-blue-600 bg-blue-50 px-2 py-1 rounded-full inline-block">
+                            10+ Years Experience
+                        </div>
+                        <div class="mt-3 text-xs text-gray-500">
+                            🏆 Microsoft MVP<br>
+                            🎓 Master IT Management
+                        </div>
+                    </div>
+                    
+                    <!-- Team Member 2 - CTO -->
+                    <div class="morph-card bg-white p-6 rounded-xl shadow-lg border border-gray-200 text-center hover:shadow-xl">
+                        <div class="w-24 h-24 mx-auto mb-4 rounded-full bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center">
+                            <div class="text-white text-center">
+                                <div class="text-2xl mb-1">👨‍💻</div>
+                                <div class="text-xs font-bold">CTO</div>
+                            </div>
+                        </div>
+                        <h4 class="font-bold text-gray-900 mb-1 morph-text">Budi Santoso</h4>
+                        <p class="text-sm text-gray-600 mb-2">Chief Technology Officer</p>
+                        <div class="text-xs text-green-600 bg-green-50 px-2 py-1 rounded-full inline-block">
+                            AWS Solutions Architect
+                        </div>
+                        <div class="mt-3 text-xs text-gray-500">
+                            ☁️ Cloud Expert<br>
+                            🔧 DevOps Specialist
+                        </div>
+                    </div>
+                    
+                    <!-- Team Member 3 - Security Lead -->
+                    <div class="morph-card bg-white p-6 rounded-xl shadow-lg border border-gray-200 text-center hover:shadow-xl">
+                        <div class="w-24 h-24 mx-auto mb-4 rounded-full bg-gradient-to-br from-red-500 to-pink-600 flex items-center justify-center">
+                            <div class="text-white text-center">
+                                <div class="text-2xl mb-1">👩‍💻</div>
+                                <div class="text-xs font-bold">SEC</div>
+                            </div>
+                        </div>
+                        <h4 class="font-bold text-gray-900 mb-1 morph-text">Sari Indah</h4>
+                        <p class="text-sm text-gray-600 mb-2">Security Lead</p>
+                        <div class="text-xs text-red-600 bg-red-50 px-2 py-1 rounded-full inline-block">
+                            CompTIA Security+
+                        </div>
+                        <div class="mt-3 text-xs text-gray-500">
+                            🔒 Cyber Security Expert<br>
+                            🛡️ Penetration Tester
+                        </div>
+                    </div>
+                    
+                    <!-- Team Member 4 - Project Manager -->
+                    <div class="morph-card bg-white p-6 rounded-xl shadow-lg border border-gray-200 text-center hover:shadow-xl">
+                        <div class="w-24 h-24 mx-auto mb-4 rounded-full bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center">
+                            <div class="text-white text-center">
+                                <div class="text-2xl mb-1">👨‍🎓</div>
+                                <div class="text-xs font-bold">PM</div>
+                            </div>
+                        </div>
+                        <h4 class="font-bold text-gray-900 mb-1 morph-text">Dedi Rahman</h4>
+                        <p class="text-sm text-gray-600 mb-2">Senior Project Manager</p>
+                        <div class="text-xs text-purple-600 bg-purple-50 px-2 py-1 rounded-full inline-block">
+                            PMP Certified
+                        </div>
+                        <div class="mt-3 text-xs text-gray-500">
+                            📊 Agile Master<br>
+                            🎯 100+ Projects
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Extended Team -->
+                <div class="grid md:grid-cols-6 gap-6 mt-12">
+                    <!-- Developer 1 -->
+                    <div class="morph-card bg-white p-4 rounded-lg shadow-md border border-gray-200 text-center hover:shadow-lg">
+                        <div class="w-16 h-16 mx-auto mb-3 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center">
+                            <div class="text-white text-lg">👨‍💻</div>
+                        </div>
+                        <h5 class="font-semibold text-gray-900 text-sm mb-1">Riko Dev</h5>
+                        <p class="text-xs text-gray-600">Full Stack Developer</p>
+                        <div class="text-xs text-cyan-600 mt-1">React • Node.js</div>
+                    </div>
+                    
+                    <!-- Developer 2 -->
+                    <div class="morph-card bg-white p-4 rounded-lg shadow-md border border-gray-200 text-center hover:shadow-lg">
+                        <div class="w-16 h-16 mx-auto mb-3 rounded-full bg-gradient-to-br from-yellow-500 to-orange-600 flex items-center justify-center">
+                            <div class="text-white text-lg">👩‍💻</div>
+                        </div>
+                        <h5 class="font-semibold text-gray-900 text-sm mb-1">Maya Code</h5>
+                        <p class="text-xs text-gray-600">Mobile Developer</p>
+                        <div class="text-xs text-yellow-600 mt-1">Flutter • Swift</div>
+                    </div>
+                    
+                    <!-- Network Engineer -->
+                    <div class="morph-card bg-white p-4 rounded-lg shadow-md border border-gray-200 text-center hover:shadow-lg">
+                        <div class="w-16 h-16 mx-auto mb-3 rounded-full bg-gradient-to-br from-green-500 to-teal-600 flex items-center justify-center">
+                            <div class="text-white text-lg">👨‍🔧</div>
+                        </div>
+                        <h5 class="font-semibold text-gray-900 text-sm mb-1">Agus Net</h5>
+                        <p class="text-xs text-gray-600">Network Engineer</p>
+                        <div class="text-xs text-green-600 mt-1">Cisco • Mikrotik</div>
+                    </div>
+                    
+                    <!-- UI/UX Designer -->
+                    <div class="morph-card bg-white p-4 rounded-lg shadow-md border border-gray-200 text-center hover:shadow-lg">
+                        <div class="w-16 h-16 mx-auto mb-3 rounded-full bg-gradient-to-br from-pink-500 to-rose-600 flex items-center justify-center">
+                            <div class="text-white text-lg">👩‍🎨</div>
+                        </div>
+                        <h5 class="font-semibold text-gray-900 text-sm mb-1">Lina Design</h5>
+                        <p class="text-xs text-gray-600">UI/UX Designer</p>
+                        <div class="text-xs text-pink-600 mt-1">Figma • Adobe</div>
+                    </div>
+                    
+                    <!-- Database Admin -->
+                    <div class="morph-card bg-white p-4 rounded-lg shadow-md border border-gray-200 text-center hover:shadow-lg">
+                        <div class="w-16 h-16 mx-auto mb-3 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
+                            <div class="text-white text-lg">👨‍🔬</div>
+                        </div>
+                        <h5 class="font-semibold text-gray-900 text-sm mb-1">Toni DB</h5>
+                        <p class="text-xs text-gray-600">Database Admin</p>
+                        <div class="text-xs text-indigo-600 mt-1">Oracle • MySQL</div>
+                    </div>
+                    
+                    <!-- Support Specialist -->
+                    <div class="morph-card bg-white p-4 rounded-lg shadow-md border border-gray-200 text-center hover:shadow-lg">
+                        <div class="w-16 h-16 mx-auto mb-3 rounded-full bg-gradient-to-br from-emerald-500 to-green-600 flex items-center justify-center">
+                            <div class="text-white text-lg">👩‍💼</div>
+                        </div>
+                        <h5 class="font-semibold text-gray-900 text-sm mb-1">Nina Support</h5>
+                        <p class="text-xs text-gray-600">Support Specialist</p>
+                        <div class="text-xs text-emerald-600 mt-1">24/7 • ITIL</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Prominent Certifications Section -->
+    <section class="py-20 bg-gray-900">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-white mb-4 morph-text">Sertifikasi & Kredensial</h2>
+                <p class="text-gray-400 text-lg morph-text">Tim ahli bersertifikat internasional dari vendor teknologi terkemuka</p>
+            </div>
+            
+            <!-- Major Certifications Grid -->
+            <div class="grid md:grid-cols-3 lg:grid-cols-5 gap-8 mb-16">
+                <!-- Cisco Certification -->
+                <div class="morph-card bg-white/10 backdrop-blur-md p-8 rounded-xl border border-white/20 text-center hover:bg-white/15 transition-all">
+                    <div class="w-20 h-20 mx-auto mb-4 bg-white rounded-xl flex items-center justify-center">
+                        <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
+                            <rect width="60" height="60" rx="8" fill="#1BA0D7"/>
+                            <path d="M15 25h8v10h-8zm9 0h8v10h-8zm9 0h8v10h-8zm9 0h8v10h-8z" fill="white"/>
+                            <circle cx="30" cy="20" r="3" fill="white"/>
+                            <circle cx="30" cy="40" r="3" fill="white"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-white font-bold text-lg mb-2">Cisco CCNA</h3>
+                    <p class="text-gray-300 text-sm mb-3">Network Associate</p>
+                    <div class="bg-blue-500/20 text-blue-300 px-3 py-1 rounded-full text-xs">
+                        Certified Professional
+                    </div>
+                </div>
+                
+                <!-- Microsoft Certification -->
+                <div class="morph-card bg-white/10 backdrop-blur-md p-8 rounded-xl border border-white/20 text-center hover:bg-white/15 transition-all">
+                    <div class="w-20 h-20 mx-auto mb-4 bg-white rounded-xl flex items-center justify-center">
+                        <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
+                            <rect width="60" height="60" rx="8" fill="#00BCF2"/>
+                            <rect x="12" y="12" width="12" height="12" fill="white"/>
+                            <rect x="36" y="12" width="12" height="12" fill="white"/>
+                            <rect x="12" y="36" width="12" height="12" fill="white"/>
+                            <rect x="36" y="36" width="12" height="12" fill="white"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-white font-bold text-lg mb-2">Microsoft Azure</h3>
+                    <p class="text-gray-300 text-sm mb-3">Cloud Solutions</p>
+                    <div class="bg-cyan-500/20 text-cyan-300 px-3 py-1 rounded-full text-xs">
+                        Azure Certified
+                    </div>
+                </div>
+                
+                <!-- AWS Certification -->
+                <div class="morph-card bg-white/10 backdrop-blur-md p-8 rounded-xl border border-white/20 text-center hover:bg-white/15 transition-all">
+                    <div class="w-20 h-20 mx-auto mb-4 bg-white rounded-xl flex items-center justify-center">
+                        <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
+                            <rect width="60" height="60" rx="8" fill="#FF9900"/>
+                            <path d="M15 35c0-8 6-15 15-15s15 7 15 15" stroke="white" stroke-width="3" fill="none"/>
+                            <path d="M20 30l10 8 10-8" stroke="white" stroke-width="3" fill="none"/>
+                            <circle cx="30" cy="25" r="2" fill="white"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-white font-bold text-lg mb-2">AWS</h3>
+                    <p class="text-gray-300 text-sm mb-3">Solutions Architect</p>
+                    <div class="bg-orange-500/20 text-orange-300 px-3 py-1 rounded-full text-xs">
+                        Professional Level
+                    </div>
+                </div>
+                
+                <!-- Oracle Certification -->
+                <div class="morph-card bg-white/10 backdrop-blur-md p-8 rounded-xl border border-white/20 text-center hover:bg-white/15 transition-all">
+                    <div class="w-20 h-20 mx-auto mb-4 bg-white rounded-xl flex items-center justify-center">
+                        <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
+                            <rect width="60" height="60" rx="8" fill="#F80000"/>
+                            <ellipse cx="30" cy="20" rx="15" ry="5" fill="white"/>
+                            <ellipse cx="30" cy="30" rx="15" ry="5" fill="white"/>
+                            <ellipse cx="30" cy="40" rx="15" ry="5" fill="white"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-white font-bold text-lg mb-2">Oracle DBA</h3>
+                    <p class="text-gray-300 text-sm mb-3">Database Admin</p>
+                    <div class="bg-red-500/20 text-red-300 px-3 py-1 rounded-full text-xs">
+                        Certified Expert
+                    </div>
+                </div>
+                
+                <!-- CompTIA Security+ -->
+                <div class="morph-card bg-white/10 backdrop-blur-md p-8 rounded-xl border border-white/20 text-center hover:bg-white/15 transition-all">
+                    <div class="w-20 h-20 mx-auto mb-4 bg-white rounded-xl flex items-center justify-center">
+                        <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
+                            <rect width="60" height="60" rx="8" fill="#E2231A"/>
+                            <rect x="20" y="25" width="20" height="15" rx="2" fill="white"/>
+                            <path d="M25 25v-5c0-3 2-5 5-5s5 2 5 5v5" stroke="white" stroke-width="2" fill="none"/>
+                            <circle cx="30" cy="32" r="2" fill="#E2231A"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-white font-bold text-lg mb-2">CompTIA</h3>
+                    <p class="text-gray-300 text-sm mb-3">Security+</p>
+                    <div class="bg-red-500/20 text-red-300 px-3 py-1 rounded-full text-xs">
+                        Security Certified
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Additional Certifications Scrolling -->
+            <div class="overflow-hidden">
+                <div class="flex animate-scroll space-x-8 items-center">
+                    <!-- Red Hat -->
+                    <div class="flex-shrink-0 morph-hover bg-white/10 backdrop-blur-md p-6 rounded-lg border border-white/20">
+                        <div class="text-white text-center">
+                            <div class="w-16 h-16 mx-auto mb-3 bg-red-600 rounded-lg flex items-center justify-center">
+                                <span class="text-white text-2xl font-bold">RH</span>
+                            </div>
+                            <div class="text-sm font-semibold">Red Hat RHCE</div>
+                            <div class="text-xs text-gray-300">Linux Systems</div>
+                        </div>
+                    </div>
+                    
+                    <!-- VMware -->
+                    <div class="flex-shrink-0 morph-hover bg-white/10 backdrop-blur-md p-6 rounded-lg border border-white/20">
+                        <div class="text-white text-center">
+                            <div class="w-16 h-16 mx-auto mb-3 bg-blue-600 rounded-lg flex items-center justify-center">
+                                <span class="text-white text-xl">📦</span>
+                            </div>
+                            <div class="text-sm font-semibold">VMware VCP</div>
+                            <div class="text-xs text-gray-300">Virtualization</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Google Cloud -->
+                    <div class="flex-shrink-0 morph-hover bg-white/10 backdrop-blur-md p-6 rounded-lg border border-white/20">
+                        <div class="text-white text-center">
+                            <div class="w-16 h-16 mx-auto mb-3 bg-green-600 rounded-lg flex items-center justify-center">
+                                <span class="text-white text-xl">☁️</span>
+                            </div>
+                            <div class="text-sm font-semibold">Google Cloud</div>
+                            <div class="text-xs text-gray-300">Professional</div>
+                        </div>
+                    </div>
+                    
+                    <!-- ITIL -->
+                    <div class="flex-shrink-0 morph-hover bg-white/10 backdrop-blur-md p-6 rounded-lg border border-white/20">
+                        <div class="text-white text-center">
+                            <div class="w-16 h-16 mx-auto mb-3 bg-purple-600 rounded-lg flex items-center justify-center">
+                                <span class="text-white text-xl">⚙️</span>
+                            </div>
+                            <div class="text-sm font-semibold">ITIL Foundation</div>
+                            <div class="text-xs text-gray-300">Service Management</div>
+                        </div>
+                    </div>
+                    
+                    <!-- PMP -->
+                    <div class="flex-shrink-0 morph-hover bg-white/10 backdrop-blur-md p-6 rounded-lg border border-white/20">
+                        <div class="text-white text-center">
+                            <div class="w-16 h-16 mx-auto mb-3 bg-indigo-600 rounded-lg flex items-center justify-center">
+                                <span class="text-white text-xl">📊</span>
+                            </div>
+                            <div class="text-sm font-semibold">PMP Certified</div>
+                            <div class="text-xs text-gray-300">Project Management</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Repeat for continuous scroll -->
+                    <div class="flex-shrink-0 morph-hover bg-white/10 backdrop-blur-md p-6 rounded-lg border border-white/20">
+                        <div class="text-white text-center">
+                            <div class="w-16 h-16 mx-auto mb-3 bg-red-600 rounded-lg flex items-center justify-center">
+                                <span class="text-white text-2xl font-bold">RH</span>
+                            </div>
+                            <div class="text-sm font-semibold">Red Hat RHCE</div>
+                            <div class="text-xs text-gray-300">Linux Systems</div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex-shrink-0 morph-hover bg-white/10 backdrop-blur-md p-6 rounded-lg border border-white/20">
+                        <div class="text-white text-center">
+                            <div class="w-16 h-16 mx-auto mb-3 bg-blue-600 rounded-lg flex items-center justify-center">
+                                <span class="text-white text-xl">📦</span>
+                            </div>
+                            <div class="text-sm font-semibold">VMware VCP</div>
+                            <div class="text-xs text-gray-300">Virtualization</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Certification Summary -->
+            <div class="text-center mt-16">
+                <div class="bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20">
+                    <h3 class="text-2xl font-bold text-white mb-4">Komitmen Profesional</h3>
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-blue-400 mb-2">Multi</div>
+                            <div class="text-gray-300">Sertifikasi Internasional</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-green-400 mb-2">Vendor</div>
+                            <div class="text-gray-300">Technology Partners</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-white py-12">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <div class="mb-4">
+                        <!-- Extended Horizontal Logo for Footer -->
+                        <div class="morph-text">
+                            <svg width="150" height="35" viewBox="0 0 120 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <!-- Background rounded rectangle -->
+                                <rect x="0" y="2" width="120" height="24" rx="12" fill="url(#footerExtendedLogoGradient)" stroke="url(#footerExtendedLogoBorder)" stroke-width="1"/>
+                                
+                                <!-- Left side tech icon -->
+                                <circle cx="14" cy="14" r="7" fill="rgba(255,255,255,0.2)" stroke="white" stroke-width="1"/>
+                                <path d="M14 9C12 9 10.5 10.5 10.5 12.5V15.5C10.5 17.5 12 19 14 19" stroke="white" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+                                <circle cx="16.5" cy="11" r="0.8" fill="white"/>
+                                <circle cx="16.5" cy="14" r="0.8" fill="white"/>
+                                <circle cx="16.5" cy="17" r="0.8" fill="white"/>
+                                
+                                <!-- Company name text -->
+                                <text x="26" y="18" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">ClueForIT</text>
+                                
+                                <!-- Right side decorative elements -->
+                                <rect x="85" y="10" width="5" height="8" rx="1" fill="white" opacity="0.8"/>
+                                <rect x="92" y="8" width="3" height="12" rx="1" fill="white" opacity="0.6"/>
+                                <rect x="97" y="12" width="3" height="4" rx="1" fill="white" opacity="0.9"/>
+                                
+                                <!-- Connection lines -->
+                                <path d="M102 12H110M102 16H108" stroke="white" stroke-width="1" opacity="0.7"/>
+                                <circle cx="110" cy="12" r="1.2" fill="white"/>
+                                <circle cx="108" cy="16" r="1.2" fill="white"/>
+                                
+                                <!-- Bottom accent line -->
+                                <path d="M6 24H114" stroke="white" stroke-width="0.5" opacity="0.5"/>
+                                
+                                <defs>
+                                    <linearGradient id="footerExtendedLogoGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                        <stop offset="0%" style="stop-color:#667eea"/>
+                                        <stop offset="30%" style="stop-color:#764ba2"/>
+                                        <stop offset="70%" style="stop-color:#f093fb"/>
+                                        <stop offset="100%" style="stop-color:#667eea"/>
+                                    </linearGradient>
+                                    <linearGradient id="footerExtendedLogoBorder" x1="0%" y1="0%" x2="100%" y2="0%">
+                                        <stop offset="0%" style="stop-color:#4f46e5"/>
+                                        <stop offset="100%" style="stop-color:#7c3aed"/>
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                        </div>
+                    </div>
+                    <p class="text-gray-400 morph-text">Partner terpercaya untuk transformasi digital dan IT managed services.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4 morph-text">Layanan</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="morph-text text-gray-400 hover:text-white">IT Managed Services</a></li>
+                        <li><a href="#" class="morph-text text-gray-400 hover:text-white">Digital Transformation</a></li>
+                        <li><a href="#" class="morph-text text-gray-400 hover:text-white">Cyber Security</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4 morph-text">Perusahaan</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="morph-text text-gray-400 hover:text-white">Tentang Kami</a></li>
+                        <li><a href="#" class="morph-text text-gray-400 hover:text-white">Karir</a></li>
+                        <li><a href="#" class="morph-text text-gray-400 hover:text-white">Blog</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4 morph-text">Ikuti Kami</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="morph-icon text-2xl hover:text-purple-400">📘</a>
+                        <a href="#" class="morph-icon text-2xl hover:text-purple-400">📷</a>
+                        <a href="#" class="morph-icon text-2xl hover:text-purple-400">🐦</a>
+                        <a href="#" class="morph-icon text-2xl hover:text-purple-400">💼</a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center">
+                <p class="text-gray-400 morph-text">&copy; 2024 ClueForIT. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Loading Screen
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                const loadingScreen = document.getElementById('loadingScreen');
+                if (loadingScreen) {
+                    loadingScreen.style.opacity = '0';
+                    setTimeout(() => {
+                        loadingScreen.style.display = 'none';
+                    }, 500);
+                }
+            }, 2000);
+        });
+
+        // Portfolio Data
+        const portfolioData = [
+            {
+                id: 1,
+                title: 'Pelatihan IT SMA/SMK',
+                description: 'Program pelatihan komprehensif untuk siswa SMA/SMK dalam bidang teknologi informasi dan digital literacy.',
+                icon: '🎓',
+                stats: ['50+ Sekolah', '5000+ Siswa'],
+                category: 'pendidikan',
+                color: 'text-blue-600'
+            },
+            {
+                id: 2,
+                title: 'App Showroom Mobil',
+                description: 'Aplikasi mobile dan web untuk manajemen showroom mobil dengan fitur inventory, CRM, dan sistem penjualan terintegrasi.',
+                icon: '🚗',
+                stats: ['15+ Dealer', 'iOS & Android'],
+                category: 'mobile',
+                color: 'text-emerald-600'
+            },
+            {
+                id: 3,
+                title: 'Lab Komputer Sekolah',
+                description: 'Pembangunan dan setup laboratorium komputer lengkap untuk sekolah dan institusi pendidikan.',
+                icon: '💻',
+                stats: ['30+ Lab', '1000+ PC'],
+                category: 'infrastructure',
+                color: 'text-violet-600'
+            },
+            {
+                id: 4,
+                title: 'App Regulated Agent Dephub',
+                description: 'Sistem aplikasi khusus untuk perusahaan regulated agent Departemen Perhubungan dengan compliance penuh.',
+                icon: '✈️',
+                stats: ['Certified', 'Government Grade'],
+                category: 'enterprise',
+                color: 'text-orange-600'
+            },
+            {
+                id: 5,
+                title: 'Setup Ruang Server',
+                description: 'Perancangan, pembangunan, dan setup ruang server enterprise dengan standar internasional untuk perusahaan.',
+                icon: '🏢',
+                stats: ['25+ Perusahaan', 'Tier 3 Standard'],
+                category: 'infrastructure',
+                color: 'text-cyan-600'
+            },
+            {
+                id: 6,
+                title: 'Aplikasi Enterprise',
+                description: 'Pengembangan aplikasi custom untuk berbagai kebutuhan perusahaan seperti ERP, CRM, HRM, dan sistem manajemen lainnya.',
+                icon: '⚙️',
+                stats: ['100+ Projects', 'Multi Platform'],
+                category: 'enterprise',
+                color: 'text-pink-600'
+            },
+            {
+                id: 7,
+                title: 'E-Learning Platform',
+                description: 'Platform pembelajaran online dengan fitur video conference, assignment tracking, dan assessment tools untuk institusi pendidikan.',
+                icon: '📚',
+                stats: ['20+ Universitas', '50K+ Users'],
+                category: 'pendidikan',
+                color: 'text-indigo-600'
+            },
+            {
+                id: 8,
+                title: 'Mobile Banking App',
+                description: 'Aplikasi mobile banking dengan fitur keamanan tinggi, real-time transaction, dan user experience yang optimal.',
+                icon: '🏦',
+                stats: ['Bank Grade Security', 'Multi Platform'],
+                category: 'mobile',
+                color: 'text-green-600'
+            },
+            {
+                id: 9,
+                title: 'Hospital Management System',
+                description: 'Sistem informasi rumah sakit terintegrasi dengan modul rekam medis, farmasi, laboratorium, dan billing system.',
+                icon: '🏥',
+                stats: ['15+ Rumah Sakit', 'SIMRS Certified'],
+                category: 'enterprise',
+                color: 'text-red-600'
+            }
+        ];
+
+        // Blog Data
+        const blogData = {
+            'ai-bisnis': {
+                title: 'Implementasi AI dalam Bisnis: Panduan Lengkap 2024',
+                content: `
+                    <div style="margin-bottom: 24px;">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDYwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iMzAwIiBmaWxsPSJ1cmwoI2dyYWRpZW50KSIvPgo8Y2lyY2xlIGN4PSIzMDAiIGN5PSIxNTAiIHI9IjgwIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMikiLz4KPHN2ZyB4PSIyNjAiIHk9IjExMCIgd2lkdGg9IjgwIiBoZWlnaHQ9IjgwIiBmaWxsPSJ3aGl0ZSI+CjxwYXRoIGQ9Ik00MCAyMEMyOC45NTQzIDIwIDIwIDI4Ljk1NDMgMjAgNDBTMjguOTU0MyA2MCA0MCA2MFM2MCA1MS4wNDU3IDYwIDQwUzUxLjA0NTcgMjAgNDAgMjBaTTQwIDI4QzQ2LjYyNzQgMjggNTIgMzMuMzcyNiA1MiA0MFM0Ni42Mjc0IDUyIDQwIDUyUzI4IDQ2LjYyNzQgMjggNDBTMzMuMzcyNiAyOCA0MCAyOFoiLz4KPHN2Zz4KPGRlZnM+CjxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZGllbnQiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgo8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojNjY3ZWVhIi8+CjxzdG9wIG9mZnNldD0iMTAwJSIgc3R5bGU9InN0b3AtY29sb3I6Izc2NGJhMiIvPgo8L2xpbmVhckdyYWRpZW50Pgo8L2RlZnM+Cjwvc3ZnPg==" alt="AI Implementation" style="width: 100%; height: 200px; object-fit: cover; border-radius: 12px;">
+                    </div>
+                    
+                    <h2 style="color: #1f2937; font-size: 20px; font-weight: bold; margin-bottom: 16px;">Mengapa AI Penting untuk Bisnis Modern?</h2>
+                    <p style="color: #4b5563; line-height: 1.6; margin-bottom: 20px;">
+                        Artificial Intelligence (AI) telah menjadi game-changer dalam dunia bisnis. Dari otomatisasi proses hingga analisis prediktif, AI membantu perusahaan meningkatkan efisiensi operasional dan memberikan competitive advantage yang signifikan.
+                    </p>
+                    
+                    <h3 style="color: #1f2937; font-size: 18px; font-weight: bold; margin-bottom: 12px;">🎯 Manfaat Utama Implementasi AI</h3>
+                    <ul style="color: #4b5563; line-height: 1.6; margin-bottom: 20px; padding-left: 20px;">
+                        <li><strong>Otomatisasi Proses:</strong> Mengurangi pekerjaan manual dan human error</li>
+                        <li><strong>Analisis Data:</strong> Insight mendalam dari big data untuk decision making</li>
+                        <li><strong>Customer Experience:</strong> Personalisasi layanan dan chatbot 24/7</li>
+                        <li><strong>Predictive Analytics:</strong> Forecasting yang akurat untuk planning</li>
+                    </ul>
+                    
+                    <h3 style="color: #1f2937; font-size: 18px; font-weight: bold; margin-bottom: 12px;">🚀 Langkah Implementasi AI</h3>
+                    <ol style="color: #4b5563; line-height: 1.6; margin-bottom: 20px; padding-left: 20px;">
+                        <li><strong>Assessment Kebutuhan:</strong> Identifikasi area yang bisa dioptimalkan dengan AI</li>
+                        <li><strong>Data Preparation:</strong> Pastikan data berkualitas dan terstruktur</li>
+                        <li><strong>Pilot Project:</strong> Mulai dengan project kecil untuk proof of concept</li>
+                        <li><strong>Training & Development:</strong> Upskill tim untuk mengoperasikan AI tools</li>
+                        <li><strong>Scale & Optimize:</strong> Expand implementasi ke area lain</li>
+                    </ol>
+                    
+                    <div style="background: #f3f4f6; padding: 20px; border-radius: 12px; margin: 24px 0;">
+                        <h4 style="color: #1f2937; font-weight: bold; margin-bottom: 12px;">💡 Tips dari ClueForIT</h4>
+                        <p style="color: #4b5563; line-height: 1.6; margin: 0;">
+                            Jangan terburu-buru mengimplementasikan AI di semua lini. Mulai dari satu area yang paling critical dan memiliki ROI yang jelas. Tim kami di ClueForIT siap membantu Anda merancang roadmap AI yang sesuai dengan kebutuhan bisnis Anda.
+                        </p>
+                    </div>
+                    
+                    <p style="color: #4b5563; line-height: 1.6;">
+                        Tertarik untuk mengimplementasikan AI di perusahaan Anda? Hubungi tim ClueForIT untuk konsultasi gratis dan dapatkan strategi AI yang tepat untuk bisnis Anda.
+                    </p>
+                `
+            },
+            'cyber-security': {
+                title: '7 Langkah Penting Mengamankan Data Perusahaan',
+                content: `
+                    <div style="margin-bottom: 24px;">
+                        <div style="width: 100%; height: 200px; background: linear-gradient(135deg, #10b981, #059669); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                            <div style="color: white; text-align: center;">
+                                <div style="font-size: 48px; margin-bottom: 12px;">🔒</div>
+                                <div style="font-size: 18px; font-weight: bold;">Cyber Security</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p style="color: #4b5563; line-height: 1.6; margin-bottom: 20px;">
+                        Ancaman cyber semakin canggih dan beragam. Perusahaan harus proaktif dalam melindungi aset digital mereka. Berikut 7 langkah penting yang harus diterapkan setiap perusahaan.
+                    </p>
+                    
+                    <h3 style="color: #1f2937; font-size: 18px; font-weight: bold; margin-bottom: 12px;">🛡️ 7 Langkah Keamanan Cyber</h3>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <h4 style="color: #059669; font-weight: bold; margin-bottom: 8px;">1. Multi-Factor Authentication (MFA)</h4>
+                        <p style="color: #4b5563; line-height: 1.6;">Implementasikan MFA untuk semua akses sistem critical. Ini mengurangi risiko unauthorized access hingga 99.9%.</p>
+                    </div>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <h4 style="color: #059669; font-weight: bold; margin-bottom: 8px;">2. Regular Security Updates</h4>
+                        <p style="color: #4b5563; line-height: 1.6;">Pastikan semua software dan sistem operasi selalu update dengan patch keamanan terbaru.</p>
+                    </div>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <h4 style="color: #059669; font-weight: bold; margin-bottom: 8px;">3. Employee Security Training</h4>
+                        <p style="color: #4b5563; line-height: 1.6;">80% serangan cyber dimulai dari human error. Training rutin sangat penting untuk awareness.</p>
+                    </div>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <h4 style="color: #059669; font-weight: bold; margin-bottom: 8px;">4. Data Backup & Recovery Plan</h4>
+                        <p style="color: #4b5563; line-height: 1.6;">Implementasikan strategi backup 3-2-1: 3 copies, 2 different media, 1 offsite.</p>
+                    </div>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <h4 style="color: #059669; font-weight: bold; margin-bottom: 8px;">5. Network Segmentation</h4>
+                        <p style="color: #4b5563; line-height: 1.6;">Pisahkan network critical dari network umum untuk membatasi spread serangan.</p>
+                    </div>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <h4 style="color: #059669; font-weight: bold; margin-bottom: 8px;">6. Continuous Monitoring</h4>
+                        <p style="color: #4b5563; line-height: 1.6;">Deploy SIEM tools untuk monitoring real-time dan deteksi anomali.</p>
+                    </div>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <h4 style="color: #059669; font-weight: bold; margin-bottom: 8px;">7. Incident Response Plan</h4>
+                        <p style="color: #4b5563; line-height: 1.6;">Siapkan prosedur response yang jelas untuk minimize damage saat terjadi incident.</p>
+                    </div>
+                    
+                    <div style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 16px; margin: 24px 0;">
+                        <h4 style="color: #92400e; font-weight: bold; margin-bottom: 8px;">⚠️ Warning Signs</h4>
+                        <p style="color: #92400e; line-height: 1.6; margin: 0;">
+                            Jika perusahaan Anda belum menerapkan langkah-langkah di atas, Anda berisiko tinggi menjadi target serangan cyber. Jangan tunggu sampai terlambat!
+                        </p>
+                    </div>
+                    
+                    <p style="color: #4b5563; line-height: 1.6;">
+                        Butuh bantuan mengamankan infrastruktur IT perusahaan? Tim cyber security ClueForIT siap membantu dengan assessment, implementasi, dan monitoring 24/7.
+                    </p>
+                `
+            }
+        };
+
+        // Search Data
+        const searchData = [
+            { title: 'IT Managed Services', description: 'Pengelolaan infrastruktur IT proaktif dan komprehensif', section: 'services' },
+            { title: 'Digital Transformation', description: 'Transformasi digital end-to-end untuk modernisasi bisnis', section: 'services' },
+            { title: 'Cyber Security', description: 'Perlindungan data dan sistem dengan teknologi terdepan', section: 'services' },
+            { title: 'Pelatihan IT SMA/SMK', description: '50+ Sekolah, 5000+ Siswa terlatih', section: 'portfolio' },
+            { title: 'App Showroom Mobil', description: '15+ Dealer, iOS & Android', section: 'portfolio' },
+            { title: 'Lab Komputer Sekolah', description: '30+ Lab, 1000+ PC', section: 'portfolio' },
+            { title: 'Setup Ruang Server', description: '25+ Perusahaan, Tier 3 Standard', section: 'portfolio' },
+            { title: 'Blog AI & Machine Learning', description: 'Implementasi AI dalam bisnis', section: 'blog' },
+            { title: 'Blog Cyber Security', description: '7 langkah mengamankan data perusahaan', section: 'blog' },
+            { title: 'Kontak ClueForIT', description: 'Email, WhatsApp, Alamat kantor', section: 'contact' },
+            { title: 'Tentang ClueForIT', description: 'Pengalaman 10+ tahun, Tim bersertifikat', section: 'about' }
+        ];
+
+        // Search Functions
+        function openSearch() {
+            const searchOverlay = document.getElementById('searchOverlay');
+            const searchInput = document.getElementById('searchInput');
+            const searchContainer = document.getElementById('searchContainer');
+            
+            if (searchOverlay && searchInput && searchContainer) {
+                searchOverlay.style.opacity = '1';
+                searchOverlay.style.visibility = 'visible';
+                setTimeout(() => {
+                    searchContainer.style.transform = 'translateY(0)';
+                    searchInput.focus();
+                }, 100);
+            }
+        }
+
+        function closeSearch() {
+            const searchOverlay = document.getElementById('searchOverlay');
+            const searchInput = document.getElementById('searchInput');
+            const searchResults = document.getElementById('searchResults');
+            const searchContainer = document.getElementById('searchContainer');
+            
+            if (searchContainer) searchContainer.style.transform = 'translateY(-50px)';
+            
+            setTimeout(() => {
+                if (searchOverlay) {
+                    searchOverlay.style.opacity = '0';
+                    searchOverlay.style.visibility = 'hidden';
+                }
+                if (searchInput) searchInput.value = '';
+                if (searchResults) searchResults.innerHTML = '';
+            }, 200);
+        }
+
+        function performSearch() {
+            const searchInput = document.getElementById('searchInput');
+            const searchResults = document.getElementById('searchResults');
+            
+            if (!searchInput || !searchResults) return;
+            
+            const query = searchInput.value.toLowerCase().trim();
+            
+            if (query.length < 2) {
+                searchResults.innerHTML = '';
+                return;
+            }
+            
+            const filtered = searchData.filter(item => 
+                item.title.toLowerCase().includes(query) || 
+                item.description.toLowerCase().includes(query)
+            );
+            
+            if (filtered.length === 0) {
+                searchResults.innerHTML = '<div style="text-align: center; padding: 32px 0; color: #6b7280;">Tidak ada hasil ditemukan</div>';
+                return;
+            }
+            
+            searchResults.innerHTML = filtered.map(item => `
+                <div onclick="navigateToSection('${item.section}')" style="padding: 15px; border-bottom: 1px solid #f3f4f6; cursor: pointer; transition: background-color 0.3s ease;" onmouseover="this.style.backgroundColor='#f9fafb'" onmouseout="this.style.backgroundColor='transparent'">
+                    <div style="font-weight: 600; color: #1f2937; margin-bottom: 5px;">${item.title}</div>
+                    <div style="color: #6b7280; font-size: 14px;">${item.description}</div>
+                </div>
+            `).join('');
+        }
+
+        function navigateToSection(sectionId) {
+            closeSearch();
+            document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // Scroll Functions
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Scroll Events
+        window.addEventListener('scroll', function() {
+            const scrollY = window.scrollY;
+            
+            // Update Breadcrumb
+            const sections = [
+                { id: 'home', name: 'Beranda' },
+                { id: 'services', name: 'Layanan' },
+                { id: 'portfolio', name: 'Portfolio' },
+                { id: 'about', name: 'Tentang Kami' },
+                { id: 'contact', name: 'Kontak' }
+            ];
+            
+            let currentSection = 'Beranda';
+            sections.forEach(section => {
+                const element = document.getElementById(section.id);
+                if (element && scrollY + 100 >= element.offsetTop) {
+                    currentSection = section.name;
+                }
+            });
+            
+            const breadcrumbText = document.getElementById('breadcrumbText');
+            const breadcrumb = document.getElementById('breadcrumb');
+            
+            if (breadcrumbText) breadcrumbText.textContent = currentSection;
+            
+            if (breadcrumb) {
+                if (scrollY > 200) {
+                    breadcrumb.style.opacity = '1';
+                    breadcrumb.style.visibility = 'visible';
+                } else {
+                    breadcrumb.style.opacity = '0';
+                    breadcrumb.style.visibility = 'hidden';
+                }
+            }
+            
+            // Update Back to Top
+            const backToTop = document.getElementById('backToTop');
+            if (backToTop) {
+                if (scrollY > 300) {
+                    backToTop.style.opacity = '1';
+                    backToTop.style.visibility = 'visible';
+                    backToTop.style.transform = 'translateY(0)';
+                } else {
+                    backToTop.style.opacity = '0';
+                    backToTop.style.visibility = 'hidden';
+                    backToTop.style.transform = 'translateY(20px)';
+                }
+            }
+        });
+
+        // Keyboard Shortcuts
+        document.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                openSearch();
+            }
+            if (e.key === 'Escape') {
+                closeSearch();
+            }
+        });
+
+        // Hero slideshow functionality
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide-item');
+        const productLabel = document.querySelector('.product-label');
+        
+        const productLabels = [
+            'Pelatihan Komputer SMA/SMK',
+            'Lab Komputer Setup',
+            'Infrastruktur Server',
+            'Jaringan IT',
+            'Aplikasi Bisnis Digital',
+            'Platform E-commerce'
+        ];
+        
+        function showSlide(index) {
+            // Hide all slides
+            slides.forEach((slide, i) => {
+                slide.style.opacity = i === index ? '1' : '0';
+            });
+            
+            // Update product label
+            if (productLabel) {
+                productLabel.textContent = productLabels[index];
+            }
+            
+            currentSlide = index;
+        }
+        
+        function nextSlide() {
+            const next = (currentSlide + 1) % slides.length;
+            showSlide(next);
+        }
+        
+        // Auto-advance slideshow every 4 seconds
+        setInterval(nextSlide, 4000);
+        
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Chatbot functionality
+        const chatResponses = {
+            layanan: {
+                keywords: ['layanan', 'service', 'jasa', 'apa saja', 'what'],
+                response: `ClueForIT menyediakan 3 layanan utama:
+
+🖥️ **IT Managed Services** (95% success rate)
+- Pengelolaan infrastruktur IT proaktif
+- Monitoring 24/7
+- Maintenance & support
+
+🚀 **Digital Transformation** (88% success rate)  
+- Modernisasi proses bisnis
+- Implementasi teknologi terbaru
+- Konsultasi strategis IT
+
+🔒 **Cyber Security** (92% success rate)
+- Perlindungan data & sistem
+- Security audit & assessment
+- Incident response
+
+Mau tahu lebih detail tentang layanan tertentu?`
+            },
+            portfolio: {
+                keywords: ['portfolio', 'project', 'proyek', 'karya', 'hasil', 'pengalaman'],
+                response: `Berikut beberapa portfolio unggulan kami:
+
+🎓 **Pelatihan IT SMA/SMK**
+- 50+ Sekolah
+- 5000+ Siswa terlatih
+
+🚗 **App Showroom Mobil**
+- 15+ Dealer
+- iOS & Android
+
+💻 **Lab Komputer Sekolah**
+- 30+ Lab terbangun
+- 1000+ PC terinstall
+
+✈️ **App Regulated Agent Dephub**
+- Certified Government Grade
+- Compliance penuh
+
+🏢 **Setup Ruang Server**
+- 25+ Perusahaan
+- Tier 3 Standard
+
+⚙️ **Aplikasi Enterprise**
+- 100+ Projects
+- Multi Platform
+
+Ingin detail portfolio tertentu?`
+            },
+            kontak: {
+                keywords: ['kontak', 'hubungi', 'contact', 'alamat', 'telepon', 'email'],
+                response: `Hubungi kami melalui:
+
+📧 **Email:** realboxofme@gmail.com
+💬 **WhatsApp:** 0897 232 5030
+📍 **Alamat:** Gading Serpong, Tangerang
+
+**Jam Operasional:**
+Senin - Jumat: 08:00 - 17:00 WIB
+Sabtu: 08:00 - 12:00 WIB
+
+Untuk konsultasi gratis, langsung hubungi WhatsApp kami ya! 😊`
+            },
+            harga: {
+                keywords: ['harga', 'biaya', 'cost', 'price', 'tarif', 'budget'],
+                response: `Untuk informasi harga, kami menyediakan:
+
+💰 **Konsultasi Gratis**
+- Assessment kebutuhan
+- Proposal solusi
+- Estimasi budget
+
+📋 **Paket Layanan**
+- IT Managed Services: Custom sesuai kebutuhan
+- Digital Transformation: Mulai dari project basis
+- Cyber Security: Paket bulanan/tahunan
+
+Setiap project memiliki kebutuhan unik. Hubungi kami untuk mendapat penawaran yang sesuai dengan budget Anda!
+
+Mau konsultasi gratis sekarang?`
+            },
+            teknologi: {
+                keywords: ['teknologi', 'technology', 'tools', 'software', 'hardware'],
+                response: `Teknologi yang kami gunakan:
+
+☁️ **Cloud Platforms**
+- AWS, Azure, Google Cloud
+- VMware virtualization
+
+🔧 **Development**
+- Mobile: iOS, Android
+- Web: Modern frameworks
+- Database: Oracle, MySQL, PostgreSQL
+
+🌐 **Networking**
+- Cisco certified solutions
+- Enterprise grade security
+- 24/7 monitoring tools
+
+🛡️ **Security**
+- CompTIA Security+ certified
+- Advanced threat protection
+- Compliance standards
+
+Tim kami bersertifikat internasional dari vendor teknologi terkemuka!`
+            },
+            sertifikasi: {
+                keywords: ['sertifikat', 'certified', 'certification', 'credential'],
+                response: `Tim kami memiliki sertifikasi internasional:
+
+🌐 **Cisco CCNA** - Networking
+🪟 **Microsoft Azure** - Cloud Solutions  
+🔴 **Oracle DBA** - Database Management
+🎩 **Red Hat RHCE** - Linux Systems
+☁️ **AWS Solutions Architect** - Cloud Architecture
+📦 **VMware VCP** - Virtualization
+🔒 **CompTIA Security+** - Cybersecurity
+🌤️ **Google Cloud Professional** - Cloud Platform
+⚙️ **ITIL Foundation** - IT Service Management
+
+Sertifikasi ini memastikan layanan berkualitas tinggi dan mengikuti best practices industri!`
+            }
+        };
+
+        function findBestResponse(message) {
+            const lowerMessage = message.toLowerCase();
+            
+            // Check for greetings
+            if (lowerMessage.includes('halo') || lowerMessage.includes('hai') || lowerMessage.includes('hello') || lowerMessage.includes('hi')) {
+                return `Halo! Selamat datang di ClueForIT! 👋
+
+Saya ClueBot, siap membantu Anda mengetahui tentang:
+- Layanan IT kami
+- Portfolio & pengalaman
+- Informasi kontak
+- Teknologi yang kami gunakan
+
+Ada yang ingin Anda tanyakan?`;
+            }
+
+            // Check for thanks
+            if (lowerMessage.includes('terima kasih') || lowerMessage.includes('thanks') || lowerMessage.includes('thank you')) {
+                return `Sama-sama! Senang bisa membantu Anda. 😊
+
+Jika ada pertanyaan lain tentang ClueForIT, jangan ragu untuk bertanya ya!
+
+Atau langsung hubungi tim kami di WhatsApp: 0897 232 5030`;
+            }
+
+            // Find matching response
+            for (const [category, data] of Object.entries(chatResponses)) {
+                if (data.keywords.some(keyword => lowerMessage.includes(keyword))) {
+                    return data.response;
+                }
+            }
+
+            // Default response
+            return `Maaf, saya tidak menemukan jawaban atas pertanyaan Anda. Silakan hubungi kami di:\n📧 Email: realboxofme@gmail.com\n💬 WhatsApp: 0897 232 5030`;
+        }
+
+        function addMessage(message, isUser = false) {
+            const chatMessages = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'flex items-start space-x-2';
+            
+            if (isUser) {
+                messageDiv.className += ' justify-end';
+                messageDiv.innerHTML = `
+                    <div class="bg-blue-500 text-white p-3 rounded-lg shadow-sm max-w-xs">
+                        <p class="text-sm">${message}</p>
+                    </div>
+                    <div class="w-8 h-8 bg-gray-400 rounded-full flex items-center justify-center text-white text-sm">👤</div>
+                `;
+            } else {
+                messageDiv.innerHTML = `
+                    <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm">🤖</div>
+                    <div class="bg-white p-3 rounded-lg shadow-sm max-w-xs">
+                        <div class="text-sm text-gray-800 whitespace-pre-line">${message}</div>
+                    </div>
+                `;
+            }
+            
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (message) {
+                // Add user message
+                addMessage(message, true);
+                input.value = '';
+                
+                // Show typing indicator
+                setTimeout(() => {
+                    const response = findBestResponse(message);
+                    addMessage(response, false);
+                }, 1000);
+            }
+        }
+
+        function sendQuickMessage(message) {
+            addMessage(message, true);
+            
+            setTimeout(() => {
+                const response = findBestResponse(message);
+                addMessage(response, false);
+            }, 1000);
+        }
+
+        function handleChatKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendChatMessage();
+            }
+        }
+
+        // Add scroll effect to navbar
+        window.addEventListener('scroll', function() {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 100) {
+                nav.classList.add('bg-slate-900');
+                nav.classList.remove('bg-slate-900/95');
+            } else {
+                nav.classList.add('bg-slate-900/95');
+                nav.classList.remove('bg-slate-900');
+            }
+        });
+
+        // Mobile menu functionality
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            const hamburgerIcon = document.getElementById('hamburgerIcon');
+            const closeIcon = document.getElementById('closeIcon');
+            
+            if (mobileMenu.classList.contains('hidden')) {
+                // Show menu
+                mobileMenu.classList.remove('hidden');
+                hamburgerIcon.classList.add('hidden');
+                closeIcon.classList.remove('hidden');
+                
+                // Add animation
+                mobileMenu.style.opacity = '0';
+                mobileMenu.style.transform = 'translateY(-10px)';
+                setTimeout(() => {
+                    mobileMenu.style.transition = 'all 0.3s ease-out';
+                    mobileMenu.style.opacity = '1';
+                    mobileMenu.style.transform = 'translateY(0)';
+                }, 10);
+            } else {
+                // Hide menu
+                closeMobileMenu();
+            }
+        }
+        
+        function closeMobileMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            const hamburgerIcon = document.getElementById('hamburgerIcon');
+            const closeIcon = document.getElementById('closeIcon');
+            
+            mobileMenu.style.transition = 'all 0.3s ease-in';
+            mobileMenu.style.opacity = '0';
+            mobileMenu.style.transform = 'translateY(-10px)';
+            
+            setTimeout(() => {
+                mobileMenu.classList.add('hidden');
+                hamburgerIcon.classList.remove('hidden');
+                closeIcon.classList.add('hidden');
+            }, 300);
+        }
+        
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const mobileMenu = document.getElementById('mobileMenu');
+            const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+            
+            if (!mobileMenu.contains(event.target) && !mobileMenuToggle.contains(event.target)) {
+                if (!mobileMenu.classList.contains('hidden')) {
+                    closeMobileMenu();
+                }
+            }
+        });
+
+        // Toggle portfolio visibility
+        function togglePortfolio() {
+            const hiddenPortfolio = document.getElementById('hiddenPortfolio');
+            const toggleButton = document.getElementById('togglePortfolio');
+            
+            if (hiddenPortfolio.classList.contains('hidden')) {
+                hiddenPortfolio.classList.remove('hidden');
+                hiddenPortfolio.style.opacity = '0';
+                hiddenPortfolio.style.transform = 'translateY(20px)';
+                
+                // Animate in
+                setTimeout(() => {
+                    hiddenPortfolio.style.transition = 'all 0.6s ease-out';
+                    hiddenPortfolio.style.opacity = '1';
+                    hiddenPortfolio.style.transform = 'translateY(0)';
+                }, 10);
+                
+                toggleButton.textContent = 'Sembunyikan Portfolio';
+                
+                // Scroll to the new content
+                setTimeout(() => {
+                    hiddenPortfolio.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }, 300);
+            } else {
+                hiddenPortfolio.style.transition = 'all 0.4s ease-in';
+                hiddenPortfolio.style.opacity = '0';
+                hiddenPortfolio.style.transform = 'translateY(-20px)';
+                
+                setTimeout(() => {
+                    hiddenPortfolio.classList.add('hidden');
+                }, 400);
+                
+                toggleButton.textContent = 'Lihat Semua Portfolio';
+            }
+        }
+
+        // Portfolio Filter Functions
+        function renderPortfolio(items) {
+            const portfolioGrid = document.getElementById('portfolioGrid');
+            if (!portfolioGrid) return;
+            
+            portfolioGrid.innerHTML = items.map(item => `
+                <div class="morph-card bg-white p-6 shadow-lg border border-gray-200 hover:shadow-xl portfolio-item" data-category="${item.category}">
+                    <div class="morph-icon text-4xl mb-4">${item.icon}</div>
+                    <h3 class="text-xl font-bold mb-3 morph-text text-gray-900">${item.title}</h3>
+                    <p class="text-gray-600 mb-4">${item.description}</p>
+                    <div class="flex items-center text-sm ${item.color}">
+                        <span class="morph-text">${item.stats[0]}</span>
+                        <span class="mx-2">•</span>
+                        <span class="morph-text">${item.stats[1]}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterPortfolio(category) {
+            // Update active button
+            document.querySelectorAll('.portfolio-filter-btn').forEach(btn => {
+                btn.classList.remove('active', 'bg-blue-600', 'text-white');
+                btn.classList.add('bg-gray-200', 'text-gray-700');
+            });
+            
+            event.target.classList.add('active', 'bg-blue-600', 'text-white');
+            event.target.classList.remove('bg-gray-200', 'text-gray-700');
+            
+            // Filter and render portfolio
+            const filteredItems = category === 'all' ? portfolioData : portfolioData.filter(item => item.category === category);
+            renderPortfolio(filteredItems);
+        }
+
+        // Blog Modal Functions
+        function openBlogModal(blogId) {
+            const modal = document.getElementById('blogModal');
+            const container = document.getElementById('blogModalContainer');
+            const title = document.getElementById('blogModalTitle');
+            const content = document.getElementById('blogModalContent');
+            
+            if (modal && container && title && content && blogData[blogId]) {
+                title.textContent = blogData[blogId].title;
+                content.innerHTML = blogData[blogId].content;
+                
+                modal.style.opacity = '1';
+                modal.style.visibility = 'visible';
+                setTimeout(() => {
+                    container.style.transform = 'translateY(0)';
+                }, 100);
+                
+                // Prevent body scroll
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeBlogModal() {
+            const modal = document.getElementById('blogModal');
+            const container = document.getElementById('blogModalContainer');
+            
+            if (container) container.style.transform = 'translateY(-50px)';
+            
+            setTimeout(() => {
+                if (modal) {
+                    modal.style.opacity = '0';
+                    modal.style.visibility = 'hidden';
+                }
+                // Restore body scroll
+                document.body.style.overflow = 'auto';
+            }, 200);
+        }
+
+        // Live Chat Functions
+        function toggleLiveChat() {
+            const chatWindow = document.getElementById('liveChatWindow');
+            const chatIcon = document.getElementById('chatIcon');
+            const notification = document.getElementById('chatNotification');
+            
+            if (chatWindow) {
+                const isVisible = chatWindow.style.opacity === '1';
+                
+                if (isVisible) {
+                    // Hide chat
+                    chatWindow.style.opacity = '0';
+                    chatWindow.style.visibility = 'hidden';
+                    chatWindow.style.transform = 'translateY(20px) scale(0.9)';
+                    chatIcon.textContent = '💬';
+                } else {
+                    // Show chat
+                    chatWindow.style.opacity = '1';
+                    chatWindow.style.visibility = 'visible';
+                    chatWindow.style.transform = 'translateY(0) scale(1)';
+                    chatIcon.textContent = '×';
+                    
+                    // Hide notification
+                    if (notification) notification.style.display = 'none';
+                    
+                    // Focus input
+                    setTimeout(() => {
+                        const input = document.getElementById('liveChatInput');
+                        if (input) input.focus();
+                    }, 300);
+                }
+            }
+        }
+
+        function addLiveChatMessage(message, isUser = false, showTyping = false) {
+            const messagesContainer = document.getElementById('liveChatMessages');
+            if (!messagesContainer) return;
+            
+            const messageDiv = document.createElement('div');
+            messageDiv.style.marginBottom = '16px';
+            
+            if (isUser) {
+                messageDiv.innerHTML = `
+                    <div style="display: flex; justify-content: flex-end;">
+                        <div style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 12px 16px; border-radius: 18px; max-width: 80%; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                            <div style="font-size: 14px; line-height: 1.4;">${message}</div>
+                            <div style="font-size: 11px; opacity: 0.8; margin-top: 6px; text-align: right;">Baru saja</div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                messageDiv.innerHTML = `
+                    <div style="display: flex; align-items: start;">
+                        <div style="width: 32px; height: 32px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 10px; flex-shrink: 0;">
+                            <span style="color: white; font-size: 14px;">👨‍💻</span>
+                        </div>
+                        <div style="background: white; padding: 12px 16px; border-radius: 18px; max-width: 80%; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                            <div style="font-size: 14px; color: #374151; line-height: 1.4;">${message}</div>
+                            <div style="font-size: 11px; color: #9ca3af; margin-top: 6px;">Baru saja</div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function sendLiveChatMessage(predefinedMessage = null) {
+            const input = document.getElementById('liveChatInput');
+            const message = predefinedMessage || (input ? input.value.trim() : '');
+            
+            if (message) {
+                // Add user message
+                addLiveChatMessage(message, true);
+                if (input) input.value = '';
+                // Simulate typing and response
+                setTimeout(() => {
+                    // Gunakan fungsi dinamis dari HTML
+                    if (typeof findBestResponse === 'function') {
+                        const response = findBestResponse(message);
+                        addLiveChatMessage(response, false);
+                    } else {
+                        addLiveChatMessage('Maaf, chatbot tidak dapat menemukan jawaban.', false);
+                    }
+                }, 1000);
+            }
+        }
+
+        function handleLiveChatKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendLiveChatMessage();
+            }
+        }
+
+        // Download Brochure Function
+        function downloadBrochure() {
+            // Create a comprehensive company profile content
+            const brochureContent = `
+                CLUEFORIT - IT MANAGED SERVICES & DIGITAL BUSINESS
+                ================================================
+                
+                TENTANG KAMI
+                ------------
+                ClueForIT adalah partner terpercaya untuk transformasi digital dan IT managed services dengan pengalaman lebih dari 10 tahun di industri teknologi.
+                
+                LAYANAN UTAMA
+                -------------
+                
+                🖥️ IT MANAGED SERVICES (95% Success Rate)
+                - Pengelolaan infrastruktur IT proaktif
+                - Monitoring 24/7
+                - Maintenance & support
+                
+                🚀 DIGITAL TRANSFORMATION (88% Success Rate)
+                - Modernisasi proses bisnis
+                - Implementasi teknologi terbaru
+                - Konsultasi strategis IT
+                
+                🔒 CYBER SECURITY (92% Success Rate)
+                - Perlindungan data & sistem
+                - Security audit & assessment
+                - Incident response
+                
+                PORTFOLIO UNGGULAN
+                ------------------
+                
+                PENDIDIKAN:
+                • Pelatihan IT SMA/SMK - 50+ Sekolah, 5000+ Siswa
+                • Lab Komputer Sekolah - 30+ Lab, 1000+ PC
+                • E-Learning Platform - 20+ Universitas, 50K+ Users
+                
+                ENTERPRISE:
+                • App Regulated Agent Dephub - Government Grade
+                • Hospital Management System - 15+ Rumah Sakit
+                • Aplikasi Enterprise - 100+ Projects
+                
+                MOBILE APPS:
+                • App Showroom Mobil - 15+ Dealer
+                • Mobile Banking App - Bank Grade Security
+                
+                INFRASTRUCTURE:
+                • Setup Ruang Server - 25+ Perusahaan, Tier 3 Standard
+                
+                SERTIFIKASI TIM
+                ---------------
+                🌐 Cisco CCNA - Networking
+                🪟 Microsoft Azure - Cloud Solutions
+                🔴 Oracle DBA - Database Management
+                🎩 Red Hat RHCE - Linux Systems
+                ☁️ AWS Solutions Architect
+                📦 VMware VCP - Virtualization
+                🔒 CompTIA Security+ - Cybersecurity
+                🌤️ Google Cloud Professional
+                ⚙️ ITIL Foundation - IT Service Management
+                
+                MENGAPA MEMILIH CLUEFORIT?
+                --------------------------
+                ✓ Tim ahli bersertifikat internasional
+                ✓ Support 24/7 untuk semua klien
+                ✓ Teknologi terdepan dan inovatif
+                ✓ Pengalaman 10+ tahun
+                ✓ Komitmen kualitas dan profesionalisme
+                
+                KONTAK KAMI
+                -----------
+                📧 Email: realboxofme@gmail.com
+                💬 WhatsApp: 0897 232 5030
+                📍 Alamat: Gading Serpong, Tangerang, Indonesia
+                
+                Jam Operasional:
+                Senin - Jumat: 08:00 - 17:00 WIB
+                Sabtu: 08:00 - 12:00 WIB
+                
+                KONSULTASI GRATIS!
+                Hubungi kami sekarang untuk mendapatkan solusi IT terbaik untuk bisnis Anda.
+                
+                © 2024 ClueForIT. All rights reserved.
+            `;
+            
+            // Create and download the file
+            const blob = new Blob([brochureContent], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'ClueForIT-Company-Profile-2024.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+            
+            // Show success message
+            alert('📄 Company Profile ClueForIT berhasil didownload!\n\nFile berisi informasi lengkap tentang layanan, portfolio, dan kontak kami.');
+        }
+
+        // Initialize Portfolio on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            renderPortfolio(portfolioData);
+            
+            // Show live chat notification after 5 seconds
+            setTimeout(() => {
+                const notification = document.getElementById('chatNotification');
+                if (notification) {
+                    notification.style.display = 'flex';
+                    notification.style.animation = 'pulse 2s infinite';
+                }
+            }, 5000);
+        });
+
+        // Update breadcrumb sections
+        window.addEventListener('scroll', function() {
+            const scrollY = window.scrollY;
+            
+            // Update Breadcrumb
+            const sections = [
+                { id: 'home', name: 'Beranda' },
+                { id: 'services', name: 'Layanan' },
+                { id: 'portfolio', name: 'Portfolio' },
+                { id: 'blog', name: 'Blog' },
+                { id: 'about', name: 'Tentang Kami' },
+                { id: 'contact', name: 'Kontak' }
+            ];
+            
+            let currentSection = 'Beranda';
+            sections.forEach(section => {
+                const element = document.getElementById(section.id);
+                if (element && scrollY + 100 >= element.offsetTop) {
+                    currentSection = section.name;
+                }
+            });
+            
+            const breadcrumbText = document.getElementById('breadcrumbText');
+            const breadcrumb = document.getElementById('breadcrumb');
+            
+            if (breadcrumbText) breadcrumbText.textContent = currentSection;
+            
+            if (breadcrumb) {
+                if (scrollY > 200) {
+                    breadcrumb.style.opacity = '1';
+                    breadcrumb.style.visibility = 'visible';
+                } else {
+                    breadcrumb.style.opacity = '0';
+                    breadcrumb.style.visibility = 'hidden';
+                }
+            }
+            
+            // Update Back to Top
+            const backToTop = document.getElementById('backToTop');
+            if (backToTop) {
+                if (scrollY > 300) {
+                    backToTop.style.opacity = '1';
+                    backToTop.style.visibility = 'visible';
+                    backToTop.style.transform = 'translateY(0)';
+                } else {
+                    backToTop.style.opacity = '0';
+                    backToTop.style.visibility = 'hidden';
+                    backToTop.style.transform = 'translateY(20px)';
+                }
+            }
+        });
+
+        // Animate progress bars when they come into view
+        const observerOptions = {
+            threshold: 0.5,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const progressBars = entry.target.querySelectorAll('.progress-bar');
+                    progressBars.forEach(bar => {
+                        bar.style.animationDelay = Math.random() * 0.5 + 's';
+                    });
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('#services .morph-card').forEach(card => {
+            observer.observe(card);
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98714de6206644c9',t:'MTc1OTIwOTk3NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
