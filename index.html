@@ -241,9 +241,56 @@
             border-radius: 50%;
             animation: particleFloat 6s ease-in-out infinite;
         }
+        
+        /* Loading Screen */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes loadingProgress {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
     </style>
 </head>
 <body class="bg-gray-50">
+    <!-- Loading Screen -->
+    <div id="loadingScreen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #0f172a 0%, #1e293b 25%, #334155 50%, #475569 75%, #64748b 100%); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; transition: opacity 0.5s ease-out;">
+        <div style="width: 80px; height: 80px; border: 4px solid rgba(99, 102, 241, 0.3); border-top: 4px solid #6366f1; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px;"></div>
+        <div style="color: white; font-size: 18px; font-weight: 600; margin-bottom: 10px;">ClueForIT</div>
+        <div style="width: 200px; height: 4px; background: rgba(255, 255, 255, 0.2); border-radius: 2px; overflow: hidden;">
+            <div style="height: 100%; background: linear-gradient(90deg, #6366f1, #8b5cf6); border-radius: 2px; animation: loadingProgress 2s ease-out forwards;"></div>
+        </div>
+        <div style="color: white; font-size: 14px; margin-top: 16px; opacity: 0.75;">Memuat pengalaman digital terbaik...</div>
+    </div>
+    
+    <!-- Breadcrumb Navigation -->
+    <div id="breadcrumb" style="position: fixed; top: 80px; left: 50%; transform: translateX(-50%); background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(10px); padding: 8px 20px; border-radius: 20px; z-index: 40; transition: all 0.3s ease; opacity: 0; visibility: hidden;">
+        <span id="breadcrumbText" style="color: rgba(255, 255, 255, 0.7); font-size: 14px; transition: color 0.3s ease;">Beranda</span>
+    </div>
+    
+    <!-- Back to Top Button -->
+    <button id="backToTop" onclick="scrollToTop()" style="position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; background: linear-gradient(135deg, #6366f1, #8b5cf6); border: none; border-radius: 50%; color: white; font-size: 20px; cursor: pointer; z-index: 50; transition: all 0.3s ease; opacity: 0; visibility: hidden; transform: translateY(20px);">
+        ↑
+    </button>
+    
+    <!-- Search Overlay -->
+    <div id="searchOverlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(10px); z-index: 60; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: all 0.3s ease;">
+        <div id="searchContainer" style="background: white; border-radius: 20px; padding: 30px; width: 90%; max-width: 600px; transform: translateY(-50px); transition: transform 0.3s ease; position: relative;">
+            <button onclick="closeSearch()" style="position: absolute; top: 20px; right: 20px; background: none; border: none; font-size: 24px; cursor: pointer; color: #6b7280;">×</button>
+            <h3 style="font-size: 20px; font-weight: bold; margin-bottom: 16px;">Cari Layanan & Portfolio</h3>
+            <input 
+                type="text" 
+                id="searchInput" 
+                placeholder="Ketik untuk mencari layanan, portfolio, atau informasi... (Ctrl+K)"
+                style="width: 100%; padding: 15px 20px; border: 2px solid #e5e7eb; border-radius: 15px; font-size: 16px; outline: none; transition: border-color 0.3s ease;"
+                oninput="performSearch()"
+            >
+            <div id="searchResults" style="max-height: 300px; overflow-y: auto; margin-top: 20px;"></div>
+        </div>
+    </div>
+
     <!-- Navigation -->
     <nav class="fixed w-full z-50 bg-gray-900/95 backdrop-blur-md shadow-lg morph-wave">
         <div class="container mx-auto px-6 py-4">
@@ -293,12 +340,17 @@
                         </svg>
                     </div>
                 </div>
-                <div class="hidden md:flex space-x-8">
+                <div class="hidden md:flex space-x-8 items-center">
                     <a href="#home" class="morph-text text-gray-300 hover:text-blue-400">Beranda</a>
                     <a href="#services" class="morph-text text-gray-300 hover:text-blue-400">Layanan</a>
                     <a href="#portfolio" class="morph-text text-gray-300 hover:text-blue-400">Portfolio</a>
                     <a href="#about" class="morph-text text-gray-300 hover:text-blue-400">Tentang</a>
                     <a href="#contact" class="morph-text text-gray-300 hover:text-blue-400">Kontak</a>
+                    <button onclick="openSearch()" class="morph-icon text-gray-300 hover:text-blue-400 ml-4 p-2 rounded-lg hover:bg-gray-800 transition-colors" title="Cari (Ctrl+K)">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </button>
                 </div>
                 <button id="mobileMenuToggle" class="md:hidden morph-icon text-white" onclick="toggleMobileMenu()">
                     <svg id="hamburgerIcon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -318,6 +370,7 @@
                     <a href="#portfolio" class="block morph-text text-gray-300 hover:text-blue-400 py-2" onclick="closeMobileMenu()">Portfolio</a>
                     <a href="#about" class="block morph-text text-gray-300 hover:text-blue-400 py-2" onclick="closeMobileMenu()">Tentang</a>
                     <a href="#contact" class="block morph-text text-gray-300 hover:text-blue-400 py-2" onclick="closeMobileMenu()">Kontak</a>
+                    <button onclick="openSearch()" class="block morph-text text-gray-300 hover:text-blue-400 py-2 text-left">🔍 Cari</button>
                 </div>
             </div>
         </div>
@@ -1101,6 +1154,169 @@
     </footer>
 
     <script>
+        // Loading Screen
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                const loadingScreen = document.getElementById('loadingScreen');
+                if (loadingScreen) {
+                    loadingScreen.style.opacity = '0';
+                    setTimeout(() => {
+                        loadingScreen.style.display = 'none';
+                    }, 500);
+                }
+            }, 2000);
+        });
+
+        // Search Data
+        const searchData = [
+            { title: 'IT Managed Services', description: 'Pengelolaan infrastruktur IT proaktif dan komprehensif', section: 'services' },
+            { title: 'Digital Transformation', description: 'Transformasi digital end-to-end untuk modernisasi bisnis', section: 'services' },
+            { title: 'Cyber Security', description: 'Perlindungan data dan sistem dengan teknologi terdepan', section: 'services' },
+            { title: 'Pelatihan IT SMA/SMK', description: '50+ Sekolah, 5000+ Siswa terlatih', section: 'portfolio' },
+            { title: 'App Showroom Mobil', description: '15+ Dealer, iOS & Android', section: 'portfolio' },
+            { title: 'Lab Komputer Sekolah', description: '30+ Lab, 1000+ PC', section: 'portfolio' },
+            { title: 'Setup Ruang Server', description: '25+ Perusahaan, Tier 3 Standard', section: 'portfolio' },
+            { title: 'Kontak ClueForIT', description: 'Email, WhatsApp, Alamat kantor', section: 'contact' },
+            { title: 'Tentang ClueForIT', description: 'Pengalaman 10+ tahun, Tim bersertifikat', section: 'about' }
+        ];
+
+        // Search Functions
+        function openSearch() {
+            const searchOverlay = document.getElementById('searchOverlay');
+            const searchInput = document.getElementById('searchInput');
+            const searchContainer = document.getElementById('searchContainer');
+            
+            if (searchOverlay && searchInput && searchContainer) {
+                searchOverlay.style.opacity = '1';
+                searchOverlay.style.visibility = 'visible';
+                setTimeout(() => {
+                    searchContainer.style.transform = 'translateY(0)';
+                    searchInput.focus();
+                }, 100);
+            }
+        }
+
+        function closeSearch() {
+            const searchOverlay = document.getElementById('searchOverlay');
+            const searchInput = document.getElementById('searchInput');
+            const searchResults = document.getElementById('searchResults');
+            const searchContainer = document.getElementById('searchContainer');
+            
+            if (searchContainer) searchContainer.style.transform = 'translateY(-50px)';
+            
+            setTimeout(() => {
+                if (searchOverlay) {
+                    searchOverlay.style.opacity = '0';
+                    searchOverlay.style.visibility = 'hidden';
+                }
+                if (searchInput) searchInput.value = '';
+                if (searchResults) searchResults.innerHTML = '';
+            }, 200);
+        }
+
+        function performSearch() {
+            const searchInput = document.getElementById('searchInput');
+            const searchResults = document.getElementById('searchResults');
+            
+            if (!searchInput || !searchResults) return;
+            
+            const query = searchInput.value.toLowerCase().trim();
+            
+            if (query.length < 2) {
+                searchResults.innerHTML = '';
+                return;
+            }
+            
+            const filtered = searchData.filter(item => 
+                item.title.toLowerCase().includes(query) || 
+                item.description.toLowerCase().includes(query)
+            );
+            
+            if (filtered.length === 0) {
+                searchResults.innerHTML = '<div style="text-align: center; padding: 32px 0; color: #6b7280;">Tidak ada hasil ditemukan</div>';
+                return;
+            }
+            
+            searchResults.innerHTML = filtered.map(item => `
+                <div onclick="navigateToSection('${item.section}')" style="padding: 15px; border-bottom: 1px solid #f3f4f6; cursor: pointer; transition: background-color 0.3s ease;" onmouseover="this.style.backgroundColor='#f9fafb'" onmouseout="this.style.backgroundColor='transparent'">
+                    <div style="font-weight: 600; color: #1f2937; margin-bottom: 5px;">${item.title}</div>
+                    <div style="color: #6b7280; font-size: 14px;">${item.description}</div>
+                </div>
+            `).join('');
+        }
+
+        function navigateToSection(sectionId) {
+            closeSearch();
+            document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // Scroll Functions
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Scroll Events
+        window.addEventListener('scroll', function() {
+            const scrollY = window.scrollY;
+            
+            // Update Breadcrumb
+            const sections = [
+                { id: 'home', name: 'Beranda' },
+                { id: 'services', name: 'Layanan' },
+                { id: 'portfolio', name: 'Portfolio' },
+                { id: 'about', name: 'Tentang Kami' },
+                { id: 'contact', name: 'Kontak' }
+            ];
+            
+            let currentSection = 'Beranda';
+            sections.forEach(section => {
+                const element = document.getElementById(section.id);
+                if (element && scrollY + 100 >= element.offsetTop) {
+                    currentSection = section.name;
+                }
+            });
+            
+            const breadcrumbText = document.getElementById('breadcrumbText');
+            const breadcrumb = document.getElementById('breadcrumb');
+            
+            if (breadcrumbText) breadcrumbText.textContent = currentSection;
+            
+            if (breadcrumb) {
+                if (scrollY > 200) {
+                    breadcrumb.style.opacity = '1';
+                    breadcrumb.style.visibility = 'visible';
+                } else {
+                    breadcrumb.style.opacity = '0';
+                    breadcrumb.style.visibility = 'hidden';
+                }
+            }
+            
+            // Update Back to Top
+            const backToTop = document.getElementById('backToTop');
+            if (backToTop) {
+                if (scrollY > 300) {
+                    backToTop.style.opacity = '1';
+                    backToTop.style.visibility = 'visible';
+                    backToTop.style.transform = 'translateY(0)';
+                } else {
+                    backToTop.style.opacity = '0';
+                    backToTop.style.visibility = 'hidden';
+                    backToTop.style.transform = 'translateY(20px)';
+                }
+            }
+        });
+
+        // Keyboard Shortcuts
+        document.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                openSearch();
+            }
+            if (e.key === 'Escape') {
+                closeSearch();
+            }
+        });
+
         // Hero slideshow functionality
         let currentSlide = 0;
         const slides = document.querySelectorAll('.slide-item');
@@ -1509,5 +1725,5 @@ Coba tanyakan dengan kata kunci di atas, atau langsung hubungi tim kami di Whats
             observer.observe(card);
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9870eef662bace4a',t:'MTc1OTIwNjA4Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'987111ec353e6097',t:'MTc1OTIwNzUxOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
