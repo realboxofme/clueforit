@@ -141,34 +141,87 @@
             100% { transform: translateY(-100px) scale(1); opacity: 0; }
         }
         
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        @keyframes circuitPulse {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.1); }
         }
         
-        @keyframes particleFloat {
+        @keyframes dataFlow {
+            0% { transform: translateX(-100px) translateY(0px); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateX(100vw) translateY(-20px); opacity: 0; }
+        }
+        
+        @keyframes geometricRotate {
+            0% { transform: rotate(0deg) scale(1); }
+            25% { transform: rotate(90deg) scale(1.2); }
+            50% { transform: rotate(180deg) scale(0.8); }
+            75% { transform: rotate(270deg) scale(1.1); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+        
+        @keyframes hexagonFloat {
             0%, 100% { transform: translateY(0px) rotate(0deg); }
-            33% { transform: translateY(-20px) rotate(120deg); }
-            66% { transform: translateY(-10px) rotate(240deg); }
+            33% { transform: translateY(-30px) rotate(120deg); }
+            66% { transform: translateY(-15px) rotate(240deg); }
         }
         
         .hero-animated-bg {
-            background: linear-gradient(-45deg, #1e3a8a, #3730a3, #581c87, #7c2d12, #dc2626, #059669, #0891b2, #4338ca);
-            background-size: 400% 400%;
-            animation: gradientShift 12s ease infinite;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(99, 102, 241, 0.4) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(139, 92, 246, 0.4) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(59, 130, 246, 0.3) 0%, transparent 50%),
+                linear-gradient(135deg, #0f172a 0%, #1e293b 25%, #334155 50%, #475569 75%, #64748b 100%);
             position: relative;
             overflow: hidden;
         }
         
         .hero-overlay {
-            background: linear-gradient(135deg, rgba(30, 58, 138, 0.8) 0%, rgba(88, 28, 135, 0.7) 50%, rgba(5, 150, 105, 0.8) 100%);
+            background: 
+                linear-gradient(45deg, transparent 0%, rgba(99, 102, 241, 0.1) 25%, transparent 50%, rgba(139, 92, 246, 0.1) 75%, transparent 100%),
+                radial-gradient(ellipse at center, transparent 0%, rgba(15, 23, 42, 0.8) 100%);
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
             z-index: 1;
+        }
+        
+        .circuit-line {
+            position: absolute;
+            background: linear-gradient(90deg, transparent, #60a5fa, transparent);
+            height: 2px;
+            animation: dataFlow linear infinite;
+            z-index: 2;
+        }
+        
+        .geometric-shape {
+            position: absolute;
+            border: 2px solid rgba(99, 102, 241, 0.3);
+            animation: geometricRotate linear infinite;
+            z-index: 2;
+        }
+        
+        .hexagon {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: rgba(139, 92, 246, 0.1);
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            animation: hexagonFloat ease-in-out infinite;
+            z-index: 2;
+        }
+        
+        .circuit-node {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #60a5fa;
+            border-radius: 50%;
+            animation: circuitPulse ease-in-out infinite;
+            z-index: 2;
         }
         
         .floating-bubble {
@@ -275,24 +328,36 @@
         <!-- Hero Overlay -->
         <div class="hero-overlay"></div>
         
-        <!-- Animated Background Elements -->
-        <div class="floating-bubble" style="left: 10%; width: 60px; height: 60px; animation-duration: 15s; animation-delay: 0s;"></div>
-        <div class="floating-bubble" style="left: 20%; width: 40px; height: 40px; animation-duration: 12s; animation-delay: 2s;"></div>
-        <div class="floating-bubble" style="left: 35%; width: 80px; height: 80px; animation-duration: 18s; animation-delay: 1s;"></div>
-        <div class="floating-bubble" style="left: 50%; width: 30px; height: 30px; animation-duration: 10s; animation-delay: 4s;"></div>
-        <div class="floating-bubble" style="left: 65%; width: 50px; height: 50px; animation-duration: 14s; animation-delay: 3s;"></div>
-        <div class="floating-bubble" style="left: 80%; width: 70px; height: 70px; animation-duration: 16s; animation-delay: 1.5s;"></div>
-        <div class="floating-bubble" style="left: 90%; width: 35px; height: 35px; animation-duration: 11s; animation-delay: 5s;"></div>
+        <!-- Tech-themed Animated Background Elements -->
         
-        <!-- Floating Particles -->
-        <div class="floating-particle" style="left: 15%; top: 20%; animation-delay: 0s;"></div>
-        <div class="floating-particle" style="left: 25%; top: 60%; animation-delay: 1s;"></div>
-        <div class="floating-particle" style="left: 45%; top: 30%; animation-delay: 2s;"></div>
-        <div class="floating-particle" style="left: 55%; top: 70%; animation-delay: 3s;"></div>
-        <div class="floating-particle" style="left: 75%; top: 40%; animation-delay: 4s;"></div>
-        <div class="floating-particle" style="left: 85%; top: 80%; animation-delay: 5s;"></div>
-        <div class="floating-particle" style="left: 5%; top: 50%; animation-delay: 1.5s;"></div>
-        <div class="floating-particle" style="left: 95%; top: 25%; animation-delay: 2.5s;"></div>
+        <!-- Circuit Lines -->
+        <div class="circuit-line" style="top: 15%; width: 200px; animation-duration: 8s; animation-delay: 0s;"></div>
+        <div class="circuit-line" style="top: 35%; width: 150px; animation-duration: 6s; animation-delay: 2s;"></div>
+        <div class="circuit-line" style="top: 55%; width: 180px; animation-duration: 7s; animation-delay: 1s;"></div>
+        <div class="circuit-line" style="top: 75%; width: 120px; animation-duration: 5s; animation-delay: 3s;"></div>
+        <div class="circuit-line" style="top: 85%; width: 160px; animation-duration: 9s; animation-delay: 4s;"></div>
+        
+        <!-- Geometric Shapes -->
+        <div class="geometric-shape" style="left: 10%; top: 20%; width: 40px; height: 40px; animation-duration: 20s; animation-delay: 0s;"></div>
+        <div class="geometric-shape" style="left: 80%; top: 30%; width: 30px; height: 30px; border-radius: 50%; animation-duration: 15s; animation-delay: 2s;"></div>
+        <div class="geometric-shape" style="left: 15%; top: 70%; width: 25px; height: 25px; animation-duration: 18s; animation-delay: 1s;"></div>
+        <div class="geometric-shape" style="left: 85%; top: 80%; width: 35px; height: 35px; border-radius: 50%; animation-duration: 22s; animation-delay: 3s;"></div>
+        
+        <!-- Hexagons -->
+        <div class="hexagon" style="left: 5%; top: 40%; animation-duration: 12s; animation-delay: 0s;"></div>
+        <div class="hexagon" style="left: 90%; top: 15%; animation-duration: 14s; animation-delay: 2s;"></div>
+        <div class="hexagon" style="left: 25%; top: 85%; animation-duration: 16s; animation-delay: 1s;"></div>
+        <div class="hexagon" style="left: 75%; top: 60%; animation-duration: 13s; animation-delay: 4s;"></div>
+        
+        <!-- Circuit Nodes -->
+        <div class="circuit-node" style="left: 12%; top: 25%; animation-duration: 3s; animation-delay: 0s;"></div>
+        <div class="circuit-node" style="left: 88%; top: 45%; animation-duration: 2.5s; animation-delay: 1s;"></div>
+        <div class="circuit-node" style="left: 30%; top: 15%; animation-duration: 4s; animation-delay: 2s;"></div>
+        <div class="circuit-node" style="left: 70%; top: 75%; animation-duration: 3.5s; animation-delay: 0.5s;"></div>
+        <div class="circuit-node" style="left: 45%; top: 90%; animation-duration: 2.8s; animation-delay: 1.5s;"></div>
+        <div class="circuit-node" style="left: 60%; top: 10%; animation-duration: 3.2s; animation-delay: 2.5s;"></div>
+        <div class="circuit-node" style="left: 20%; top: 60%; animation-duration: 4.2s; animation-delay: 3s;"></div>
+        <div class="circuit-node" style="left: 95%; top: 85%; animation-duration: 2.2s; animation-delay: 1.8s;"></div>
         
         <div class="container mx-auto px-6 relative z-20">
             <div class="grid md:grid-cols-2 gap-12 items-center">
@@ -1444,5 +1509,5 @@ Coba tanyakan dengan kata kunci di atas, atau langsung hubungi tim kami di Whats
             observer.observe(card);
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9870db4e90fc6010',t:'MTc1OTIwNTI4MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9870eef662bace4a',t:'MTc1OTIwNjA4Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
