@@ -291,6 +291,97 @@
         </div>
     </div>
 
+    <!-- Blog Modal -->
+    <div id="blogModal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(10px); z-index: 70; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: all 0.3s ease;">
+        <div id="blogModalContainer" style="background: white; border-radius: 20px; padding: 0; width: 90%; max-width: 800px; max-height: 90vh; overflow-y: auto; transform: translateY(-50px); transition: transform 0.3s ease; position: relative;">
+            <div style="position: sticky; top: 0; background: white; padding: 20px; border-bottom: 1px solid #e5e7eb; border-radius: 20px 20px 0 0; z-index: 1;">
+                <button onclick="closeBlogModal()" style="position: absolute; top: 20px; right: 20px; background: none; border: none; font-size: 24px; cursor: pointer; color: #6b7280;">×</button>
+                <h3 id="blogModalTitle" style="font-size: 24px; font-weight: bold; margin: 0; padding-right: 40px;">Blog Title</h3>
+            </div>
+            <div id="blogModalContent" style="padding: 30px;">
+                <!-- Blog content will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Live Chat Widget -->
+    <div id="liveChatWidget" style="position: fixed; bottom: 100px; right: 30px; z-index: 55;">
+        <!-- Chat Toggle Button -->
+        <button id="chatToggleBtn" onclick="toggleLiveChat()" style="width: 60px; height: 60px; background: linear-gradient(135deg, #667eea, #764ba2); border: none; border-radius: 50%; color: white; font-size: 24px; cursor: pointer; box-shadow: 0 4px 20px rgba(0,0,0,0.3); transition: all 0.3s ease; position: relative;">
+            <span id="chatIcon">💬</span>
+            <div id="chatNotification" style="position: absolute; top: -5px; right: -5px; width: 20px; height: 20px; background: #ef4444; border-radius: 50%; color: white; font-size: 12px; display: flex; align-items: center; justify-content: center; font-weight: bold;">3</div>
+        </button>
+        
+        <!-- Chat Window -->
+        <div id="liveChatWindow" style="position: absolute; bottom: 80px; right: 0; width: 350px; height: 500px; background: white; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); opacity: 0; visibility: hidden; transform: translateY(20px) scale(0.9); transition: all 0.3s ease; overflow: hidden;">
+            <!-- Chat Header -->
+            <div style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 20px; position: relative;">
+                <div style="display: flex; align-items: center;">
+                    <div style="width: 40px; height: 40px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 12px;">
+                        <span style="font-size: 20px;">👨‍💻</span>
+                    </div>
+                    <div>
+                        <div style="font-weight: bold; font-size: 16px;">Tim Support ClueForIT</div>
+                        <div style="font-size: 12px; opacity: 0.9; display: flex; align-items: center;">
+                            <div style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; margin-right: 6px;"></div>
+                            Online - Biasanya membalas dalam beberapa menit
+                        </div>
+                    </div>
+                </div>
+                <button onclick="toggleLiveChat()" style="position: absolute; top: 15px; right: 15px; background: none; border: none; color: white; font-size: 20px; cursor: pointer; opacity: 0.8; hover:opacity: 1;">×</button>
+            </div>
+            
+            <!-- Chat Messages -->
+            <div id="liveChatMessages" style="height: 320px; overflow-y: auto; padding: 20px; background: #f9fafb;">
+                <!-- Welcome Message -->
+                <div style="display: flex; align-items: start; margin-bottom: 16px;">
+                    <div style="width: 32px; height: 32px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 10px; flex-shrink: 0;">
+                        <span style="color: white; font-size: 14px;">👨‍💻</span>
+                    </div>
+                    <div style="background: white; padding: 12px 16px; border-radius: 18px; max-width: 80%; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                        <div style="font-size: 14px; color: #374151; line-height: 1.4;">
+                            Halo! Selamat datang di ClueForIT! 👋<br><br>
+                            Saya Andi dari tim support. Ada yang bisa saya bantu hari ini?
+                        </div>
+                        <div style="font-size: 11px; color: #9ca3af; margin-top: 6px;">Baru saja</div>
+                    </div>
+                </div>
+                
+                <!-- Quick Actions -->
+                <div style="display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0; padding-left: 42px;">
+                    <button onclick="sendLiveChatMessage('Saya ingin konsultasi tentang layanan IT')" style="background: #e5e7eb; border: none; padding: 8px 12px; border-radius: 20px; font-size: 12px; cursor: pointer; transition: background-color 0.3s;">
+                        💼 Konsultasi IT
+                    </button>
+                    <button onclick="sendLiveChatMessage('Berapa harga untuk setup server?')" style="background: #e5e7eb; border: none; padding: 8px 12px; border-radius: 20px; font-size: 12px; cursor: pointer; transition: background-color 0.3s;">
+                        💰 Tanya Harga
+                    </button>
+                    <button onclick="sendLiveChatMessage('Saya butuh support teknis')" style="background: #e5e7eb; border: none; padding: 8px 12px; border-radius: 20px; font-size: 12px; cursor: pointer; transition: background-color 0.3s;">
+                        🔧 Support
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Chat Input -->
+            <div style="padding: 16px; border-top: 1px solid #e5e7eb; background: white;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <input 
+                        type="text" 
+                        id="liveChatInput" 
+                        placeholder="Ketik pesan Anda..."
+                        style="flex: 1; padding: 12px 16px; border: 1px solid #d1d5db; border-radius: 25px; font-size: 14px; outline: none; transition: border-color 0.3s;"
+                        onkeypress="handleLiveChatKeyPress(event)"
+                    >
+                    <button onclick="sendLiveChatMessage()" style="width: 40px; height: 40px; background: linear-gradient(135deg, #667eea, #764ba2); border: none; border-radius: 50%; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: transform 0.2s;">
+                        <span style="font-size: 16px;">📤</span>
+                    </button>
+                </div>
+                <div style="font-size: 11px; color: #9ca3af; margin-top: 8px; text-align: center;">
+                    Powered by ClueForIT Live Support
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Navigation -->
     <nav class="fixed w-full z-50 bg-gray-900/95 backdrop-blur-md shadow-lg morph-wave">
         <div class="container mx-auto px-6 py-4">
@@ -344,6 +435,7 @@
                     <a href="#home" class="morph-text text-gray-300 hover:text-blue-400">Beranda</a>
                     <a href="#services" class="morph-text text-gray-300 hover:text-blue-400">Layanan</a>
                     <a href="#portfolio" class="morph-text text-gray-300 hover:text-blue-400">Portfolio</a>
+                    <a href="#blog" class="morph-text text-gray-300 hover:text-blue-400">Blog</a>
                     <a href="#about" class="morph-text text-gray-300 hover:text-blue-400">Tentang</a>
                     <a href="#contact" class="morph-text text-gray-300 hover:text-blue-400">Kontak</a>
                     <button onclick="openSearch()" class="morph-icon text-gray-300 hover:text-blue-400 ml-4 p-2 rounded-lg hover:bg-gray-800 transition-colors" title="Cari (Ctrl+K)">
@@ -368,6 +460,7 @@
                     <a href="#home" class="block morph-text text-gray-300 hover:text-blue-400 py-2" onclick="closeMobileMenu()">Beranda</a>
                     <a href="#services" class="block morph-text text-gray-300 hover:text-blue-400 py-2" onclick="closeMobileMenu()">Layanan</a>
                     <a href="#portfolio" class="block morph-text text-gray-300 hover:text-blue-400 py-2" onclick="closeMobileMenu()">Portfolio</a>
+                    <a href="#blog" class="block morph-text text-gray-300 hover:text-blue-400 py-2" onclick="closeMobileMenu()">Blog</a>
                     <a href="#about" class="block morph-text text-gray-300 hover:text-blue-400 py-2" onclick="closeMobileMenu()">Tentang</a>
                     <a href="#contact" class="block morph-text text-gray-300 hover:text-blue-400 py-2" onclick="closeMobileMenu()">Kontak</a>
                     <button onclick="openSearch()" class="block morph-text text-gray-300 hover:text-blue-400 py-2 text-left">🔍 Cari</button>
@@ -428,6 +521,9 @@
                         <a href="#portfolio" class="morph-button border-2 border-white text-white px-8 py-4 font-semibold inline-block text-center">
                             Lihat Portfolio
                         </a>
+                        <button onclick="downloadBrochure()" class="morph-button bg-gradient-to-r from-purple-600 to-blue-600 text-white px-8 py-4 font-semibold inline-block text-center">
+                            📄 Download Brochure
+                        </button>
                     </div>
                 </div>
                 <div class="relative">
@@ -581,72 +677,27 @@
                 <p class="text-gray-600 text-lg morph-text">Berbagai proyek sukses yang telah kami kerjakan untuk klien</p>
             </div>
             
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="morph-card bg-white p-6 shadow-lg border border-gray-200 hover:shadow-xl">
-                    <div class="morph-icon text-4xl mb-4">🎓</div>
-                    <h3 class="text-xl font-bold mb-3 morph-text text-gray-900">Pelatihan IT SMA/SMK</h3>
-                    <p class="text-gray-600 mb-4">Program pelatihan komprehensif untuk siswa SMA/SMK dalam bidang teknologi informasi dan digital literacy.</p>
-                    <div class="flex items-center text-sm text-blue-600">
-                        <span class="morph-text">50+ Sekolah</span>
-                        <span class="mx-2">•</span>
-                        <span class="morph-text">5000+ Siswa</span>
-                    </div>
-                </div>
-                
-                <div class="morph-card bg-white p-6 shadow-lg border border-gray-200 hover:shadow-xl">
-                    <div class="morph-icon text-4xl mb-4">🚗</div>
-                    <h3 class="text-xl font-bold mb-3 morph-text text-gray-900">App Showroom Mobil</h3>
-                    <p class="text-gray-600 mb-4">Aplikasi mobile dan web untuk manajemen showroom mobil dengan fitur inventory, CRM, dan sistem penjualan terintegrasi.</p>
-                    <div class="flex items-center text-sm text-emerald-600">
-                        <span class="morph-text">15+ Dealer</span>
-                        <span class="mx-2">•</span>
-                        <span class="morph-text">iOS & Android</span>
-                    </div>
-                </div>
-                
-                <div class="morph-card bg-white p-6 shadow-lg border border-gray-200 hover:shadow-xl">
-                    <div class="morph-icon text-4xl mb-4">💻</div>
-                    <h3 class="text-xl font-bold mb-3 morph-text text-gray-900">Lab Komputer Sekolah</h3>
-                    <p class="text-gray-600 mb-4">Pembangunan dan setup laboratorium komputer lengkap untuk sekolah dan institusi pendidikan.</p>
-                    <div class="flex items-center text-sm text-violet-600">
-                        <span class="morph-text">30+ Lab</span>
-                        <span class="mx-2">•</span>
-                        <span class="morph-text">1000+ PC</span>
-                    </div>
-                </div>
-                
-                <div class="morph-card bg-white p-6 shadow-lg border border-gray-200 hover:shadow-xl">
-                    <div class="morph-icon text-4xl mb-4">✈️</div>
-                    <h3 class="text-xl font-bold mb-3 morph-text text-gray-900">App Regulated Agent Dephub</h3>
-                    <p class="text-gray-600 mb-4">Sistem aplikasi khusus untuk perusahaan regulated agent Departemen Perhubungan dengan compliance penuh.</p>
-                    <div class="flex items-center text-sm text-orange-600">
-                        <span class="morph-text">Certified</span>
-                        <span class="mx-2">•</span>
-                        <span class="morph-text">Government Grade</span>
-                    </div>
-                </div>
-                
-                <div class="morph-card bg-white p-6 shadow-lg border border-gray-200 hover:shadow-xl">
-                    <div class="morph-icon text-4xl mb-4">🏢</div>
-                    <h3 class="text-xl font-bold mb-3 morph-text text-gray-900">Setup Ruang Server</h3>
-                    <p class="text-gray-600 mb-4">Perancangan, pembangunan, dan setup ruang server enterprise dengan standar internasional untuk perusahaan.</p>
-                    <div class="flex items-center text-sm text-cyan-600">
-                        <span class="morph-text">25+ Perusahaan</span>
-                        <span class="mx-2">•</span>
-                        <span class="morph-text">Tier 3 Standard</span>
-                    </div>
-                </div>
-                
-                <div class="morph-card bg-white p-6 shadow-lg border border-gray-200 hover:shadow-xl">
-                    <div class="morph-icon text-4xl mb-4">⚙️</div>
-                    <h3 class="text-xl font-bold mb-3 morph-text text-gray-900">Aplikasi Enterprise</h3>
-                    <p class="text-gray-600 mb-4">Pengembangan aplikasi custom untuk berbagai kebutuhan perusahaan seperti ERP, CRM, HRM, dan sistem manajemen lainnya.</p>
-                    <div class="flex items-center text-sm text-pink-600">
-                        <span class="morph-text">100+ Projects</span>
-                        <span class="mx-2">•</span>
-                        <span class="morph-text">Multi Platform</span>
-                    </div>
-                </div>
+            <!-- Portfolio Filter -->
+            <div class="flex flex-wrap justify-center gap-4 mb-12">
+                <button onclick="filterPortfolio('all')" class="portfolio-filter-btn active morph-button bg-blue-600 text-white px-6 py-3 rounded-full font-semibold transition-all">
+                    Semua
+                </button>
+                <button onclick="filterPortfolio('pendidikan')" class="portfolio-filter-btn morph-button bg-gray-200 text-gray-700 px-6 py-3 rounded-full font-semibold transition-all hover:bg-gray-300">
+                    Pendidikan
+                </button>
+                <button onclick="filterPortfolio('enterprise')" class="portfolio-filter-btn morph-button bg-gray-200 text-gray-700 px-6 py-3 rounded-full font-semibold transition-all hover:bg-gray-300">
+                    Enterprise
+                </button>
+                <button onclick="filterPortfolio('mobile')" class="portfolio-filter-btn morph-button bg-gray-200 text-gray-700 px-6 py-3 rounded-full font-semibold transition-all hover:bg-gray-300">
+                    Mobile Apps
+                </button>
+                <button onclick="filterPortfolio('infrastructure')" class="portfolio-filter-btn morph-button bg-gray-200 text-gray-700 px-6 py-3 rounded-full font-semibold transition-all hover:bg-gray-300">
+                    Infrastructure
+                </button>
+            </div>
+            
+            <div id="portfolioGrid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Portfolio items will be populated by JavaScript -->
             </div>
             
             <!-- Hidden Portfolio Items -->
@@ -750,8 +801,158 @@
         </div>
     </section>
 
+    <!-- Blog Section -->
+    <section id="blog" class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4 morph-text">Blog & Artikel</h2>
+                <p class="text-gray-600 text-lg morph-text">Insights terbaru tentang teknologi dan transformasi digital</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Blog Article 1 -->
+                <article class="morph-card bg-white border border-gray-200 rounded-xl shadow-lg hover:shadow-xl overflow-hidden">
+                    <div class="h-48 bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                        <div class="text-white text-center">
+                            <div class="text-4xl mb-2">🤖</div>
+                            <div class="text-sm font-semibold">AI & Machine Learning</div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center text-sm text-gray-500 mb-3">
+                            <span>📅 15 Des 2024</span>
+                            <span class="mx-2">•</span>
+                            <span>⏱️ 5 min read</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 morph-text text-gray-900">Implementasi AI dalam Bisnis: Panduan Lengkap 2024</h3>
+                        <p class="text-gray-600 mb-4">Bagaimana artificial intelligence dapat meningkatkan efisiensi operasional dan memberikan competitive advantage untuk bisnis Anda.</p>
+                        <button onclick="openBlogModal('ai-bisnis')" class="morph-button text-blue-600 hover:text-blue-800 font-semibold">
+                            Baca Selengkapnya →
+                        </button>
+                    </div>
+                </article>
+                
+                <!-- Blog Article 2 -->
+                <article class="morph-card bg-white border border-gray-200 rounded-xl shadow-lg hover:shadow-xl overflow-hidden">
+                    <div class="h-48 bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center">
+                        <div class="text-white text-center">
+                            <div class="text-4xl mb-2">🔒</div>
+                            <div class="text-sm font-semibold">Cyber Security</div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center text-sm text-gray-500 mb-3">
+                            <span>📅 12 Des 2024</span>
+                            <span class="mx-2">•</span>
+                            <span>⏱️ 7 min read</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 morph-text text-gray-900">7 Langkah Penting Mengamankan Data Perusahaan</h3>
+                        <p class="text-gray-600 mb-4">Strategi komprehensif untuk melindungi aset digital perusahaan dari ancaman cyber yang semakin canggih.</p>
+                        <button onclick="openBlogModal('cyber-security')" class="morph-button text-blue-600 hover:text-blue-800 font-semibold">
+                            Baca Selengkapnya →
+                        </button>
+                    </div>
+                </article>
+                
+                <!-- Blog Article 3 -->
+                <article class="morph-card bg-white border border-gray-200 rounded-xl shadow-lg hover:shadow-xl overflow-hidden">
+                    <div class="h-48 bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center">
+                        <div class="text-white text-center">
+                            <div class="text-4xl mb-2">☁️</div>
+                            <div class="text-sm font-semibold">Cloud Computing</div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center text-sm text-gray-500 mb-3">
+                            <span>📅 10 Des 2024</span>
+                            <span class="mx-2">•</span>
+                            <span>⏱️ 6 min read</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 morph-text text-gray-900">Migrasi ke Cloud: Manfaat dan Tantangan</h3>
+                        <p class="text-gray-600 mb-4">Panduan praktis untuk memahami proses migrasi ke cloud computing dan bagaimana memaksimalkan ROI investasi IT.</p>
+                        <button onclick="openBlogModal('cloud-migration')" class="morph-button text-blue-600 hover:text-blue-800 font-semibold">
+                            Baca Selengkapnya →
+                        </button>
+                    </div>
+                </article>
+                
+                <!-- Blog Article 4 -->
+                <article class="morph-card bg-white border border-gray-200 rounded-xl shadow-lg hover:shadow-xl overflow-hidden">
+                    <div class="h-48 bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center">
+                        <div class="text-white text-center">
+                            <div class="text-4xl mb-2">📱</div>
+                            <div class="text-sm font-semibold">Mobile Development</div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center text-sm text-gray-500 mb-3">
+                            <span>📅 8 Des 2024</span>
+                            <span class="mx-2">•</span>
+                            <span>⏱️ 4 min read</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 morph-text text-gray-900">Tren Mobile App Development 2024</h3>
+                        <p class="text-gray-600 mb-4">Teknologi dan framework terbaru yang mendominasi pengembangan aplikasi mobile di tahun 2024.</p>
+                        <button onclick="openBlogModal('mobile-trends')" class="morph-button text-blue-600 hover:text-blue-800 font-semibold">
+                            Baca Selengkapnya →
+                        </button>
+                    </div>
+                </article>
+                
+                <!-- Blog Article 5 -->
+                <article class="morph-card bg-white border border-gray-200 rounded-xl shadow-lg hover:shadow-xl overflow-hidden">
+                    <div class="h-48 bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center">
+                        <div class="text-white text-center">
+                            <div class="text-4xl mb-2">🚀</div>
+                            <div class="text-sm font-semibold">Digital Transformation</div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center text-sm text-gray-500 mb-3">
+                            <span>📅 5 Des 2024</span>
+                            <span class="mx-2">•</span>
+                            <span>⏱️ 8 min read</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 morph-text text-gray-900">Roadmap Transformasi Digital untuk UKM</h3>
+                        <p class="text-gray-600 mb-4">Langkah-langkah praktis bagi usaha kecil menengah untuk memulai perjalanan transformasi digital mereka.</p>
+                        <button onclick="openBlogModal('digital-transformation')" class="morph-button text-blue-600 hover:text-blue-800 font-semibold">
+                            Baca Selengkapnya →
+                        </button>
+                    </div>
+                </article>
+                
+                <!-- Blog Article 6 -->
+                <article class="morph-card bg-white border border-gray-200 rounded-xl shadow-lg hover:shadow-xl overflow-hidden">
+                    <div class="h-48 bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
+                        <div class="text-white text-center">
+                            <div class="text-4xl mb-2">⚙️</div>
+                            <div class="text-sm font-semibold">IT Infrastructure</div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center text-sm text-gray-500 mb-3">
+                            <span>📅 3 Des 2024</span>
+                            <span class="mx-2">•</span>
+                            <span>⏱️ 6 min read</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 morph-text text-gray-900">Best Practices Setup Server Room Enterprise</h3>
+                        <p class="text-gray-600 mb-4">Panduan lengkap merancang dan membangun ruang server yang memenuhi standar enterprise dan compliance.</p>
+                        <button onclick="openBlogModal('server-room')" class="morph-button text-blue-600 hover:text-blue-800 font-semibold">
+                            Baca Selengkapnya →
+                        </button>
+                    </div>
+                </article>
+            </div>
+            
+            <div class="text-center mt-12">
+                <button class="morph-button gradient-bg text-white px-8 py-4 font-semibold">
+                    Lihat Semua Artikel
+                </button>
+            </div>
+        </div>
+    </section>
+
     <!-- About Section -->
-    <section id="about" class="py-20 bg-white">
+    <section id="about" class="py-20 bg-gray-100">
         <div class="container mx-auto px-6">
             <div class="grid md:grid-cols-2 gap-12 items-center">
                 <div>
@@ -1167,6 +1368,201 @@
             }, 2000);
         });
 
+        // Portfolio Data
+        const portfolioData = [
+            {
+                id: 1,
+                title: 'Pelatihan IT SMA/SMK',
+                description: 'Program pelatihan komprehensif untuk siswa SMA/SMK dalam bidang teknologi informasi dan digital literacy.',
+                icon: '🎓',
+                stats: ['50+ Sekolah', '5000+ Siswa'],
+                category: 'pendidikan',
+                color: 'text-blue-600'
+            },
+            {
+                id: 2,
+                title: 'App Showroom Mobil',
+                description: 'Aplikasi mobile dan web untuk manajemen showroom mobil dengan fitur inventory, CRM, dan sistem penjualan terintegrasi.',
+                icon: '🚗',
+                stats: ['15+ Dealer', 'iOS & Android'],
+                category: 'mobile',
+                color: 'text-emerald-600'
+            },
+            {
+                id: 3,
+                title: 'Lab Komputer Sekolah',
+                description: 'Pembangunan dan setup laboratorium komputer lengkap untuk sekolah dan institusi pendidikan.',
+                icon: '💻',
+                stats: ['30+ Lab', '1000+ PC'],
+                category: 'infrastructure',
+                color: 'text-violet-600'
+            },
+            {
+                id: 4,
+                title: 'App Regulated Agent Dephub',
+                description: 'Sistem aplikasi khusus untuk perusahaan regulated agent Departemen Perhubungan dengan compliance penuh.',
+                icon: '✈️',
+                stats: ['Certified', 'Government Grade'],
+                category: 'enterprise',
+                color: 'text-orange-600'
+            },
+            {
+                id: 5,
+                title: 'Setup Ruang Server',
+                description: 'Perancangan, pembangunan, dan setup ruang server enterprise dengan standar internasional untuk perusahaan.',
+                icon: '🏢',
+                stats: ['25+ Perusahaan', 'Tier 3 Standard'],
+                category: 'infrastructure',
+                color: 'text-cyan-600'
+            },
+            {
+                id: 6,
+                title: 'Aplikasi Enterprise',
+                description: 'Pengembangan aplikasi custom untuk berbagai kebutuhan perusahaan seperti ERP, CRM, HRM, dan sistem manajemen lainnya.',
+                icon: '⚙️',
+                stats: ['100+ Projects', 'Multi Platform'],
+                category: 'enterprise',
+                color: 'text-pink-600'
+            },
+            {
+                id: 7,
+                title: 'E-Learning Platform',
+                description: 'Platform pembelajaran online dengan fitur video conference, assignment tracking, dan assessment tools untuk institusi pendidikan.',
+                icon: '📚',
+                stats: ['20+ Universitas', '50K+ Users'],
+                category: 'pendidikan',
+                color: 'text-indigo-600'
+            },
+            {
+                id: 8,
+                title: 'Mobile Banking App',
+                description: 'Aplikasi mobile banking dengan fitur keamanan tinggi, real-time transaction, dan user experience yang optimal.',
+                icon: '🏦',
+                stats: ['Bank Grade Security', 'Multi Platform'],
+                category: 'mobile',
+                color: 'text-green-600'
+            },
+            {
+                id: 9,
+                title: 'Hospital Management System',
+                description: 'Sistem informasi rumah sakit terintegrasi dengan modul rekam medis, farmasi, laboratorium, dan billing system.',
+                icon: '🏥',
+                stats: ['15+ Rumah Sakit', 'SIMRS Certified'],
+                category: 'enterprise',
+                color: 'text-red-600'
+            }
+        ];
+
+        // Blog Data
+        const blogData = {
+            'ai-bisnis': {
+                title: 'Implementasi AI dalam Bisnis: Panduan Lengkap 2024',
+                content: `
+                    <div style="margin-bottom: 24px;">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDYwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iMzAwIiBmaWxsPSJ1cmwoI2dyYWRpZW50KSIvPgo8Y2lyY2xlIGN4PSIzMDAiIGN5PSIxNTAiIHI9IjgwIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMikiLz4KPHN2ZyB4PSIyNjAiIHk9IjExMCIgd2lkdGg9IjgwIiBoZWlnaHQ9IjgwIiBmaWxsPSJ3aGl0ZSI+CjxwYXRoIGQ9Ik00MCAyMEMyOC45NTQzIDIwIDIwIDI4Ljk1NDMgMjAgNDBTMjguOTU0MyA2MCA0MCA2MFM2MCA1MS4wNDU3IDYwIDQwUzUxLjA0NTcgMjAgNDAgMjBaTTQwIDI4QzQ2LjYyNzQgMjggNTIgMzMuMzcyNiA1MiA0MFM0Ni42Mjc0IDUyIDQwIDUyUzI4IDQ2LjYyNzQgMjggNDBTMzMuMzcyNiAyOCA0MCAyOFoiLz4KPHN2Zz4KPGRlZnM+CjxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZGllbnQiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgo8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojNjY3ZWVhIi8+CjxzdG9wIG9mZnNldD0iMTAwJSIgc3R5bGU9InN0b3AtY29sb3I6Izc2NGJhMiIvPgo8L2xpbmVhckdyYWRpZW50Pgo8L2RlZnM+Cjwvc3ZnPg==" alt="AI Implementation" style="width: 100%; height: 200px; object-fit: cover; border-radius: 12px;">
+                    </div>
+                    
+                    <h2 style="color: #1f2937; font-size: 20px; font-weight: bold; margin-bottom: 16px;">Mengapa AI Penting untuk Bisnis Modern?</h2>
+                    <p style="color: #4b5563; line-height: 1.6; margin-bottom: 20px;">
+                        Artificial Intelligence (AI) telah menjadi game-changer dalam dunia bisnis. Dari otomatisasi proses hingga analisis prediktif, AI membantu perusahaan meningkatkan efisiensi operasional dan memberikan competitive advantage yang signifikan.
+                    </p>
+                    
+                    <h3 style="color: #1f2937; font-size: 18px; font-weight: bold; margin-bottom: 12px;">🎯 Manfaat Utama Implementasi AI</h3>
+                    <ul style="color: #4b5563; line-height: 1.6; margin-bottom: 20px; padding-left: 20px;">
+                        <li><strong>Otomatisasi Proses:</strong> Mengurangi pekerjaan manual dan human error</li>
+                        <li><strong>Analisis Data:</strong> Insight mendalam dari big data untuk decision making</li>
+                        <li><strong>Customer Experience:</strong> Personalisasi layanan dan chatbot 24/7</li>
+                        <li><strong>Predictive Analytics:</strong> Forecasting yang akurat untuk planning</li>
+                    </ul>
+                    
+                    <h3 style="color: #1f2937; font-size: 18px; font-weight: bold; margin-bottom: 12px;">🚀 Langkah Implementasi AI</h3>
+                    <ol style="color: #4b5563; line-height: 1.6; margin-bottom: 20px; padding-left: 20px;">
+                        <li><strong>Assessment Kebutuhan:</strong> Identifikasi area yang bisa dioptimalkan dengan AI</li>
+                        <li><strong>Data Preparation:</strong> Pastikan data berkualitas dan terstruktur</li>
+                        <li><strong>Pilot Project:</strong> Mulai dengan project kecil untuk proof of concept</li>
+                        <li><strong>Training & Development:</strong> Upskill tim untuk mengoperasikan AI tools</li>
+                        <li><strong>Scale & Optimize:</strong> Expand implementasi ke area lain</li>
+                    </ol>
+                    
+                    <div style="background: #f3f4f6; padding: 20px; border-radius: 12px; margin: 24px 0;">
+                        <h4 style="color: #1f2937; font-weight: bold; margin-bottom: 12px;">💡 Tips dari ClueForIT</h4>
+                        <p style="color: #4b5563; line-height: 1.6; margin: 0;">
+                            Jangan terburu-buru mengimplementasikan AI di semua lini. Mulai dari satu area yang paling critical dan memiliki ROI yang jelas. Tim kami di ClueForIT siap membantu Anda merancang roadmap AI yang sesuai dengan kebutuhan bisnis Anda.
+                        </p>
+                    </div>
+                    
+                    <p style="color: #4b5563; line-height: 1.6;">
+                        Tertarik untuk mengimplementasikan AI di perusahaan Anda? Hubungi tim ClueForIT untuk konsultasi gratis dan dapatkan strategi AI yang tepat untuk bisnis Anda.
+                    </p>
+                `
+            },
+            'cyber-security': {
+                title: '7 Langkah Penting Mengamankan Data Perusahaan',
+                content: `
+                    <div style="margin-bottom: 24px;">
+                        <div style="width: 100%; height: 200px; background: linear-gradient(135deg, #10b981, #059669); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                            <div style="color: white; text-align: center;">
+                                <div style="font-size: 48px; margin-bottom: 12px;">🔒</div>
+                                <div style="font-size: 18px; font-weight: bold;">Cyber Security</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p style="color: #4b5563; line-height: 1.6; margin-bottom: 20px;">
+                        Ancaman cyber semakin canggih dan beragam. Perusahaan harus proaktif dalam melindungi aset digital mereka. Berikut 7 langkah penting yang harus diterapkan setiap perusahaan.
+                    </p>
+                    
+                    <h3 style="color: #1f2937; font-size: 18px; font-weight: bold; margin-bottom: 12px;">🛡️ 7 Langkah Keamanan Cyber</h3>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <h4 style="color: #059669; font-weight: bold; margin-bottom: 8px;">1. Multi-Factor Authentication (MFA)</h4>
+                        <p style="color: #4b5563; line-height: 1.6;">Implementasikan MFA untuk semua akses sistem critical. Ini mengurangi risiko unauthorized access hingga 99.9%.</p>
+                    </div>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <h4 style="color: #059669; font-weight: bold; margin-bottom: 8px;">2. Regular Security Updates</h4>
+                        <p style="color: #4b5563; line-height: 1.6;">Pastikan semua software dan sistem operasi selalu update dengan patch keamanan terbaru.</p>
+                    </div>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <h4 style="color: #059669; font-weight: bold; margin-bottom: 8px;">3. Employee Security Training</h4>
+                        <p style="color: #4b5563; line-height: 1.6;">80% serangan cyber dimulai dari human error. Training rutin sangat penting untuk awareness.</p>
+                    </div>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <h4 style="color: #059669; font-weight: bold; margin-bottom: 8px;">4. Data Backup & Recovery Plan</h4>
+                        <p style="color: #4b5563; line-height: 1.6;">Implementasikan strategi backup 3-2-1: 3 copies, 2 different media, 1 offsite.</p>
+                    </div>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <h4 style="color: #059669; font-weight: bold; margin-bottom: 8px;">5. Network Segmentation</h4>
+                        <p style="color: #4b5563; line-height: 1.6;">Pisahkan network critical dari network umum untuk membatasi spread serangan.</p>
+                    </div>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <h4 style="color: #059669; font-weight: bold; margin-bottom: 8px;">6. Continuous Monitoring</h4>
+                        <p style="color: #4b5563; line-height: 1.6;">Deploy SIEM tools untuk monitoring real-time dan deteksi anomali.</p>
+                    </div>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <h4 style="color: #059669; font-weight: bold; margin-bottom: 8px;">7. Incident Response Plan</h4>
+                        <p style="color: #4b5563; line-height: 1.6;">Siapkan prosedur response yang jelas untuk minimize damage saat terjadi incident.</p>
+                    </div>
+                    
+                    <div style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 16px; margin: 24px 0;">
+                        <h4 style="color: #92400e; font-weight: bold; margin-bottom: 8px;">⚠️ Warning Signs</h4>
+                        <p style="color: #92400e; line-height: 1.6; margin: 0;">
+                            Jika perusahaan Anda belum menerapkan langkah-langkah di atas, Anda berisiko tinggi menjadi target serangan cyber. Jangan tunggu sampai terlambat!
+                        </p>
+                    </div>
+                    
+                    <p style="color: #4b5563; line-height: 1.6;">
+                        Butuh bantuan mengamankan infrastruktur IT perusahaan? Tim cyber security ClueForIT siap membantu dengan assessment, implementasi, dan monitoring 24/7.
+                    </p>
+                `
+            }
+        };
+
         // Search Data
         const searchData = [
             { title: 'IT Managed Services', description: 'Pengelolaan infrastruktur IT proaktif dan komprehensif', section: 'services' },
@@ -1176,6 +1572,8 @@
             { title: 'App Showroom Mobil', description: '15+ Dealer, iOS & Android', section: 'portfolio' },
             { title: 'Lab Komputer Sekolah', description: '30+ Lab, 1000+ PC', section: 'portfolio' },
             { title: 'Setup Ruang Server', description: '25+ Perusahaan, Tier 3 Standard', section: 'portfolio' },
+            { title: 'Blog AI & Machine Learning', description: 'Implementasi AI dalam bisnis', section: 'blog' },
+            { title: 'Blog Cyber Security', description: '7 langkah mengamankan data perusahaan', section: 'blog' },
             { title: 'Kontak ClueForIT', description: 'Email, WhatsApp, Alamat kantor', section: 'contact' },
             { title: 'Tentang ClueForIT', description: 'Pengalaman 10+ tahun, Tim bersertifikat', section: 'about' }
         ];
@@ -1704,6 +2102,342 @@ Coba tanyakan dengan kata kunci di atas, atau langsung hubungi tim kami di Whats
             }
         }
 
+        // Portfolio Filter Functions
+        function renderPortfolio(items) {
+            const portfolioGrid = document.getElementById('portfolioGrid');
+            if (!portfolioGrid) return;
+            
+            portfolioGrid.innerHTML = items.map(item => `
+                <div class="morph-card bg-white p-6 shadow-lg border border-gray-200 hover:shadow-xl portfolio-item" data-category="${item.category}">
+                    <div class="morph-icon text-4xl mb-4">${item.icon}</div>
+                    <h3 class="text-xl font-bold mb-3 morph-text text-gray-900">${item.title}</h3>
+                    <p class="text-gray-600 mb-4">${item.description}</p>
+                    <div class="flex items-center text-sm ${item.color}">
+                        <span class="morph-text">${item.stats[0]}</span>
+                        <span class="mx-2">•</span>
+                        <span class="morph-text">${item.stats[1]}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterPortfolio(category) {
+            // Update active button
+            document.querySelectorAll('.portfolio-filter-btn').forEach(btn => {
+                btn.classList.remove('active', 'bg-blue-600', 'text-white');
+                btn.classList.add('bg-gray-200', 'text-gray-700');
+            });
+            
+            event.target.classList.add('active', 'bg-blue-600', 'text-white');
+            event.target.classList.remove('bg-gray-200', 'text-gray-700');
+            
+            // Filter and render portfolio
+            const filteredItems = category === 'all' ? portfolioData : portfolioData.filter(item => item.category === category);
+            renderPortfolio(filteredItems);
+        }
+
+        // Blog Modal Functions
+        function openBlogModal(blogId) {
+            const modal = document.getElementById('blogModal');
+            const container = document.getElementById('blogModalContainer');
+            const title = document.getElementById('blogModalTitle');
+            const content = document.getElementById('blogModalContent');
+            
+            if (modal && container && title && content && blogData[blogId]) {
+                title.textContent = blogData[blogId].title;
+                content.innerHTML = blogData[blogId].content;
+                
+                modal.style.opacity = '1';
+                modal.style.visibility = 'visible';
+                setTimeout(() => {
+                    container.style.transform = 'translateY(0)';
+                }, 100);
+                
+                // Prevent body scroll
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeBlogModal() {
+            const modal = document.getElementById('blogModal');
+            const container = document.getElementById('blogModalContainer');
+            
+            if (container) container.style.transform = 'translateY(-50px)';
+            
+            setTimeout(() => {
+                if (modal) {
+                    modal.style.opacity = '0';
+                    modal.style.visibility = 'hidden';
+                }
+                // Restore body scroll
+                document.body.style.overflow = 'auto';
+            }, 200);
+        }
+
+        // Live Chat Functions
+        function toggleLiveChat() {
+            const chatWindow = document.getElementById('liveChatWindow');
+            const chatIcon = document.getElementById('chatIcon');
+            const notification = document.getElementById('chatNotification');
+            
+            if (chatWindow) {
+                const isVisible = chatWindow.style.opacity === '1';
+                
+                if (isVisible) {
+                    // Hide chat
+                    chatWindow.style.opacity = '0';
+                    chatWindow.style.visibility = 'hidden';
+                    chatWindow.style.transform = 'translateY(20px) scale(0.9)';
+                    chatIcon.textContent = '💬';
+                } else {
+                    // Show chat
+                    chatWindow.style.opacity = '1';
+                    chatWindow.style.visibility = 'visible';
+                    chatWindow.style.transform = 'translateY(0) scale(1)';
+                    chatIcon.textContent = '×';
+                    
+                    // Hide notification
+                    if (notification) notification.style.display = 'none';
+                    
+                    // Focus input
+                    setTimeout(() => {
+                        const input = document.getElementById('liveChatInput');
+                        if (input) input.focus();
+                    }, 300);
+                }
+            }
+        }
+
+        function addLiveChatMessage(message, isUser = false, showTyping = false) {
+            const messagesContainer = document.getElementById('liveChatMessages');
+            if (!messagesContainer) return;
+            
+            const messageDiv = document.createElement('div');
+            messageDiv.style.marginBottom = '16px';
+            
+            if (isUser) {
+                messageDiv.innerHTML = `
+                    <div style="display: flex; justify-content: flex-end;">
+                        <div style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 12px 16px; border-radius: 18px; max-width: 80%; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                            <div style="font-size: 14px; line-height: 1.4;">${message}</div>
+                            <div style="font-size: 11px; opacity: 0.8; margin-top: 6px; text-align: right;">Baru saja</div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                messageDiv.innerHTML = `
+                    <div style="display: flex; align-items: start;">
+                        <div style="width: 32px; height: 32px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 10px; flex-shrink: 0;">
+                            <span style="color: white; font-size: 14px;">👨‍💻</span>
+                        </div>
+                        <div style="background: white; padding: 12px 16px; border-radius: 18px; max-width: 80%; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                            <div style="font-size: 14px; color: #374151; line-height: 1.4;">${message}</div>
+                            <div style="font-size: 11px; color: #9ca3af; margin-top: 6px;">Baru saja</div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function sendLiveChatMessage(predefinedMessage = null) {
+            const input = document.getElementById('liveChatInput');
+            const message = predefinedMessage || (input ? input.value.trim() : '');
+            
+            if (message) {
+                // Add user message
+                addLiveChatMessage(message, true);
+                if (input) input.value = '';
+                
+                // Simulate typing and response
+                setTimeout(() => {
+                    const responses = [
+                        "Terima kasih atas pertanyaan Anda! Tim kami akan segera menghubungi Anda untuk memberikan solusi terbaik. 😊",
+                        "Saya akan menghubungkan Anda dengan specialist kami. Mohon tunggu sebentar ya! 👨‍💻",
+                        "Pertanyaan yang bagus! Kami akan berikan penawaran khusus untuk kebutuhan Anda. 💼",
+                        "Tim support kami akan follow up via WhatsApp dalam 5-10 menit. Terima kasih! 📞"
+                    ];
+                    
+                    const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                    addLiveChatMessage(randomResponse, false);
+                }, 1500);
+            }
+        }
+
+        function handleLiveChatKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendLiveChatMessage();
+            }
+        }
+
+        // Download Brochure Function
+        function downloadBrochure() {
+            // Create a comprehensive company profile content
+            const brochureContent = `
+                CLUEFORIT - IT MANAGED SERVICES & DIGITAL BUSINESS
+                ================================================
+                
+                TENTANG KAMI
+                ------------
+                ClueForIT adalah partner terpercaya untuk transformasi digital dan IT managed services dengan pengalaman lebih dari 10 tahun di industri teknologi.
+                
+                LAYANAN UTAMA
+                -------------
+                
+                🖥️ IT MANAGED SERVICES (95% Success Rate)
+                - Pengelolaan infrastruktur IT proaktif
+                - Monitoring 24/7
+                - Maintenance & support
+                
+                🚀 DIGITAL TRANSFORMATION (88% Success Rate)
+                - Modernisasi proses bisnis
+                - Implementasi teknologi terbaru
+                - Konsultasi strategis IT
+                
+                🔒 CYBER SECURITY (92% Success Rate)
+                - Perlindungan data & sistem
+                - Security audit & assessment
+                - Incident response
+                
+                PORTFOLIO UNGGULAN
+                ------------------
+                
+                PENDIDIKAN:
+                • Pelatihan IT SMA/SMK - 50+ Sekolah, 5000+ Siswa
+                • Lab Komputer Sekolah - 30+ Lab, 1000+ PC
+                • E-Learning Platform - 20+ Universitas, 50K+ Users
+                
+                ENTERPRISE:
+                • App Regulated Agent Dephub - Government Grade
+                • Hospital Management System - 15+ Rumah Sakit
+                • Aplikasi Enterprise - 100+ Projects
+                
+                MOBILE APPS:
+                • App Showroom Mobil - 15+ Dealer
+                • Mobile Banking App - Bank Grade Security
+                
+                INFRASTRUCTURE:
+                • Setup Ruang Server - 25+ Perusahaan, Tier 3 Standard
+                
+                SERTIFIKASI TIM
+                ---------------
+                🌐 Cisco CCNA - Networking
+                🪟 Microsoft Azure - Cloud Solutions
+                🔴 Oracle DBA - Database Management
+                🎩 Red Hat RHCE - Linux Systems
+                ☁️ AWS Solutions Architect
+                📦 VMware VCP - Virtualization
+                🔒 CompTIA Security+ - Cybersecurity
+                🌤️ Google Cloud Professional
+                ⚙️ ITIL Foundation - IT Service Management
+                
+                MENGAPA MEMILIH CLUEFORIT?
+                --------------------------
+                ✓ Tim ahli bersertifikat internasional
+                ✓ Support 24/7 untuk semua klien
+                ✓ Teknologi terdepan dan inovatif
+                ✓ Pengalaman 10+ tahun
+                ✓ 500+ Proyek berhasil diselesaikan
+                
+                KONTAK KAMI
+                -----------
+                📧 Email: realboxofme@gmail.com
+                💬 WhatsApp: 0897 232 5030
+                📍 Alamat: Gading Serpong, Tangerang, Indonesia
+                
+                Jam Operasional:
+                Senin - Jumat: 08:00 - 17:00 WIB
+                Sabtu: 08:00 - 12:00 WIB
+                
+                KONSULTASI GRATIS!
+                Hubungi kami sekarang untuk mendapatkan solusi IT terbaik untuk bisnis Anda.
+                
+                © 2024 ClueForIT. All rights reserved.
+            `;
+            
+            // Create and download the file
+            const blob = new Blob([brochureContent], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'ClueForIT-Company-Profile-2024.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+            
+            // Show success message
+            alert('📄 Company Profile ClueForIT berhasil didownload!\n\nFile berisi informasi lengkap tentang layanan, portfolio, dan kontak kami.');
+        }
+
+        // Initialize Portfolio on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            renderPortfolio(portfolioData);
+            
+            // Show live chat notification after 5 seconds
+            setTimeout(() => {
+                const notification = document.getElementById('chatNotification');
+                if (notification) {
+                    notification.style.display = 'flex';
+                    notification.style.animation = 'pulse 2s infinite';
+                }
+            }, 5000);
+        });
+
+        // Update breadcrumb sections
+        window.addEventListener('scroll', function() {
+            const scrollY = window.scrollY;
+            
+            // Update Breadcrumb
+            const sections = [
+                { id: 'home', name: 'Beranda' },
+                { id: 'services', name: 'Layanan' },
+                { id: 'portfolio', name: 'Portfolio' },
+                { id: 'blog', name: 'Blog' },
+                { id: 'about', name: 'Tentang Kami' },
+                { id: 'contact', name: 'Kontak' }
+            ];
+            
+            let currentSection = 'Beranda';
+            sections.forEach(section => {
+                const element = document.getElementById(section.id);
+                if (element && scrollY + 100 >= element.offsetTop) {
+                    currentSection = section.name;
+                }
+            });
+            
+            const breadcrumbText = document.getElementById('breadcrumbText');
+            const breadcrumb = document.getElementById('breadcrumb');
+            
+            if (breadcrumbText) breadcrumbText.textContent = currentSection;
+            
+            if (breadcrumb) {
+                if (scrollY > 200) {
+                    breadcrumb.style.opacity = '1';
+                    breadcrumb.style.visibility = 'visible';
+                } else {
+                    breadcrumb.style.opacity = '0';
+                    breadcrumb.style.visibility = 'hidden';
+                }
+            }
+            
+            // Update Back to Top
+            const backToTop = document.getElementById('backToTop');
+            if (backToTop) {
+                if (scrollY > 300) {
+                    backToTop.style.opacity = '1';
+                    backToTop.style.visibility = 'visible';
+                    backToTop.style.transform = 'translateY(0)';
+                } else {
+                    backToTop.style.opacity = '0';
+                    backToTop.style.visibility = 'hidden';
+                    backToTop.style.transform = 'translateY(20px)';
+                }
+            }
+        });
+
         // Animate progress bars when they come into view
         const observerOptions = {
             threshold: 0.5,
@@ -1725,5 +2459,5 @@ Coba tanyakan dengan kata kunci di atas, atau langsung hubungi tim kami di Whats
             observer.observe(card);
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'987111ec353e6097',t:'MTc1OTIwNzUxOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98711fd2f60b44c9',t:'MTc1OTIwODA4Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
