@@ -1,0 +1,1772 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog ClueForIT - Insights Teknologi & Digital Transformation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            box-sizing: border-box;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .morph-card {
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 20px;
+        }
+        
+        .morph-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-radius: 30px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+        }
+        
+        .morph-button {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 15px;
+        }
+        
+        .morph-button:hover {
+            transform: scale(1.05) translateY(-2px);
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+        
+        .morph-text {
+            transition: all 0.3s ease;
+        }
+        
+        .morph-text:hover {
+            transform: scale(1.02);
+        }
+        
+        .article-content {
+            line-height: 1.8;
+        }
+        
+        .article-content h3 {
+            color: #1f2937;
+            font-weight: 700;
+            margin: 1.5rem 0 1rem 0;
+            font-size: 1.25rem;
+        }
+        
+        .article-content p {
+            margin-bottom: 1rem;
+            color: #4b5563;
+        }
+        
+        .article-content ul {
+            margin: 1rem 0;
+            padding-left: 1.5rem;
+        }
+        
+        .article-content li {
+            margin-bottom: 0.5rem;
+            color: #4b5563;
+        }
+        
+        .tag {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin: 0.125rem;
+        }
+        
+        .hero-bg {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 25%, #334155 50%, #475569 75%, #64748b 100%);
+        }
+        
+        .search-highlight {
+            background-color: #fef3c7;
+            padding: 0.125rem 0.25rem;
+            border-radius: 0.25rem;
+        }
+        
+        /* Loading Screen Animations */
+        .loading-logo {
+            animation: logoSpin 2s linear infinite;
+        }
+        
+        @keyframes logoSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .loading-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            animation: loadingBounce 1.4s ease-in-out infinite both;
+        }
+        
+        .loading-dot:nth-child(1) { animation-delay: -0.32s; }
+        .loading-dot:nth-child(2) { animation-delay: -0.16s; }
+        .loading-dot:nth-child(3) { animation-delay: 0s; }
+        
+        @keyframes loadingBounce {
+            0%, 80%, 100% {
+                transform: scale(0.8);
+                opacity: 0.5;
+            }
+            40% {
+                transform: scale(1.2);
+                opacity: 1;
+            }
+        }
+        
+        #loadingScreen {
+            transition: opacity 0.5s ease-out;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="fixed inset-0 bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-800 z-50 flex items-center justify-center">
+        <div class="text-center">
+            <!-- Animated Logo -->
+            <div class="mb-8 relative">
+                <div class="loading-logo">
+                    <svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="60" cy="60" r="50" stroke="rgba(255,255,255,0.2)" stroke-width="2" fill="none"/>
+                        <circle cx="60" cy="60" r="40" fill="rgba(255,255,255,0.1)" stroke="white" stroke-width="1"/>
+                        <path d="M60 30C45 30 35 40 35 55V65C35 80 45 90 60 90" stroke="white" stroke-width="3" stroke-linecap="round" fill="none"/>
+                        <circle cx="70" cy="40" r="3" fill="white"/>
+                        <circle cx="70" cy="60" r="3" fill="white"/>
+                        <circle cx="70" cy="80" r="3" fill="white"/>
+                    </svg>
+                </div>
+            </div>
+            
+            <!-- Loading Text -->
+            <h2 class="text-3xl font-bold text-white mb-4">ClueForIT Blog</h2>
+            <p class="text-white/80 mb-8">Memuat insights teknologi terbaru...</p>
+            
+            <!-- Loading Animation -->
+            <div class="flex justify-center space-x-2">
+                <div class="loading-dot bg-white"></div>
+                <div class="loading-dot bg-white"></div>
+                <div class="loading-dot bg-white"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 bg-white/95 backdrop-blur-md shadow-lg">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center">
+                    <a href="index.html" class="morph-text">
+                        <svg width="180" height="40" viewBox="0 0 140 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="0" y="4" width="140" height="24" rx="12" fill="url(#extendedLogoGradient)" stroke="url(#extendedLogoBorder)" stroke-width="1"/>
+                            <circle cx="16" cy="16" r="8" fill="rgba(255,255,255,0.2)" stroke="white" stroke-width="1"/>
+                            <path d="M16 10C13.5 10 12 11.5 12 14V18C12 20.5 13.5 22 16 22" stroke="white" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+                            <circle cx="19" cy="12" r="1" fill="white"/>
+                            <circle cx="19" cy="16" r="1" fill="white"/>
+                            <circle cx="19" cy="20" r="1" fill="white"/>
+                            <text x="32" y="20" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white">ClueForIT</text>
+                            <rect x="100" y="12" width="6" height="8" rx="1" fill="white" opacity="0.8"/>
+                            <rect x="108" y="10" width="4" height="12" rx="1" fill="white" opacity="0.6"/>
+                            <rect x="114" y="14" width="4" height="4" rx="1" fill="white" opacity="0.9"/>
+                            <path d="M120 14H130M120 18H128" stroke="white" stroke-width="1" opacity="0.7"/>
+                            <circle cx="130" cy="14" r="1.5" fill="white"/>
+                            <circle cx="128" cy="18" r="1.5" fill="white"/>
+                            <path d="M8 26H132" stroke="white" stroke-width="0.5" opacity="0.5"/>
+                            <defs>
+                                <linearGradient id="extendedLogoGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" style="stop-color:#667eea"/>
+                                    <stop offset="30%" style="stop-color:#764ba2"/>
+                                    <stop offset="70%" style="stop-color:#f093fb"/>
+                                    <stop offset="100%" style="stop-color:#667eea"/>
+                                </linearGradient>
+                                <linearGradient id="extendedLogoBorder" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" style="stop-color:#4f46e5"/>
+                                    <stop offset="100%" style="stop-color:#7c3aed"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </a>
+                </div>
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="index.html" class="morph-text text-gray-600 hover:text-blue-600">Beranda</a>
+                    <a href="index.html#services" class="morph-text text-gray-600 hover:text-blue-600">Layanan</a>
+                    <a href="index.html#portfolio" class="morph-text text-gray-600 hover:text-blue-600">Portfolio</a>
+                    <a href="#" class="morph-text text-blue-600 font-semibold">Blog</a>
+                    <a href="index.html#about" class="morph-text text-gray-600 hover:text-blue-600">Tentang</a>
+                    <a href="index.html#contact" class="morph-text text-gray-600 hover:text-blue-600">Kontak</a>
+                </div>
+                <button id="mobileMenuToggle" class="md:hidden text-gray-600" onclick="toggleMobileMenu()">
+                    <svg id="hamburgerIcon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <div id="mobileMenu" class="md:hidden hidden bg-white border-t border-gray-200">
+                <div class="px-6 py-4 space-y-4">
+                    <a href="index.html" class="block morph-text text-gray-600 hover:text-blue-600 py-2">Beranda</a>
+                    <a href="index.html#services" class="block morph-text text-gray-600 hover:text-blue-600 py-2">Layanan</a>
+                    <a href="index.html#portfolio" class="block morph-text text-gray-600 hover:text-blue-600 py-2">Portfolio</a>
+                    <a href="#" class="block morph-text text-blue-600 font-semibold py-2">Blog</a>
+                    <a href="index.html#about" class="block morph-text text-gray-600 hover:text-blue-600 py-2">Tentang</a>
+                    <a href="index.html#contact" class="block morph-text text-gray-600 hover:text-blue-600 py-2">Kontak</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-bg pt-24 pb-16">
+        <div class="container mx-auto px-6">
+            <div class="text-center text-white">
+                <h1 class="text-4xl md:text-5xl font-bold mb-6 morph-text">Blog ClueForIT</h1>
+                <p class="text-xl mb-8 opacity-90 morph-text">Insights, Tips, dan Tren Teknologi Terbaru untuk Transformasi Digital</p>
+                
+                <!-- Search Bar -->
+                <div class="max-w-2xl mx-auto mb-8">
+                    <div class="relative">
+                        <input 
+                            type="text" 
+                            id="searchInput"
+                            placeholder="Cari artikel, topik, atau kata kunci..." 
+                            class="w-full px-6 py-4 rounded-2xl text-gray-900 bg-white/95 backdrop-blur-sm border border-white/30 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            onkeyup="searchArticles()"
+                        >
+                        <div class="absolute right-4 top-1/2 transform -translate-y-1/2">
+                            <span class="text-gray-400 text-xl">🔍</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Category Filter -->
+                <div class="flex flex-wrap justify-center gap-3 mb-8">
+                    <button onclick="filterByCategory('all')" class="category-filter active morph-button bg-white/20 backdrop-blur-sm text-white px-6 py-2 border border-white/30">
+                        Semua Artikel
+                    </button>
+                    <button onclick="filterByCategory('ai')" class="category-filter morph-button bg-white/10 backdrop-blur-sm text-white px-6 py-2 border border-white/20 hover:bg-white/20">
+                        AI & ML
+                    </button>
+                    <button onclick="filterByCategory('security')" class="category-filter morph-button bg-white/10 backdrop-blur-sm text-white px-6 py-2 border border-white/20 hover:bg-white/20">
+                        Cyber Security
+                    </button>
+                    <button onclick="filterByCategory('cloud')" class="category-filter morph-button bg-white/10 backdrop-blur-sm text-white px-6 py-2 border border-white/20 hover:bg-white/20">
+                        Cloud Computing
+                    </button>
+                    <button onclick="filterByCategory('digital')" class="category-filter morph-button bg-white/10 backdrop-blur-sm text-white px-6 py-2 border border-white/20 hover:bg-white/20">
+                        Digital Transform
+                    </button>
+                    <button onclick="filterByCategory('mobile')" class="category-filter morph-button bg-white/10 backdrop-blur-sm text-white px-6 py-2 border border-white/20 hover:bg-white/20">
+                        Mobile & Web
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Articles Section -->
+    <section class="py-16">
+        <div class="container mx-auto px-6">
+            <div id="articlesContainer" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- Article 1: AI Implementation -->
+                <article class="article-card morph-card bg-white shadow-lg overflow-hidden" data-category="ai" data-keywords="ai artificial intelligence machine learning bisnis implementasi otomasi">
+                    <div class="h-48 bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 bg-black/20"></div>
+                        <div class="text-white text-center relative z-10">
+                            <div class="text-4xl mb-2">🤖</div>
+                            <div class="text-sm font-semibold">AI & Machine Learning</div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center text-xs text-gray-500 mb-3">
+                            <span>📅 15 Des 2024</span>
+                            <span class="mx-2">•</span>
+                            <span>⏱️ 8 min</span>
+                            <span class="mx-2">•</span>
+                            <span>👁️ 1.2K views</span>
+                        </div>
+                        <h2 class="text-xl font-bold mb-3 morph-text text-gray-900">Implementasi AI dalam Bisnis 2024: Panduan Lengkap</h2>
+                        <p class="text-gray-600 text-sm mb-4">Bagaimana AI dapat meningkatkan efisiensi operasional bisnis Anda dan memberikan competitive advantage di era digital...</p>
+                        
+                        <div class="flex flex-wrap gap-1 mb-4">
+                            <span class="tag bg-blue-100 text-blue-800">AI</span>
+                            <span class="tag bg-purple-100 text-purple-800">Machine Learning</span>
+                            <span class="tag bg-indigo-100 text-indigo-800">Business</span>
+                        </div>
+                        
+                        <button onclick="openArticle('ai-implementation')" class="morph-button text-blue-600 hover:text-blue-800 font-semibold text-sm">
+                            Baca Selengkapnya →
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Article 2: Cyber Security -->
+                <article class="article-card morph-card bg-white shadow-lg overflow-hidden" data-category="security" data-keywords="cyber security keamanan data perlindungan hacker malware firewall">
+                    <div class="h-48 bg-gradient-to-br from-red-500 to-orange-600 flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 bg-black/20"></div>
+                        <div class="text-white text-center relative z-10">
+                            <div class="text-4xl mb-2">🔒</div>
+                            <div class="text-sm font-semibold">Cyber Security</div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center text-xs text-gray-500 mb-3">
+                            <span>📅 12 Des 2024</span>
+                            <span class="mx-2">•</span>
+                            <span>⏱️ 10 min</span>
+                            <span class="mx-2">•</span>
+                            <span>👁️ 2.1K views</span>
+                        </div>
+                        <h2 class="text-xl font-bold mb-3 morph-text text-gray-900">7 Langkah Mengamankan Data Perusahaan</h2>
+                        <p class="text-gray-600 text-sm mb-4">Strategi komprehensif melindungi aset digital perusahaan dari ancaman cyber yang semakin canggih...</p>
+                        
+                        <div class="flex flex-wrap gap-1 mb-4">
+                            <span class="tag bg-red-100 text-red-800">Security</span>
+                            <span class="tag bg-orange-100 text-orange-800">Data Protection</span>
+                            <span class="tag bg-yellow-100 text-yellow-800">Enterprise</span>
+                        </div>
+                        
+                        <button onclick="openArticle('cyber-security')" class="morph-button text-blue-600 hover:text-blue-800 font-semibold text-sm">
+                            Baca Selengkapnya →
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Article 3: Cloud Migration -->
+                <article class="article-card morph-card bg-white shadow-lg overflow-hidden" data-category="cloud" data-keywords="cloud computing migrasi aws azure google cloud infrastructure">
+                    <div class="h-48 bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 bg-black/20"></div>
+                        <div class="text-white text-center relative z-10">
+                            <div class="text-4xl mb-2">☁️</div>
+                            <div class="text-sm font-semibold">Cloud Computing</div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center text-xs text-gray-500 mb-3">
+                            <span>📅 10 Des 2024</span>
+                            <span class="mx-2">•</span>
+                            <span>⏱️ 12 min</span>
+                            <span class="mx-2">•</span>
+                            <span>👁️ 1.8K views</span>
+                        </div>
+                        <h2 class="text-xl font-bold mb-3 morph-text text-gray-900">Migrasi ke Cloud: Panduan Strategis</h2>
+                        <p class="text-gray-600 text-sm mb-4">Memahami proses migrasi cloud dan cara memaksimalkan ROI investasi teknologi cloud...</p>
+                        
+                        <div class="flex flex-wrap gap-1 mb-4">
+                            <span class="tag bg-cyan-100 text-cyan-800">Cloud</span>
+                            <span class="tag bg-blue-100 text-blue-800">Migration</span>
+                            <span class="tag bg-indigo-100 text-indigo-800">Strategy</span>
+                        </div>
+                        
+                        <button onclick="openArticle('cloud-migration')" class="morph-button text-blue-600 hover:text-blue-800 font-semibold text-sm">
+                            Baca Selengkapnya →
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Article 4: Digital Transformation -->
+                <article class="article-card morph-card bg-white shadow-lg overflow-hidden" data-category="digital" data-keywords="digital transformation digitalisasi otomasi proses bisnis teknologi">
+                    <div class="h-48 bg-gradient-to-br from-emerald-500 to-green-600 flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 bg-black/20"></div>
+                        <div class="text-white text-center relative z-10">
+                            <div class="text-4xl mb-2">🚀</div>
+                            <div class="text-sm font-semibold">Digital Transformation</div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center text-xs text-gray-500 mb-3">
+                            <span>📅 8 Des 2024</span>
+                            <span class="mx-2">•</span>
+                            <span>⏱️ 9 min</span>
+                            <span class="mx-2">•</span>
+                            <span>👁️ 1.5K views</span>
+                        </div>
+                        <h2 class="text-xl font-bold mb-3 morph-text text-gray-900">Roadmap Digital Transformation 2024</h2>
+                        <p class="text-gray-600 text-sm mb-4">Langkah-langkah strategis untuk mentransformasi bisnis tradisional menjadi digital-first company...</p>
+                        
+                        <div class="flex flex-wrap gap-1 mb-4">
+                            <span class="tag bg-emerald-100 text-emerald-800">Digital Transform</span>
+                            <span class="tag bg-green-100 text-green-800">Strategy</span>
+                            <span class="tag bg-teal-100 text-teal-800">Innovation</span>
+                        </div>
+                        
+                        <button onclick="openArticle('digital-transformation')" class="morph-button text-blue-600 hover:text-blue-800 font-semibold text-sm">
+                            Baca Selengkapnya →
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Article 5: Big Data Analytics -->
+                <article class="article-card morph-card bg-white shadow-lg overflow-hidden" data-category="ai" data-keywords="big data analytics data science machine learning insights business intelligence">
+                    <div class="h-48 bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 bg-black/20"></div>
+                        <div class="text-white text-center relative z-10">
+                            <div class="text-4xl mb-2">📊</div>
+                            <div class="text-sm font-semibold">Data Analytics</div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center text-xs text-gray-500 mb-3">
+                            <span>📅 5 Des 2024</span>
+                            <span class="mx-2">•</span>
+                            <span>⏱️ 11 min</span>
+                            <span class="mx-2">•</span>
+                            <span>👁️ 1.9K views</span>
+                        </div>
+                        <h2 class="text-xl font-bold mb-3 morph-text text-gray-900">Big Data Analytics untuk Decision Making</h2>
+                        <p class="text-gray-600 text-sm mb-4">Mengubah data mentah menjadi insights actionable untuk pengambilan keputusan bisnis yang lebih baik...</p>
+                        
+                        <div class="flex flex-wrap gap-1 mb-4">
+                            <span class="tag bg-purple-100 text-purple-800">Big Data</span>
+                            <span class="tag bg-pink-100 text-pink-800">Analytics</span>
+                            <span class="tag bg-violet-100 text-violet-800">BI</span>
+                        </div>
+                        
+                        <button onclick="openArticle('big-data-analytics')" class="morph-button text-blue-600 hover:text-blue-800 font-semibold text-sm">
+                            Baca Selengkapnya →
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Article 6: DevOps Implementation -->
+                <article class="article-card morph-card bg-white shadow-lg overflow-hidden" data-category="digital" data-keywords="devops automation ci cd deployment development operations agile">
+                    <div class="h-48 bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 bg-black/20"></div>
+                        <div class="text-white text-center relative z-10">
+                            <div class="text-4xl mb-2">⚙️</div>
+                            <div class="text-sm font-semibold">DevOps</div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center text-xs text-gray-500 mb-3">
+                            <span>📅 3 Des 2024</span>
+                            <span class="mx-2">•</span>
+                            <span>⏱️ 13 min</span>
+                            <span class="mx-2">•</span>
+                            <span>👁️ 1.3K views</span>
+                        </div>
+                        <h2 class="text-xl font-bold mb-3 morph-text text-gray-900">Implementasi DevOps: Best Practices</h2>
+                        <p class="text-gray-600 text-sm mb-4">Panduan lengkap mengimplementasikan DevOps untuk meningkatkan kecepatan dan kualitas software delivery...</p>
+                        
+                        <div class="flex flex-wrap gap-1 mb-4">
+                            <span class="tag bg-orange-100 text-orange-800">DevOps</span>
+                            <span class="tag bg-red-100 text-red-800">Automation</span>
+                            <span class="tag bg-yellow-100 text-yellow-800">CI/CD</span>
+                        </div>
+                        
+                        <button onclick="openArticle('devops-implementation')" class="morph-button text-blue-600 hover:text-blue-800 font-semibold text-sm">
+                            Baca Selengkapnya →
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Article 7: IoT Solutions -->
+                <article class="article-card morph-card bg-white shadow-lg overflow-hidden" data-category="digital" data-keywords="iot internet of things sensor smart device automation industry 4.0">
+                    <div class="h-48 bg-gradient-to-br from-teal-500 to-cyan-600 flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 bg-black/20"></div>
+                        <div class="text-white text-center relative z-10">
+                            <div class="text-4xl mb-2">🌐</div>
+                            <div class="text-sm font-semibold">Internet of Things</div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center text-xs text-gray-500 mb-3">
+                            <span>📅 1 Des 2024</span>
+                            <span class="mx-2">•</span>
+                            <span>⏱️ 7 min</span>
+                            <span class="mx-2">•</span>
+                            <span>👁️ 1.1K views</span>
+                        </div>
+                        <h2 class="text-xl font-bold mb-3 morph-text text-gray-900">IoT Solutions untuk Smart Manufacturing</h2>
+                        <p class="text-gray-600 text-sm mb-4">Mengoptimalkan proses manufaktur dengan teknologi IoT untuk meningkatkan efisiensi dan mengurangi downtime...</p>
+                        
+                        <div class="flex flex-wrap gap-1 mb-4">
+                            <span class="tag bg-teal-100 text-teal-800">IoT</span>
+                            <span class="tag bg-cyan-100 text-cyan-800">Smart Manufacturing</span>
+                            <span class="tag bg-blue-100 text-blue-800">Industry 4.0</span>
+                        </div>
+                        
+                        <button onclick="openArticle('iot-solutions')" class="morph-button text-blue-600 hover:text-blue-800 font-semibold text-sm">
+                            Baca Selengkapnya →
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Article 8: Blockchain Technology -->
+                <article class="article-card morph-card bg-white shadow-lg overflow-hidden" data-category="security" data-keywords="blockchain cryptocurrency bitcoin ethereum smart contract decentralized security">
+                    <div class="h-48 bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 bg-black/20"></div>
+                        <div class="text-white text-center relative z-10">
+                            <div class="text-4xl mb-2">⛓️</div>
+                            <div class="text-sm font-semibold">Blockchain</div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center text-xs text-gray-500 mb-3">
+                            <span>📅 28 Nov 2024</span>
+                            <span class="mx-2">•</span>
+                            <span>⏱️ 14 min</span>
+                            <span class="mx-2">•</span>
+                            <span>👁️ 2.3K views</span>
+                        </div>
+                        <h2 class="text-xl font-bold mb-3 morph-text text-gray-900">Blockchain Beyond Cryptocurrency</h2>
+                        <p class="text-gray-600 text-sm mb-4">Eksplorasi aplikasi blockchain di luar cryptocurrency untuk supply chain, healthcare, dan digital identity...</p>
+                        
+                        <div class="flex flex-wrap gap-1 mb-4">
+                            <span class="tag bg-indigo-100 text-indigo-800">Blockchain</span>
+                            <span class="tag bg-purple-100 text-purple-800">Smart Contract</span>
+                            <span class="tag bg-violet-100 text-violet-800">DeFi</span>
+                        </div>
+                        
+                        <button onclick="openArticle('blockchain-technology')" class="morph-button text-blue-600 hover:text-blue-800 font-semibold text-sm">
+                            Baca Selengkapnya →
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Article 9: Remote Work Technology -->
+                <article class="article-card morph-card bg-white shadow-lg overflow-hidden" data-category="digital" data-keywords="remote work collaboration tools productivity digital workplace hybrid work">
+                    <div class="h-48 bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 bg-black/20"></div>
+                        <div class="text-white text-center relative z-10">
+                            <div class="text-4xl mb-2">💻</div>
+                            <div class="text-sm font-semibold">Remote Work</div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center text-xs text-gray-500 mb-3">
+                            <span>📅 25 Nov 2024</span>
+                            <span class="mx-2">•</span>
+                            <span>⏱️ 6 min</span>
+                            <span class="mx-2">•</span>
+                            <span>👁️ 1.7K views</span>
+                        </div>
+                        <h2 class="text-xl font-bold mb-3 morph-text text-gray-900">Teknologi untuk Remote Work yang Efektif</h2>
+                        <p class="text-gray-600 text-sm mb-4">Tools dan strategi teknologi untuk memaksimalkan produktivitas tim remote dan hybrid work environment...</p>
+                        
+                        <div class="flex flex-wrap gap-1 mb-4">
+                            <span class="tag bg-green-100 text-green-800">Remote Work</span>
+                            <span class="tag bg-emerald-100 text-emerald-800">Collaboration</span>
+                            <span class="tag bg-teal-100 text-teal-800">Productivity</span>
+                        </div>
+                        
+                        <button onclick="openArticle('remote-work-technology')" class="morph-button text-blue-600 hover:text-blue-800 font-semibold text-sm">
+                            Baca Selengkapnya →
+                        </button>
+                    </div>
+                </article>
+
+                <!-- NEW ARTICLES START HERE -->
+
+                <!-- Article 10: Quantum Computing -->
+                <article class="article-card morph-card bg-white shadow-lg overflow-hidden" data-category="ai" data-keywords="quantum computing qubits superposition entanglement quantum supremacy future technology">
+                    <div class="h-48 bg-gradient-to-br from-violet-500 to-purple-700 flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 bg-black/20"></div>
+                        <div class="text-white text-center relative z-10">
+                            <div class="text-4xl mb-2">⚛️</div>
+                            <div class="text-sm font-semibold">Quantum Computing</div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center text-xs text-gray-500 mb-3">
+                            <span>📅 22 Nov 2024</span>
+                            <span class="mx-2">•</span>
+                            <span>⏱️ 15 min</span>
+                            <span class="mx-2">•</span>
+                            <span>👁️ 890 views</span>
+                        </div>
+                        <h2 class="text-xl font-bold mb-3 morph-text text-gray-900">Quantum Computing: Revolusi Komputasi Masa Depan</h2>
+                        <p class="text-gray-600 text-sm mb-4">Memahami teknologi quantum computing dan potensi aplikasinya dalam cryptography, optimization, dan machine learning...</p>
+                        
+                        <div class="flex flex-wrap gap-1 mb-4">
+                            <span class="tag bg-violet-100 text-violet-800">Quantum</span>
+                            <span class="tag bg-purple-100 text-purple-800">Computing</span>
+                            <span class="tag bg-indigo-100 text-indigo-800">Future Tech</span>
+                        </div>
+                        
+                        <button onclick="openArticle('quantum-computing')" class="morph-button text-blue-600 hover:text-blue-800 font-semibold text-sm">
+                            Baca Selengkapnya →
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Article 11: 5G Technology -->
+                <article class="article-card morph-card bg-white shadow-lg overflow-hidden" data-category="mobile" data-keywords="5g network mobile connectivity edge computing latency bandwidth iot">
+                    <div class="h-48 bg-gradient-to-br from-pink-500 to-rose-600 flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 bg-black/20"></div>
+                        <div class="text-white text-center relative z-10">
+                            <div class="text-4xl mb-2">📡</div>
+                            <div class="text-sm font-semibold">5G Technology</div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center text-xs text-gray-500 mb-3">
+                            <span>📅 20 Nov 2024</span>
+                            <span class="mx-2">•</span>
+                            <span>⏱️ 9 min</span>
+                            <span class="mx-2">•</span>
+                            <span>👁️ 1.4K views</span>
+                        </div>
+                        <h2 class="text-xl font-bold mb-3 morph-text text-gray-900">5G dan Transformasi Konektivitas Digital</h2>
+                        <p class="text-gray-600 text-sm mb-4">Dampak teknologi 5G terhadap IoT, edge computing, dan aplikasi real-time yang membutuhkan latency rendah...</p>
+                        
+                        <div class="flex flex-wrap gap-1 mb-4">
+                            <span class="tag bg-pink-100 text-pink-800">5G</span>
+                            <span class="tag bg-rose-100 text-rose-800">Connectivity</span>
+                            <span class="tag bg-red-100 text-red-800">Mobile</span>
+                        </div>
+                        
+                        <button onclick="openArticle('5g-technology')" class="morph-button text-blue-600 hover:text-blue-800 font-semibold text-sm">
+                            Baca Selengkapnya →
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Article 12: Edge Computing -->
+                <article class="article-card morph-card bg-white shadow-lg overflow-hidden" data-category="cloud" data-keywords="edge computing distributed processing latency real-time data processing fog computing">
+                    <div class="h-48 bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 bg-black/20"></div>
+                        <div class="text-white text-center relative z-10">
+                            <div class="text-4xl mb-2">🔄</div>
+                            <div class="text-sm font-semibold">Edge Computing</div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center text-xs text-gray-500 mb-3">
+                            <span>📅 18 Nov 2024</span>
+                            <span class="mx-2">•</span>
+                            <span>⏱️ 11 min</span>
+                            <span class="mx-2">•</span>
+                            <span>👁️ 1.1K views</span>
+                        </div>
+                        <h2 class="text-xl font-bold mb-3 morph-text text-gray-900">Edge Computing: Komputasi di Ujung Jaringan</h2>
+                        <p class="text-gray-600 text-sm mb-4">Mengapa edge computing menjadi krusial untuk aplikasi IoT, autonomous vehicles, dan real-time analytics...</p>
+                        
+                        <div class="flex flex-wrap gap-1 mb-4">
+                            <span class="tag bg-amber-100 text-amber-800">Edge Computing</span>
+                            <span class="tag bg-orange-100 text-orange-800">Distributed</span>
+                            <span class="tag bg-yellow-100 text-yellow-800">Real-time</span>
+                        </div>
+                        
+                        <button onclick="openArticle('edge-computing')" class="morph-button text-blue-600 hover:text-blue-800 font-semibold text-sm">
+                            Baca Selengkapnya →
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Article 13: Augmented Reality -->
+                <article class="article-card morph-card bg-white shadow-lg overflow-hidden" data-category="mobile" data-keywords="augmented reality ar virtual reality vr mixed reality immersive technology metaverse">
+                    <div class="h-48 bg-gradient-to-br from-lime-500 to-green-600 flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 bg-black/20"></div>
+                        <div class="text-white text-center relative z-10">
+                            <div class="text-4xl mb-2">🥽</div>
+                            <div class="text-sm font-semibold">AR/VR Technology</div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center text-xs text-gray-500 mb-3">
+                            <span>📅 15 Nov 2024</span>
+                            <span class="mx-2">•</span>
+                            <span>⏱️ 12 min</span>
+                            <span class="mx-2">•</span>
+                            <span>👁️ 1.6K views</span>
+                        </div>
+                        <h2 class="text-xl font-bold mb-3 morph-text text-gray-900">AR/VR dalam Bisnis: Aplikasi Praktis</h2>
+                        <p class="text-gray-600 text-sm mb-4">Implementasi Augmented dan Virtual Reality untuk training, marketing, dan customer experience yang immersive...</p>
+                        
+                        <div class="flex flex-wrap gap-1 mb-4">
+                            <span class="tag bg-lime-100 text-lime-800">AR/VR</span>
+                            <span class="tag bg-green-100 text-green-800">Immersive</span>
+                            <span class="tag bg-emerald-100 text-emerald-800">Experience</span>
+                        </div>
+                        
+                        <button onclick="openArticle('ar-vr-business')" class="morph-button text-blue-600 hover:text-blue-800 font-semibold text-sm">
+                            Baca Selengkapnya →
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Article 14: Robotic Process Automation -->
+                <article class="article-card morph-card bg-white shadow-lg overflow-hidden" data-category="ai" data-keywords="rpa robotic process automation bot workflow automation business process">
+                    <div class="h-48 bg-gradient-to-br from-slate-500 to-gray-600 flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 bg-black/20"></div>
+                        <div class="text-white text-center relative z-10">
+                            <div class="text-4xl mb-2">🤖</div>
+                            <div class="text-sm font-semibold">RPA</div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center text-xs text-gray-500 mb-3">
+                            <span>📅 13 Nov 2024</span>
+                            <span class="mx-2">•</span>
+                            <span>⏱️ 8 min</span>
+                            <span class="mx-2">•</span>
+                            <span>👁️ 1.3K views</span>
+                        </div>
+                        <h2 class="text-xl font-bold mb-3 morph-text text-gray-900">RPA: Otomasi Proses Bisnis dengan Robot</h2>
+                        <p class="text-gray-600 text-sm mb-4">Mengimplementasikan Robotic Process Automation untuk mengotomasi tugas repetitif dan meningkatkan efisiensi...</p>
+                        
+                        <div class="flex flex-wrap gap-1 mb-4">
+                            <span class="tag bg-slate-100 text-slate-800">RPA</span>
+                            <span class="tag bg-gray-100 text-gray-800">Automation</span>
+                            <span class="tag bg-zinc-100 text-zinc-800">Process</span>
+                        </div>
+                        
+                        <button onclick="openArticle('rpa-automation')" class="morph-button text-blue-600 hover:text-blue-800 font-semibold text-sm">
+                            Baca Selengkapnya →
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Article 15: Microservices Architecture -->
+                <article class="article-card morph-card bg-white shadow-lg overflow-hidden" data-category="digital" data-keywords="microservices architecture containerization docker kubernetes scalability distributed systems">
+                    <div class="h-48 bg-gradient-to-br from-sky-500 to-blue-600 flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 bg-black/20"></div>
+                        <div class="text-white text-center relative z-10">
+                            <div class="text-4xl mb-2">🏗️</div>
+                            <div class="text-sm font-semibold">Microservices</div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center text-xs text-gray-500 mb-3">
+                            <span>📅 10 Nov 2024</span>
+                            <span class="mx-2">•</span>
+                            <span>⏱️ 14 min</span>
+                            <span class="mx-2">•</span>
+                            <span>👁️ 980 views</span>
+                        </div>
+                        <h2 class="text-xl font-bold mb-3 morph-text text-gray-900">Microservices: Arsitektur untuk Skalabilitas</h2>
+                        <p class="text-gray-600 text-sm mb-4">Membangun aplikasi dengan arsitektur microservices untuk fleksibilitas, skalabilitas, dan maintainability...</p>
+                        
+                        <div class="flex flex-wrap gap-1 mb-4">
+                            <span class="tag bg-sky-100 text-sky-800">Microservices</span>
+                            <span class="tag bg-blue-100 text-blue-800">Architecture</span>
+                            <span class="tag bg-indigo-100 text-indigo-800">Scalability</span>
+                        </div>
+                        
+                        <button onclick="openArticle('microservices-architecture')" class="morph-button text-blue-600 hover:text-blue-800 font-semibold text-sm">
+                            Baca Selengkapnya →
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Article 16: API Management -->
+                <article class="article-card morph-card bg-white shadow-lg overflow-hidden" data-category="digital" data-keywords="api management rest graphql integration middleware gateway security rate limiting">
+                    <div class="h-48 bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 bg-black/20"></div>
+                        <div class="text-white text-center relative z-10">
+                            <div class="text-4xl mb-2">🔗</div>
+                            <div class="text-sm font-semibold">API Management</div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center text-xs text-gray-500 mb-3">
+                            <span>📅 8 Nov 2024</span>
+                            <span class="mx-2">•</span>
+                            <span>⏱️ 10 min</span>
+                            <span class="mx-2">•</span>
+                            <span>👁️ 1.2K views</span>
+                        </div>
+                        <h2 class="text-xl font-bold mb-3 morph-text text-gray-900">API Management: Mengelola Integrasi Digital</h2>
+                        <p class="text-gray-600 text-sm mb-4">Best practices dalam mengelola API untuk integrasi sistem, keamanan, dan monitoring performa...</p>
+                        
+                        <div class="flex flex-wrap gap-1 mb-4">
+                            <span class="tag bg-emerald-100 text-emerald-800">API</span>
+                            <span class="tag bg-teal-100 text-teal-800">Integration</span>
+                            <span class="tag bg-green-100 text-green-800">Management</span>
+                        </div>
+                        
+                        <button onclick="openArticle('api-management')" class="morph-button text-blue-600 hover:text-blue-800 font-semibold text-sm">
+                            Baca Selengkapnya →
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Article 17: Low-Code Development -->
+                <article class="article-card morph-card bg-white shadow-lg overflow-hidden" data-category="mobile" data-keywords="low-code no-code development platform rapid application development citizen developer">
+                    <div class="h-48 bg-gradient-to-br from-fuchsia-500 to-pink-600 flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 bg-black/20"></div>
+                        <div class="text-white text-center relative z-10">
+                            <div class="text-4xl mb-2">🛠️</div>
+                            <div class="text-sm font-semibold">Low-Code Platform</div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center text-xs text-gray-500 mb-3">
+                            <span>📅 5 Nov 2024</span>
+                            <span class="mx-2">•</span>
+                            <span>⏱️ 7 min</span>
+                            <span class="mx-2">•</span>
+                            <span>👁️ 1.5K views</span>
+                        </div>
+                        <h2 class="text-xl font-bold mb-3 morph-text text-gray-900">Low-Code: Demokratisasi Pengembangan Aplikasi</h2>
+                        <p class="text-gray-600 text-sm mb-4">Platform low-code/no-code yang memungkinkan citizen developer membangun aplikasi tanpa coding kompleks...</p>
+                        
+                        <div class="flex flex-wrap gap-1 mb-4">
+                            <span class="tag bg-fuchsia-100 text-fuchsia-800">Low-Code</span>
+                            <span class="tag bg-pink-100 text-pink-800">RAD</span>
+                            <span class="tag bg-rose-100 text-rose-800">Development</span>
+                        </div>
+                        
+                        <button onclick="openArticle('low-code-development')" class="morph-button text-blue-600 hover:text-blue-800 font-semibold text-sm">
+                            Baca Selengkapnya →
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Article 18: Data Privacy & GDPR -->
+                <article class="article-card morph-card bg-white shadow-lg overflow-hidden" data-category="security" data-keywords="data privacy gdpr compliance personal data protection regulation privacy by design">
+                    <div class="h-48 bg-gradient-to-br from-red-500 to-pink-600 flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 bg-black/20"></div>
+                        <div class="text-white text-center relative z-10">
+                            <div class="text-4xl mb-2">🛡️</div>
+                            <div class="text-sm font-semibold">Data Privacy</div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center text-xs text-gray-500 mb-3">
+                            <span>📅 3 Nov 2024</span>
+                            <span class="mx-2">•</span>
+                            <span>⏱️ 13 min</span>
+                            <span class="mx-2">•</span>
+                            <span>👁️ 1.8K views</span>
+                        </div>
+                        <h2 class="text-xl font-bold mb-3 morph-text text-gray-900">Data Privacy & Compliance: Era GDPR</h2>
+                        <p class="text-gray-600 text-sm mb-4">Memahami regulasi perlindungan data personal dan implementasi privacy by design dalam sistem...</p>
+                        
+                        <div class="flex flex-wrap gap-1 mb-4">
+                            <span class="tag bg-red-100 text-red-800">Privacy</span>
+                            <span class="tag bg-pink-100 text-pink-800">GDPR</span>
+                            <span class="tag bg-rose-100 text-rose-800">Compliance</span>
+                        </div>
+                        
+                        <button onclick="openArticle('data-privacy-gdpr')" class="morph-button text-blue-600 hover:text-blue-800 font-semibold text-sm">
+                            Baca Selengkapnya →
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Article 19: Serverless Computing -->
+                <article class="article-card morph-card bg-white shadow-lg overflow-hidden" data-category="cloud" data-keywords="serverless computing lambda functions faas event-driven architecture cloud native">
+                    <div class="h-48 bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 bg-black/20"></div>
+                        <div class="text-white text-center relative z-10">
+                            <div class="text-4xl mb-2">⚡</div>
+                            <div class="text-sm font-semibold">Serverless</div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center text-xs text-gray-500 mb-3">
+                            <span>📅 1 Nov 2024</span>
+                            <span class="mx-2">•</span>
+                            <span>⏱️ 9 min</span>
+                            <span class="mx-2">•</span>
+                            <span>👁️ 1.1K views</span>
+                        </div>
+                        <h2 class="text-xl font-bold mb-3 morph-text text-gray-900">Serverless Computing: Komputasi Tanpa Server</h2>
+                        <p class="text-gray-600 text-sm mb-4">Memahami konsep serverless dan Function-as-a-Service untuk aplikasi yang scalable dan cost-effective...</p>
+                        
+                        <div class="flex flex-wrap gap-1 mb-4">
+                            <span class="tag bg-violet-100 text-violet-800">Serverless</span>
+                            <span class="tag bg-indigo-100 text-indigo-800">FaaS</span>
+                            <span class="tag bg-purple-100 text-purple-800">Cloud Native</span>
+                        </div>
+                        
+                        <button onclick="openArticle('serverless-computing')" class="morph-button text-blue-600 hover:text-blue-800 font-semibold text-sm">
+                            Baca Selengkapnya →
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Article 20: Digital Twin Technology -->
+                <article class="article-card morph-card bg-white shadow-lg overflow-hidden" data-category="digital" data-keywords="digital twin simulation modeling iot sensors predictive maintenance virtual replica">
+                    <div class="h-48 bg-gradient-to-br from-cyan-500 to-teal-600 flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 bg-black/20"></div>
+                        <div class="text-white text-center relative z-10">
+                            <div class="text-4xl mb-2">👥</div>
+                            <div class="text-sm font-semibold">Digital Twin</div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center text-xs text-gray-500 mb-3">
+                            <span>📅 29 Okt 2024</span>
+                            <span class="mx-2">•</span>
+                            <span>⏱️ 11 min</span>
+                            <span class="mx-2">•</span>
+                            <span>👁️ 950 views</span>
+                        </div>
+                        <h2 class="text-xl font-bold mb-3 morph-text text-gray-900">Digital Twin: Replika Virtual untuk Optimasi</h2>
+                        <p class="text-gray-600 text-sm mb-4">Teknologi digital twin untuk simulasi, monitoring, dan optimasi aset fisik dalam industri manufaktur...</p>
+                        
+                        <div class="flex flex-wrap gap-1 mb-4">
+                            <span class="tag bg-cyan-100 text-cyan-800">Digital Twin</span>
+                            <span class="tag bg-teal-100 text-teal-800">Simulation</span>
+                            <span class="tag bg-blue-100 text-blue-800">Modeling</span>
+                        </div>
+                        
+                        <button onclick="openArticle('digital-twin-technology')" class="morph-button text-blue-600 hover:text-blue-800 font-semibold text-sm">
+                            Baca Selengkapnya →
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Article 21: Progressive Web Apps -->
+                <article class="article-card morph-card bg-white shadow-lg overflow-hidden" data-category="mobile" data-keywords="progressive web apps pwa mobile web service worker offline first responsive design">
+                    <div class="h-48 bg-gradient-to-br from-green-500 to-lime-600 flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 bg-black/20"></div>
+                        <div class="text-white text-center relative z-10">
+                            <div class="text-4xl mb-2">📱</div>
+                            <div class="text-sm font-semibold">Progressive Web Apps</div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center text-xs text-gray-500 mb-3">
+                            <span>📅 27 Okt 2024</span>
+                            <span class="mx-2">•</span>
+                            <span>⏱️ 8 min</span>
+                            <span class="mx-2">•</span>
+                            <span>👁️ 1.4K views</span>
+                        </div>
+                        <h2 class="text-xl font-bold mb-3 morph-text text-gray-900">PWA: Aplikasi Web yang Seperti Native</h2>
+                        <p class="text-gray-600 text-sm mb-4">Progressive Web Apps yang menggabungkan kelebihan web dan mobile app untuk user experience yang optimal...</p>
+                        
+                        <div class="flex flex-wrap gap-1 mb-4">
+                            <span class="tag bg-green-100 text-green-800">PWA</span>
+                            <span class="tag bg-lime-100 text-lime-800">Mobile Web</span>
+                            <span class="tag bg-emerald-100 text-emerald-800">Offline</span>
+                        </div>
+                        
+                        <button onclick="openArticle('progressive-web-apps')" class="morph-button text-blue-600 hover:text-blue-800 font-semibold text-sm">
+                            Baca Selengkapnya →
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Article 22: Machine Learning Operations -->
+                <article class="article-card morph-card bg-white shadow-lg overflow-hidden" data-category="ai" data-keywords="mlops machine learning operations model deployment monitoring data pipeline automation">
+                    <div class="h-48 bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 bg-black/20"></div>
+                        <div class="text-white text-center relative z-10">
+                            <div class="text-4xl mb-2">🔄</div>
+                            <div class="text-sm font-semibold">MLOps</div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center text-xs text-gray-500 mb-3">
+                            <span>📅 25 Okt 2024</span>
+                            <span class="mx-2">•</span>
+                            <span>⏱️ 12 min</span>
+                            <span class="mx-2">•</span>
+                            <span>👁️ 1.0K views</span>
+                        </div>
+                        <h2 class="text-xl font-bold mb-3 morph-text text-gray-900">MLOps: Operasionalisasi Machine Learning</h2>
+                        <p class="text-gray-600 text-sm mb-4">Best practices dalam deployment, monitoring, dan maintenance model machine learning di production environment...</p>
+                        
+                        <div class="flex flex-wrap gap-1 mb-4">
+                            <span class="tag bg-orange-100 text-orange-800">MLOps</span>
+                            <span class="tag bg-amber-100 text-amber-800">ML Pipeline</span>
+                            <span class="tag bg-yellow-100 text-yellow-800">Deployment</span>
+                        </div>
+                        
+                        <button onclick="openArticle('mlops-operations')" class="morph-button text-blue-600 hover:text-blue-800 font-semibold text-sm">
+                            Baca Selengkapnya →
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Article 23: Zero Trust Security -->
+                <article class="article-card morph-card bg-white shadow-lg overflow-hidden" data-category="security" data-keywords="zero trust security network access control identity verification never trust always verify">
+                    <div class="h-48 bg-gradient-to-br from-gray-500 to-slate-600 flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 bg-black/20"></div>
+                        <div class="text-white text-center relative z-10">
+                            <div class="text-4xl mb-2">🚫</div>
+                            <div class="text-sm font-semibold">Zero Trust</div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center text-xs text-gray-500 mb-3">
+                            <span>📅 22 Okt 2024</span>
+                            <span class="mx-2">•</span>
+                            <span>⏱️ 10 min</span>
+                            <span class="mx-2">•</span>
+                            <span>👁️ 1.6K views</span>
+                        </div>
+                        <h2 class="text-xl font-bold mb-3 morph-text text-gray-900">Zero Trust: Model Keamanan "Never Trust"</h2>
+                        <p class="text-gray-600 text-sm mb-4">Implementasi zero trust security model yang tidak mempercayai siapapun secara default...</p>
+                        
+                        <div class="flex flex-wrap gap-1 mb-4">
+                            <span class="tag bg-gray-100 text-gray-800">Zero Trust</span>
+                            <span class="tag bg-slate-100 text-slate-800">Security Model</span>
+                            <span class="tag bg-zinc-100 text-zinc-800">Access Control</span>
+                        </div>
+                        
+                        <button onclick="openArticle('zero-trust-security')" class="morph-button text-blue-600 hover:text-blue-800 font-semibold text-sm">
+                            Baca Selengkapnya →
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Article 24: Kubernetes Container Orchestration -->
+                <article class="article-card morph-card bg-white shadow-lg overflow-hidden" data-category="cloud" data-keywords="kubernetes container orchestration docker microservices deployment scaling pod cluster">
+                    <div class="h-48 bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 bg-black/20"></div>
+                        <div class="text-white text-center relative z-10">
+                            <div class="text-4xl mb-2">🚢</div>
+                            <div class="text-sm font-semibold">Kubernetes</div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center text-xs text-gray-500 mb-3">
+                            <span>📅 20 Okt 2024</span>
+                            <span class="mx-2">•</span>
+                            <span>⏱️ 15 min</span>
+                            <span class="mx-2">•</span>
+                            <span>👁️ 1.2K views</span>
+                        </div>
+                        <h2 class="text-xl font-bold mb-3 morph-text text-gray-900">Kubernetes: Orkestrasi Container di Scale</h2>
+                        <p class="text-gray-600 text-sm mb-4">Mengelola dan mengotomasi deployment aplikasi containerized dengan Kubernetes untuk production environment...</p>
+                        
+                        <div class="flex flex-wrap gap-1 mb-4">
+                            <span class="tag bg-blue-100 text-blue-800">Kubernetes</span>
+                            <span class="tag bg-indigo-100 text-indigo-800">Container</span>
+                            <span class="tag bg-purple-100 text-purple-800">Orchestration</span>
+                        </div>
+                        
+                        <button onclick="openArticle('kubernetes-orchestration')" class="morph-button text-blue-600 hover:text-blue-800 font-semibold text-sm">
+                            Baca Selengkapnya →
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Article 25: Natural Language Processing -->
+                <article class="article-card morph-card bg-white shadow-lg overflow-hidden" data-category="ai" data-keywords="nlp natural language processing chatbot sentiment analysis text mining language model">
+                    <div class="h-48 bg-gradient-to-br from-rose-500 to-pink-600 flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 bg-black/20"></div>
+                        <div class="text-white text-center relative z-10">
+                            <div class="text-4xl mb-2">💬</div>
+                            <div class="text-sm font-semibold">NLP</div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center text-xs text-gray-500 mb-3">
+                            <span>📅 18 Okt 2024</span>
+                            <span class="mx-2">•</span>
+                            <span>⏱️ 11 min</span>
+                            <span class="mx-2">•</span>
+                            <span>👁️ 1.3K views</span>
+                        </div>
+                        <h2 class="text-xl font-bold mb-3 morph-text text-gray-900">NLP: AI yang Memahami Bahasa Manusia</h2>
+                        <p class="text-gray-600 text-sm mb-4">Aplikasi Natural Language Processing untuk chatbot, sentiment analysis, dan automated content generation...</p>
+                        
+                        <div class="flex flex-wrap gap-1 mb-4">
+                            <span class="tag bg-rose-100 text-rose-800">NLP</span>
+                            <span class="tag bg-pink-100 text-pink-800">Language Model</span>
+                            <span class="tag bg-red-100 text-red-800">Text Analysis</span>
+                        </div>
+                        
+                        <button onclick="openArticle('nlp-processing')" class="morph-button text-blue-600 hover:text-blue-800 font-semibold text-sm">
+                            Baca Selengkapnya →
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Article 26: GraphQL API -->
+                <article class="article-card morph-card bg-white shadow-lg overflow-hidden" data-category="mobile" data-keywords="graphql api query language rest alternative flexible data fetching schema">
+                    <div class="h-48 bg-gradient-to-br from-purple-500 to-violet-600 flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 bg-black/20"></div>
+                        <div class="text-white text-center relative z-10">
+                            <div class="text-4xl mb-2">🔗</div>
+                            <div class="text-sm font-semibold">GraphQL</div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center text-xs text-gray-500 mb-3">
+                            <span>📅 15 Okt 2024</span>
+                            <span class="mx-2">•</span>
+                            <span>⏱️ 9 min</span>
+                            <span class="mx-2">•</span>
+                            <span>👁️ 1.1K views</span>
+                        </div>
+                        <h2 class="text-xl font-bold mb-3 morph-text text-gray-900">GraphQL: Query Language untuk API Modern</h2>
+                        <p class="text-gray-600 text-sm mb-4">Mengapa GraphQL menjadi alternatif REST API yang lebih fleksibel untuk aplikasi modern...</p>
+                        
+                        <div class="flex flex-wrap gap-1 mb-4">
+                            <span class="tag bg-purple-100 text-purple-800">GraphQL</span>
+                            <span class="tag bg-violet-100 text-violet-800">Query Language</span>
+                            <span class="tag bg-indigo-100 text-indigo-800">API</span>
+                        </div>
+                        
+                        <button onclick="openArticle('graphql-api')" class="morph-button text-blue-600 hover:text-blue-800 font-semibold text-sm">
+                            Baca Selengkapnya →
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Article 27: Cybersecurity Mesh -->
+                <article class="article-card morph-card bg-white shadow-lg overflow-hidden" data-category="security" data-keywords="cybersecurity mesh distributed security perimeter-less security identity-centric protection">
+                    <div class="h-48 bg-gradient-to-br from-red-500 to-orange-600 flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 bg-black/20"></div>
+                        <div class="text-white text-center relative z-10">
+                            <div class="text-4xl mb-2">🕸️</div>
+                            <div class="text-sm font-semibold">Security Mesh</div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center text-xs text-gray-500 mb-3">
+                            <span>📅 13 Okt 2024</span>
+                            <span class="mx-2">•</span>
+                            <span>⏱️ 12 min</span>
+                            <span class="mx-2">•</span>
+                            <span>👁️ 890 views</span>
+                        </div>
+                        <h2 class="text-xl font-bold mb-3 morph-text text-gray-900">Cybersecurity Mesh: Keamanan Terdistribusi</h2>
+                        <p class="text-gray-600 text-sm mb-4">Arsitektur keamanan mesh yang memberikan perlindungan identity-centric di era distributed computing...</p>
+                        
+                        <div class="flex flex-wrap gap-1 mb-4">
+                            <span class="tag bg-red-100 text-red-800">Security Mesh</span>
+                            <span class="tag bg-orange-100 text-orange-800">Distributed</span>
+                            <span class="tag bg-yellow-100 text-yellow-800">Identity-Centric</span>
+                        </div>
+                        
+                        <button onclick="openArticle('cybersecurity-mesh')" class="morph-button text-blue-600 hover:text-blue-800 font-semibold text-sm">
+                            Baca Selengkapnya →
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Article 28: Web3 & Decentralized Internet -->
+                <article class="article-card morph-card bg-white shadow-lg overflow-hidden" data-category="security" data-keywords="web3 decentralized internet blockchain dapp smart contract cryptocurrency nft">
+                    <div class="h-48 bg-gradient-to-br from-indigo-500 to-blue-600 flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 bg-black/20"></div>
+                        <div class="text-white text-center relative z-10">
+                            <div class="text-4xl mb-2">🌐</div>
+                            <div class="text-sm font-semibold">Web3</div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center text-xs text-gray-500 mb-3">
+                            <span>📅 10 Okt 2024</span>
+                            <span class="mx-2">•</span>
+                            <span>⏱️ 14 min</span>
+                            <span class="mx-2">•</span>
+                            <span>👁️ 1.7K views</span>
+                        </div>
+                        <h2 class="text-xl font-bold mb-3 morph-text text-gray-900">Web3: Era Internet Terdesentralisasi</h2>
+                        <p class="text-gray-600 text-sm mb-4">Memahami konsep Web3, DApps, dan bagaimana blockchain mengubah cara kita berinteraksi di internet...</p>
+                        
+                        <div class="flex flex-wrap gap-1 mb-4">
+                            <span class="tag bg-indigo-100 text-indigo-800">Web3</span>
+                            <span class="tag bg-blue-100 text-blue-800">Decentralized</span>
+                            <span class="tag bg-purple-100 text-purple-800">DApps</span>
+                        </div>
+                        
+                        <button onclick="openArticle('web3-decentralized')" class="morph-button text-blue-600 hover:text-blue-800 font-semibold text-sm">
+                            Baca Selengkapnya →
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Article 29: Computer Vision -->
+                <article class="article-card morph-card bg-white shadow-lg overflow-hidden" data-category="ai" data-keywords="computer vision image recognition object detection facial recognition opencv deep learning">
+                    <div class="h-48 bg-gradient-to-br from-teal-500 to-green-600 flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 bg-black/20"></div>
+                        <div class="text-white text-center relative z-10">
+                            <div class="text-4xl mb-2">👁️</div>
+                            <div class="text-sm font-semibold">Computer Vision</div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center text-xs text-gray-500 mb-3">
+                            <span>📅 8 Okt 2024</span>
+                            <span class="mx-2">•</span>
+                            <span>⏱️ 13 min</span>
+                            <span class="mx-2">•</span>
+                            <span>👁️ 1.4K views</span>
+                        </div>
+                        <h2 class="text-xl font-bold mb-3 morph-text text-gray-900">Computer Vision: AI yang Dapat "Melihat"</h2>
+                        <p class="text-gray-600 text-sm mb-4">Aplikasi computer vision untuk object detection, facial recognition, dan quality control dalam industri...</p>
+                        
+                        <div class="flex flex-wrap gap-1 mb-4">
+                            <span class="tag bg-teal-100 text-teal-800">Computer Vision</span>
+                            <span class="tag bg-green-100 text-green-800">Image Recognition</span>
+                            <span class="tag bg-emerald-100 text-emerald-800">Deep Learning</span>
+                        </div>
+                        
+                        <button onclick="openArticle('computer-vision')" class="morph-button text-blue-600 hover:text-blue-800 font-semibold text-sm">
+                            Baca Selengkapnya →
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Article 30: Multi-Cloud Strategy -->
+                <article class="article-card morph-card bg-white shadow-lg overflow-hidden" data-category="cloud" data-keywords="multi-cloud strategy hybrid cloud vendor lock-in cloud management disaster recovery">
+                    <div class="h-48 bg-gradient-to-br from-sky-500 to-cyan-600 flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 bg-black/20"></div>
+                        <div class="text-white text-center relative z-10">
+                            <div class="text-4xl mb-2">☁️</div>
+                            <div class="text-sm font-semibold">Multi-Cloud</div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center text-xs text-gray-500 mb-3">
+                            <span>📅 5 Okt 2024</span>
+                            <span class="mx-2">•</span>
+                            <span>⏱️ 10 min</span>
+                            <span class="mx-2">•</span>
+                            <span>👁️ 1.2K views</span>
+                        </div>
+                        <h2 class="text-xl font-bold mb-3 morph-text text-gray-900">Multi-Cloud Strategy: Menghindari Vendor Lock-in</h2>
+                        <p class="text-gray-600 text-sm mb-4">Strategi multi-cloud untuk fleksibilitas, redundancy, dan optimasi cost dengan multiple cloud providers...</p>
+                        
+                        <div class="flex flex-wrap gap-1 mb-4">
+                            <span class="tag bg-sky-100 text-sky-800">Multi-Cloud</span>
+                            <span class="tag bg-cyan-100 text-cyan-800">Strategy</span>
+                            <span class="tag bg-blue-100 text-blue-800">Hybrid</span>
+                        </div>
+                        
+                        <button onclick="openArticle('multi-cloud-strategy')" class="morph-button text-blue-600 hover:text-blue-800 font-semibold text-sm">
+                            Baca Selengkapnya →
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Article 31: Sustainable IT -->
+                <article class="article-card morph-card bg-white shadow-lg overflow-hidden" data-category="digital" data-keywords="sustainable it green computing carbon footprint energy efficiency eco-friendly technology">
+                    <div class="h-48 bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 bg-black/20"></div>
+                        <div class="text-white text-center relative z-10">
+                            <div class="text-4xl mb-2">🌱</div>
+                            <div class="text-sm font-semibold">Sustainable IT</div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center text-xs text-gray-500 mb-3">
+                            <span>📅 3 Okt 2024</span>
+                            <span class="mx-2">•</span>
+                            <span>⏱️ 8 min</span>
+                            <span class="mx-2">•</span>
+                            <span>👁️ 980 views</span>
+                        </div>
+                        <h2 class="text-xl font-bold mb-3 morph-text text-gray-900">Sustainable IT: Teknologi Ramah Lingkungan</h2>
+                        <p class="text-gray-600 text-sm mb-4">Implementasi green computing dan sustainable IT practices untuk mengurangi carbon footprint teknologi...</p>
+                        
+                        <div class="flex flex-wrap gap-1 mb-4">
+                            <span class="tag bg-green-100 text-green-800">Sustainable IT</span>
+                            <span class="tag bg-emerald-100 text-emerald-800">Green Computing</span>
+                            <span class="tag bg-teal-100 text-teal-800">Eco-Friendly</span>
+                        </div>
+                        
+                        <button onclick="openArticle('sustainable-it')" class="morph-button text-blue-600 hover:text-blue-800 font-semibold text-sm">
+                            Baca Selengkapnya →
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Article 32: Autonomous Systems -->
+                <article class="article-card morph-card bg-white shadow-lg overflow-hidden" data-category="ai" data-keywords="autonomous systems self-driving cars robotics automation artificial intelligence sensors">
+                    <div class="h-48 bg-gradient-to-br from-slate-500 to-gray-600 flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 bg-black/20"></div>
+                        <div class="text-white text-center relative z-10">
+                            <div class="text-4xl mb-2">🚗</div>
+                            <div class="text-sm font-semibold">Autonomous Systems</div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center text-xs text-gray-500 mb-3">
+                            <span>📅 1 Okt 2024</span>
+                            <span class="mx-2">•</span>
+                            <span>⏱️ 16 min</span>
+                            <span class="mx-2">•</span>
+                            <span>👁️ 1.5K views</span>
+                        </div>
+                        <h2 class="text-xl font-bold mb-3 morph-text text-gray-900">Autonomous Systems: Teknologi yang Mandiri</h2>
+                        <p class="text-gray-600 text-sm mb-4">Perkembangan sistem otonom dari self-driving cars hingga autonomous robots dalam berbagai industri...</p>
+                        
+                        <div class="flex flex-wrap gap-1 mb-4">
+                            <span class="tag bg-slate-100 text-slate-800">Autonomous</span>
+                            <span class="tag bg-gray-100 text-gray-800">Self-Driving</span>
+                            <span class="tag bg-zinc-100 text-zinc-800">Robotics</span>
+                        </div>
+                        
+                        <button onclick="openArticle('autonomous-systems')" class="morph-button text-blue-600 hover:text-blue-800 font-semibold text-sm">
+                            Baca Selengkapnya →
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Article 33: Biometric Authentication -->
+                <article class="article-card morph-card bg-white shadow-lg overflow-hidden" data-category="security" data-keywords="biometric authentication fingerprint facial recognition iris scan voice recognition security">
+                    <div class="h-48 bg-gradient-to-br from-amber-500 to-yellow-600 flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 bg-black/20"></div>
+                        <div class="text-white text-center relative z-10">
+                            <div class="text-4xl mb-2">👆</div>
+                            <div class="text-sm font-semibold">Biometric Auth</div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center text-xs text-gray-500 mb-3">
+                            <span>📅 28 Sep 2024</span>
+                            <span class="mx-2">•</span>
+                            <span>⏱️ 7 min</span>
+                            <span class="mx-2">•</span>
+                            <span>👁️ 1.3K views</span>
+                        </div>
+                        <h2 class="text-xl font-bold mb-3 morph-text text-gray-900">Biometric Authentication: Keamanan Personal</h2>
+                        <p class="text-gray-600 text-sm mb-4">Implementasi autentikasi biometrik untuk keamanan yang lebih personal dan user-friendly...</p>
+                        
+                        <div class="flex flex-wrap gap-1 mb-4">
+                            <span class="tag bg-amber-100 text-amber-800">Biometric</span>
+                            <span class="tag bg-yellow-100 text-yellow-800">Authentication</span>
+                            <span class="tag bg-orange-100 text-orange-800">Security</span>
+                        </div>
+                        
+                        <button onclick="openArticle('biometric-authentication')" class="morph-button text-blue-600 hover:text-blue-800 font-semibold text-sm">
+                            Baca Selengkapnya →
+                        </button>
+                    </div>
+                </article>
+
+            </div>
+            
+            <!-- No Results Message -->
+            <div id="noResults" class="hidden text-center py-16">
+                <div class="text-6xl mb-4">🔍</div>
+                <h3 class="text-2xl font-bold text-gray-900 mb-4">Artikel Tidak Ditemukan</h3>
+                <p class="text-gray-600 mb-6">Coba gunakan kata kunci yang berbeda atau jelajahi kategori lainnya</p>
+                <button onclick="clearSearch()" class="morph-button bg-blue-600 text-white px-6 py-3">
+                    Lihat Semua Artikel
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="py-16 gradient-bg">
+        <div class="container mx-auto px-6 text-center">
+            <div class="max-w-2xl mx-auto">
+                <h2 class="text-3xl font-bold text-white mb-4">Dapatkan Update Terbaru</h2>
+                <p class="text-white/90 mb-8">Berlangganan newsletter kami untuk mendapatkan artikel terbaru tentang teknologi dan digital transformation</p>
+                
+                <form class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto" onsubmit="subscribeNewsletter(event)">
+                    <input 
+                        type="email" 
+                        placeholder="Email Anda" 
+                        required
+                        class="flex-1 px-6 py-3 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-white/50"
+                    >
+                    <button type="submit" class="morph-button bg-white text-purple-600 px-8 py-3 font-semibold">
+                        Berlangganan
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">ClueForIT</h3>
+                    <p class="text-gray-400 mb-4">Your Partner for Implementing Technology</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-blue-400">📧</a>
+                        <a href="#" class="text-gray-400 hover:text-blue-400">💬</a>
+                        <a href="#" class="text-gray-400 hover:text-blue-400">🌐</a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Layanan</h4>
+                    <ul class="space-y-2">
+                        <li><a href="index.html#services" class="text-gray-400 hover:text-white">IT Managed Services</a></li>
+                        <li><a href="index.html#services" class="text-gray-400 hover:text-white">Digital Transformation</a></li>
+                        <li><a href="index.html#services" class="text-gray-400 hover:text-white">Cyber Security</a></li>
+                        <li><a href="index.html#services" class="text-gray-400 hover:text-white">Cloud Solutions</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Perusahaan</h4>
+                    <ul class="space-y-2">
+                        <li><a href="index.html#about" class="text-gray-400 hover:text-white">Tentang Kami</a></li>
+                        <li><a href="index.html#portfolio" class="text-gray-400 hover:text-white">Portfolio</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Blog</a></li>
+                        <li><a href="index.html#contact" class="text-gray-400 hover:text-white">Kontak</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Kontak</h4>
+                    <ul class="space-y-2">
+                        <li class="text-gray-400">📧 realboxofme@gmail.com</li>
+                        <li class="text-gray-400">💬 0897 232 5030</li>
+                        <li class="text-gray-400">📍 Gading Serpong, Tangerang</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center">
+                <p class="text-gray-400">&copy; 2024 ClueForIT. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Article Modal -->
+    <div id="articleModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden shadow-2xl">
+            <div id="modalContent">
+                <!-- Content will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Loading Screen Management
+        window.addEventListener('load', function() {
+            const loadingScreen = document.getElementById('loadingScreen');
+            
+            // Hide loading screen after minimum 2 seconds
+            setTimeout(() => {
+                loadingScreen.style.opacity = '0';
+                setTimeout(() => {
+                    loadingScreen.style.display = 'none';
+                }, 500);
+            }, 2000);
+        });
+
+        // Mobile Menu Toggle
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            const hamburgerIcon = document.getElementById('hamburgerIcon');
+            
+            if (mobileMenu.classList.contains('hidden')) {
+                mobileMenu.classList.remove('hidden');
+                hamburgerIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>';
+            } else {
+                mobileMenu.classList.add('hidden');
+                hamburgerIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>';
+            }
+        }
+
+        // Search Articles
+        function searchArticles() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const articles = document.querySelectorAll('.article-card');
+            const noResults = document.getElementById('noResults');
+            let visibleCount = 0;
+
+            articles.forEach(article => {
+                const keywords = article.dataset.keywords.toLowerCase();
+                const title = article.querySelector('h2').textContent.toLowerCase();
+                const content = article.querySelector('p').textContent.toLowerCase();
+                
+                if (keywords.includes(searchTerm) || title.includes(searchTerm) || content.includes(searchTerm)) {
+                    article.style.display = 'block';
+                    visibleCount++;
+                    
+                    // Highlight search terms
+                    if (searchTerm) {
+                        highlightSearchTerm(article, searchTerm);
+                    }
+                } else {
+                    article.style.display = 'none';
+                }
+            });
+
+            if (visibleCount === 0 && searchTerm) {
+                noResults.classList.remove('hidden');
+            } else {
+                noResults.classList.add('hidden');
+            }
+        }
+
+        // Highlight search terms
+        function highlightSearchTerm(article, term) {
+            const title = article.querySelector('h2');
+            const content = article.querySelector('p');
+            
+            [title, content].forEach(element => {
+                const text = element.textContent;
+                const regex = new RegExp(`(${term})`, 'gi');
+                element.innerHTML = text.replace(regex, '<span class="search-highlight">$1</span>');
+            });
+        }
+
+        // Filter by Category
+        function filterByCategory(category) {
+            const articles = document.querySelectorAll('.article-card');
+            const buttons = document.querySelectorAll('.category-filter');
+            const noResults = document.getElementById('noResults');
+            let visibleCount = 0;
+
+            // Update active button
+            buttons.forEach(btn => {
+                btn.classList.remove('active', 'bg-white/20');
+                btn.classList.add('bg-white/10');
+            });
+            event.target.classList.add('active', 'bg-white/20');
+            event.target.classList.remove('bg-white/10');
+
+            // Filter articles
+            articles.forEach(article => {
+                if (category === 'all' || article.dataset.category === category) {
+                    article.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    article.style.display = 'none';
+                }
+            });
+
+            if (visibleCount === 0) {
+                noResults.classList.remove('hidden');
+            } else {
+                noResults.classList.add('hidden');
+            }
+
+            // Clear search
+            document.getElementById('searchInput').value = '';
+        }
+
+        // Clear Search
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            const articles = document.querySelectorAll('.article-card');
+            articles.forEach(article => {
+                article.style.display = 'block';
+            });
+            document.getElementById('noResults').classList.add('hidden');
+            
+            // Reset to show all
+            filterByCategory('all');
+        }
+
+        // Article Content Database (Extended with new articles)
+        const articleContent = {
+            'ai-implementation': {
+                title: 'Implementasi AI dalam Bisnis 2024: Panduan Lengkap',
+                content: `
+                    <h3>Mengapa AI Penting untuk Bisnis Modern?</h3>
+                    <p>Artificial Intelligence (AI) telah menjadi game-changer dalam dunia bisnis. Perusahaan yang mengadopsi AI melaporkan peningkatan efisiensi operasional hingga 40% dan pengurangan biaya operasional hingga 30%.</p>
+                    
+                    <h3>5 Area Implementasi AI yang Paling Efektif</h3>
+                    <ul>
+                        <li><strong>Customer Service:</strong> Chatbot AI dapat menangani 80% pertanyaan pelanggan secara otomatis</li>
+                        <li><strong>Predictive Analytics:</strong> Prediksi demand dan trend pasar dengan akurasi tinggi</li>
+                        <li><strong>Process Automation:</strong> Otomasi tugas-tugas repetitif dan time-consuming</li>
+                        <li><strong>Quality Control:</strong> Deteksi defect produk dengan computer vision</li>
+                        <li><strong>Personalization:</strong> Rekomendasi produk yang dipersonalisasi untuk setiap customer</li>
+                    </ul>
+                    
+                    <h3>Langkah-langkah Implementasi AI</h3>
+                    <p>Implementasi AI yang sukses memerlukan pendekatan yang terstruktur:</p>
+                    <ul>
+                        <li>Identifikasi use case yang memberikan ROI tertinggi</li>
+                        <li>Persiapan data yang berkualitas dan terstruktur</li>
+                        <li>Pemilihan teknologi dan platform yang tepat</li>
+                        <li>Training tim internal dan change management</li>
+                        <li>Pilot project dan iterative improvement</li>
+                    </ul>
+                `
+            },
+            'quantum-computing': {
+                title: 'Quantum Computing: Revolusi Komputasi Masa Depan',
+                content: `
+                    <h3>Apa itu Quantum Computing?</h3>
+                    <p>Quantum computing menggunakan prinsip mekanika kuantum seperti superposition dan entanglement untuk memproses informasi dengan cara yang tidak mungkin dilakukan komputer klasik.</p>
+                    
+                    <h3>Keunggulan Quantum Computing</h3>
+                    <ul>
+                        <li><strong>Exponential Speedup:</strong> Dapat menyelesaikan masalah kompleks dalam waktu yang jauh lebih singkat</li>
+                        <li><strong>Parallel Processing:</strong> Kemampuan memproses multiple states secara bersamaan</li>
+                        <li><strong>Cryptography Breaking:</strong> Potensi memecahkan enkripsi yang saat ini dianggap aman</li>
+                    </ul>
+                    
+                    <h3>Aplikasi Praktis</h3>
+                    <p>Quantum computing memiliki potensi besar dalam berbagai bidang:</p>
+                    <ul>
+                        <li>Drug discovery dan molecular modeling</li>
+                        <li>Financial modeling dan risk analysis</li>
+                        <li>Supply chain optimization</li>
+                        <li>Machine learning acceleration</li>
+                    </ul>
+                `
+            },
+            '5g-technology': {
+                title: '5G dan Transformasi Konektivitas Digital',
+                content: `
+                    <h3>Revolusi 5G</h3>
+                    <p>Teknologi 5G menawarkan kecepatan hingga 100x lebih cepat dari 4G dengan latency ultra-rendah di bawah 1ms, membuka peluang aplikasi real-time yang sebelumnya tidak mungkin.</p>
+                    
+                    <h3>Fitur Utama 5G</h3>
+                    <ul>
+                        <li><strong>Enhanced Mobile Broadband:</strong> Kecepatan download hingga 10 Gbps</li>
+                        <li><strong>Ultra-Reliable Low Latency:</strong> Latency di bawah 1ms untuk aplikasi kritis</li>
+                        <li><strong>Massive IoT Connectivity:</strong> Mendukung hingga 1 juta device per km²</li>
+                    </ul>
+                    
+                    <h3>Use Cases Transformatif</h3>
+                    <ul>
+                        <li>Autonomous vehicles dan smart transportation</li>
+                        <li>Remote surgery dan telemedicine</li>
+                        <li>Industrial IoT dan smart manufacturing</li>
+                        <li>Augmented/Virtual Reality applications</li>
+                    </ul>
+                `
+            },
+            'progressive-web-apps': {
+                title: 'PWA: Aplikasi Web yang Seperti Native',
+                content: `
+                    <h3>Apa itu Progressive Web Apps?</h3>
+                    <p>PWA adalah aplikasi web yang menggunakan teknologi modern untuk memberikan pengalaman seperti aplikasi native, termasuk offline functionality, push notifications, dan installability.</p>
+                    
+                    <h3>Keunggulan PWA</h3>
+                    <ul>
+                        <li><strong>Cross-Platform:</strong> Satu codebase untuk semua platform</li>
+                        <li><strong>Offline-First:</strong> Berfungsi tanpa koneksi internet</li>
+                        <li><strong>App-like Experience:</strong> UI/UX seperti aplikasi native</li>
+                        <li><strong>Automatic Updates:</strong> Update otomatis tanpa app store</li>
+                    </ul>
+                    
+                    <h3>Teknologi Inti PWA</h3>
+                    <ul>
+                        <li>Service Workers untuk offline functionality</li>
+                        <li>Web App Manifest untuk installability</li>
+                        <li>HTTPS untuk security</li>
+                        <li>Responsive design untuk semua device</li>
+                    </ul>
+                `
+            },
+            // Add more article content as needed...
+        };
+
+        // Open Article Modal
+        function openArticle(articleId) {
+            const modal = document.getElementById('articleModal');
+            const modalContent = document.getElementById('modalContent');
+            const article = articleContent[articleId];
+            
+            if (article) {
+                modalContent.innerHTML = `
+                    <div class="bg-gradient-to-r from-blue-600 to-purple-600 p-6 text-white">
+                        <div class="flex justify-between items-start">
+                            <div class="flex-1 pr-4">
+                                <h1 class="text-2xl md:text-3xl font-bold mb-2">${article.title}</h1>
+                                <div class="flex items-center text-sm opacity-90">
+                                    <span>📅 ClueForIT Team</span>
+                                    <span class="mx-2">•</span>
+                                    <span>⏱️ 10 min read</span>
+                                </div>
+                            </div>
+                            <button onclick="closeArticle()" class="text-white hover:text-gray-200 text-3xl font-bold">×</button>
+                        </div>
+                    </div>
+                    
+                    <div class="overflow-y-auto max-h-[70vh] p-6">
+                        <div class="article-content prose max-w-none">
+                            ${article.content}
+                        </div>
+                        
+                        <div class="mt-8 pt-6 border-t border-gray-200">
+                            <div class="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-6">
+                                <h3 class="text-xl font-bold text-gray-900 mb-3">Butuh Konsultasi Lebih Lanjut?</h3>
+                                <p class="text-gray-600 mb-4">Tim ahli ClueForIT siap membantu implementasi solusi teknologi untuk bisnis Anda</p>
+                                <div class="flex flex-col sm:flex-row gap-3">
+                                    <a href="index.html#contact" class="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-lg font-semibold text-center hover:shadow-lg transition-shadow">
+                                        Konsultasi Gratis
+                                    </a>
+                                    <a href="index.html#services" class="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-6 py-3 rounded-lg font-semibold text-center transition-colors">
+                                        Lihat Layanan
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                modal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            } else {
+                // For articles without detailed content, show a placeholder
+                modalContent.innerHTML = `
+                    <div class="bg-gradient-to-r from-blue-600 to-purple-600 p-6 text-white">
+                        <div class="flex justify-between items-start">
+                            <div class="flex-1 pr-4">
+                                <h1 class="text-2xl md:text-3xl font-bold mb-2">Artikel Segera Hadir</h1>
+                                <div class="flex items-center text-sm opacity-90">
+                                    <span>📅 ClueForIT Team</span>
+                                </div>
+                            </div>
+                            <button onclick="closeArticle()" class="text-white hover:text-gray-200 text-3xl font-bold">×</button>
+                        </div>
+                    </div>
+                    
+                    <div class="overflow-y-auto max-h-[70vh] p-6">
+                        <div class="article-content prose max-w-none">
+                            <p>Artikel ini sedang dalam tahap penulisan dan akan segera tersedia. Tim ClueForIT sedang menyiapkan konten berkualitas tinggi untuk Anda.</p>
+                            
+                            <h3>Sementara itu, Anda dapat:</h3>
+                            <ul>
+                                <li>Membaca artikel lain yang tersedia</li>
+                                <li>Berlangganan newsletter untuk update terbaru</li>
+                                <li>Menghubungi tim kami untuk konsultasi langsung</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="mt-8 pt-6 border-t border-gray-200">
+                            <div class="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-6">
+                                <h3 class="text-xl font-bold text-gray-900 mb-3">Butuh Informasi Sekarang?</h3>
+                                <p class="text-gray-600 mb-4">Tim ahli ClueForIT siap membantu menjawab pertanyaan Anda</p>
+                                <div class="flex flex-col sm:flex-row gap-3">
+                                    <a href="index.html#contact" class="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-lg font-semibold text-center hover:shadow-lg transition-shadow">
+                                        Konsultasi Gratis
+                                    </a>
+                                    <button onclick="closeArticle()" class="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-6 py-3 rounded-lg font-semibold text-center transition-colors">
+                                        Kembali ke Blog
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                modal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        // Close Article Modal
+        function closeArticle() {
+            const modal = document.getElementById('articleModal');
+            modal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Newsletter Subscription
+        function subscribeNewsletter(event) {
+            event.preventDefault();
+            const email = event.target.querySelector('input[type="email"]').value;
+            
+            // Simulate subscription
+            alert(`Terima kasih! Email ${email} telah berhasil berlangganan newsletter ClueForIT.`);
+            event.target.reset();
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('articleModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeArticle();
+            }
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeArticle();
+            }
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98763442f200fd28',t:'MTc1OTI2MTM1My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
