@@ -1,0 +1,2087 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClueForIT - File Manager</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            box-sizing: border-box;
+        }
+        
+        .desktop {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 25%, #334155 50%, #475569 75%, #64748b 100%);
+            min-height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .background-slideshow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+        
+        .background-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 2s ease-in-out;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        
+        .background-slide.active {
+            opacity: 0.3;
+        }
+        
+        .background-slide::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(30, 58, 138, 0.8) 0%, rgba(59, 130, 246, 0.6) 50%, rgba(30, 64, 175, 0.8) 100%);
+        }
+        
+        @media (max-width: 768px) {
+            .desktop {
+                overflow-y: auto;
+                padding-bottom: 60px;
+            }
+        }
+        
+        .taskbar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 56px;
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.95) 100%);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            z-index: 1000;
+            overflow-x: auto;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        @media (max-width: 768px) {
+            .taskbar {
+                height: 56px;
+                padding: 0 8px;
+            }
+        }
+        
+        .start-button {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+            font-size: 14px;
+        }
+        
+        .start-button:hover {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
+        }
+        
+        .taskbar-item {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 8px 12px;
+            margin-left: 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .taskbar-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .taskbar-item.active {
+            background: rgba(59, 130, 246, 0.6);
+            border-color: rgba(59, 130, 246, 0.8);
+        }
+        
+        .window {
+            position: absolute;
+            background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+            border-radius: 16px;
+            box-shadow: 
+                0 32px 64px -12px rgba(0, 0, 0, 0.4),
+                0 0 0 1px rgba(255, 255, 255, 0.05),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+            min-width: 600px;
+            min-height: 400px;
+            z-index: 100;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        @media (max-width: 768px) {
+            .window {
+                position: fixed !important;
+                top: 0 !important;
+                left: 0 !important;
+                width: 100vw !important;
+                height: calc(100vh - 56px) !important;
+                min-width: unset;
+                min-height: unset;
+                border-radius: 0;
+                max-width: 100vw;
+                max-height: calc(100vh - 56px);
+            }
+        }
+        
+        .window.maximized {
+            top: 0 !important;
+            left: 0 !important;
+            width: 100vw !important;
+            height: calc(100vh - 48px) !important;
+            border-radius: 0;
+        }
+        
+        .window-header {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            padding: 16px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: move;
+            user-select: none;
+            backdrop-filter: blur(20px);
+        }
+        
+        .window-title {
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            color: #f1f5f9;
+            font-size: 15px;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+        
+        .window-controls {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .window-control {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .window-control:hover {
+            transform: scale(1.15);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        
+        .window-control.close { 
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+        .window-control.minimize { 
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+        .window-control.maximize { 
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+        
+        .window-toolbar {
+            background: #f8fafc;
+            padding: 8px 16px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .toolbar-btn {
+            padding: 6px 12px;
+            background: white;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .toolbar-btn:hover {
+            background: #f3f4f6;
+        }
+        
+        .toolbar-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .address-bar {
+            flex: 1;
+            margin: 0 16px;
+            padding: 6px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            background: white;
+            font-size: 13px;
+        }
+        
+        .window-content {
+            display: flex;
+            height: calc(100% - 120px);
+        }
+        
+        .sidebar {
+            width: 200px;
+            background: #f8fafc;
+            border-right: 1px solid #e2e8f0;
+            padding: 16px;
+            overflow-y: auto;
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #e2e8f0;
+                padding: 12px;
+                max-height: 150px;
+            }
+            
+            .window-content {
+                flex-direction: column;
+            }
+        }
+        
+        .sidebar-section {
+            margin-bottom: 24px;
+        }
+        
+        .sidebar-title {
+            font-size: 11px;
+            font-weight: 600;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+        }
+        
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            color: #374151;
+            margin-bottom: 2px;
+            transition: all 0.2s;
+        }
+        
+        .sidebar-item:hover {
+            background: #e5e7eb;
+        }
+        
+        .sidebar-item.active {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+        
+        .sidebar-icon {
+            width: 16px;
+            height: 16px;
+            margin-right: 8px;
+        }
+        
+        .file-area {
+            flex: 1;
+            padding: 16px;
+            background: white;
+            overflow-y: auto;
+        }
+        
+        .file-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 16px;
+        }
+        
+        @media (max-width: 768px) {
+            .file-grid {
+                grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+                gap: 12px;
+            }
+            
+            .file-area {
+                padding: 12px;
+            }
+        }
+        
+        .file-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+            user-select: none;
+        }
+        
+        .file-item:hover {
+            background: #f3f4f6;
+            border-color: #3b82f6;
+        }
+        
+        .file-item.selected {
+            background: #dbeafe;
+            border-color: #3b82f6;
+        }
+        
+        .file-icon {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 8px;
+        }
+        
+        .file-name {
+            font-size: 12px;
+            text-align: center;
+            color: #374151;
+            line-height: 1.3;
+            max-width: 80px;
+            word-wrap: break-word;
+        }
+        
+        .desktop-icon {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 12px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            color: white;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+            z-index: 60;
+            backdrop-filter: blur(10px);
+        }
+        
+        @media (max-width: 768px) {
+            .desktop-icon {
+                position: relative;
+                margin: 8px;
+                padding: 12px;
+                background: rgba(255, 255, 255, 0.1);
+                backdrop-filter: blur(10px);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+            }
+            
+            .desktop-icons-container {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+                gap: 12px;
+                padding: 20px;
+                margin-bottom: 60px;
+            }
+            
+            .desktop-icons-desktop {
+                display: none !important;
+            }
+            
+            .window-header {
+                padding: 8px 12px;
+                touch-action: none;
+            }
+            
+            .window-toolbar {
+                padding: 6px 12px;
+                overflow-x: auto;
+            }
+            
+            .toolbar-btn {
+                padding: 4px 8px;
+                font-size: 11px;
+                white-space: nowrap;
+            }
+            
+            .address-bar {
+                margin: 0 8px;
+                padding: 4px 8px;
+                font-size: 12px;
+            }
+            
+            .taskbar-item {
+                padding: 6px 8px;
+                font-size: 12px;
+                white-space: nowrap;
+            }
+            
+            .start-button {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+        }
+        
+        .desktop-icon:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        .desktop-icon-image {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 4px;
+        }
+        
+        .desktop-icon-name {
+            font-size: 12px;
+            text-align: center;
+            max-width: 80px;
+            word-wrap: break-word;
+        }
+        
+        .context-menu {
+            position: fixed;
+            background: white;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            padding: 4px 0;
+            z-index: 1000;
+            min-width: 150px;
+        }
+        
+        .context-menu-item {
+            padding: 8px 16px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .context-menu-item:hover {
+            background: #f3f4f6;
+        }
+        
+        .status-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 24px;
+            background: #f8fafc;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            font-size: 11px;
+            color: #6b7280;
+        }
+        
+        @keyframes windowOpen {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        @keyframes glow {
+            0% {
+                filter: drop-shadow(0 0 5px rgba(251, 191, 36, 0.5));
+            }
+            100% {
+                filter: drop-shadow(0 0 20px rgba(251, 191, 36, 0.8)) drop-shadow(0 0 30px rgba(245, 158, 11, 0.4));
+            }
+        }
+        
+        .window {
+            animation: windowOpen 0.3s ease-out;
+        }
+        
+        .dragging {
+            z-index: 1000;
+        }
+        
+        .company-branding {
+            position: absolute;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 50;
+            text-align: center;
+            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px 30px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        @media (max-width: 768px) {
+            .company-branding {
+                position: relative;
+                top: 0;
+                left: 0;
+                transform: none;
+                padding: 20px;
+                background: rgba(255, 255, 255, 0.1);
+                backdrop-filter: blur(10px);
+                border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+                margin-bottom: 20px;
+            }
+        }
+        
+        .logo-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        @media (max-width: 768px) {
+            .logo-container {
+                gap: 8px;
+            }
+        }
+        
+        .company-logo {
+            width: 120px;
+            height: 40px;
+            filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+        }
+        
+        @media (max-width: 768px) {
+            .company-logo {
+                width: 100px;
+                height: 33px;
+            }
+        }
+        
+        .company-slogan {
+            color: white;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+        }
+        
+        .main-slogan {
+            font-size: 32px;
+            font-weight: 900;
+            margin: 0 0 16px 0;
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+            letter-spacing: 1px;
+            animation: glow 4s ease-in-out infinite alternate;
+            text-transform: uppercase;
+        }
+        
+        @media (max-width: 768px) {
+            .main-slogan {
+                font-size: 18px;
+                margin: 0 0 6px 0;
+            }
+        }
+        
+        .sub-slogan {
+            font-size: 16px;
+            margin: 0;
+            font-weight: 600;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.95) 100%);
+            color: #1e293b;
+            padding: 12px 24px;
+            border-radius: 30px;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            display: inline-block;
+            text-shadow: none;
+        }
+        
+        @media (max-width: 768px) {
+            .sub-slogan {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="desktop" id="desktop">
+        <!-- Background Product Photos Slideshow -->
+        <div class="background-slideshow" id="backgroundSlideshow">
+            <div class="background-slide active" style="background-image: url('https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');"></div>
+            <div class="background-slide" style="background-image: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');"></div>
+            <div class="background-slide" style="background-image: url('https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');"></div>
+            <div class="background-slide" style="background-image: url('https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');"></div>
+            <div class="background-slide" style="background-image: url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');"></div>
+        </div>
+        
+        <!-- Company Logo and Slogan -->
+        <div class="company-branding">
+            <div class="logo-container">
+                <svg class="company-logo" viewBox="0 0 120 40" fill="none">
+                    <!-- Logo Background -->
+                    <rect width="120" height="40" rx="8" fill="rgba(255,255,255,0.95)" stroke="rgba(59,130,246,0.3)" stroke-width="1"/>
+                    
+                    <!-- Icon -->
+                    <g transform="translate(8,8)">
+                        <rect x="0" y="0" width="24" height="24" rx="4" fill="#3b82f6"/>
+                        <path d="M6 8h12v2H6V8zm0 4h12v2H6v-2zm0 4h8v2H6v-2z" fill="white"/>
+                        <circle cx="20" cy="6" r="2" fill="#10b981"/>
+                    </g>
+                    
+                    <!-- Company Name -->
+                    <text x="40" y="16" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#1f2937">ClueForIT</text>
+                    <text x="40" y="28" font-family="Arial, sans-serif" font-size="8" fill="#6b7280">IT Solutions</text>
+                </svg>
+                
+                <div class="company-slogan">
+                    <p class="sub-slogan">Technology Resource Center</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Desktop Icons Container for Mobile -->
+        <div class="desktop-icons-container" style="display: none;">
+            <div class="desktop-icon" onclick="openWindow('fileManager')">
+                <svg class="desktop-icon-image" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M10 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2h-8l-2-2z"/>
+                </svg>
+                <div class="desktop-icon-name">ClueForIT Services</div>
+            </div>
+            
+            <div class="desktop-icon" onclick="openWindow('about')">
+                <svg class="desktop-icon-image" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                </svg>
+                <div class="desktop-icon-name">About Company</div>
+            </div>
+            
+            <div class="desktop-icon" onclick="openWindow('contact')">
+                <svg class="desktop-icon-image" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                </svg>
+                <div class="desktop-icon-name">Contact Us</div>
+            </div>
+            
+            <div class="desktop-icon" onclick="openWindow('calculator')">
+                <svg class="desktop-icon-image" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8-4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8-4H7V7h2v2zm4 0h-2V7h2v2zm4 0h-2V7h2v2z"/>
+                </svg>
+                <div class="desktop-icon-name">IT Cost Calculator</div>
+            </div>
+            
+            <div class="desktop-icon" onclick="openWindow('games')">
+                <svg class="desktop-icon-image" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M21.58 16.09l-1.09-7.66C20.21 6.46 18.52 5 16.53 5H7.47C5.48 5 3.79 6.46 3.51 8.43l-1.09 7.66C2.2 17.63 3.39 19 4.94 19c.68 0 1.32-.27 1.8-.75L9 16h6l2.25 2.25c.48.48 1.13.75 1.8.75 1.56 0 2.75-1.37 2.53-2.91zM11 11H9v2H8v-2H6v-1h2V8h1v2h2v1zm4-0.5c-.28 0-.5-.22-.5-.5s.22-.5.5-.5.5.22.5.5-.22.5-.5.5zm2 3c-.28 0-.5-.22-.5-.5s.22-.5.5-.5.5.22.5.5-.22.5-.5.5z"/>
+                </svg>
+                <div class="desktop-icon-name">IT Quiz Game</div>
+            </div>
+            
+            <div class="desktop-icon" onclick="openWindow('portfolio')">
+                <svg class="desktop-icon-image" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
+                <div class="desktop-icon-name">Success Stories</div>
+            </div>
+            
+            <div class="desktop-icon" onclick="openWindow('chat')">
+                <svg class="desktop-icon-image" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h4v3c0 .6.4 1 1 1 .2 0 .5-.1.7-.3L14.4 18H20c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 12h-2v-2h2v2zm0-4h-2V6h2v4z"/>
+                </svg>
+                <div class="desktop-icon-name">Live Chat Support</div>
+            </div>
+            
+            <div class="desktop-icon" onclick="openWindow('recycle')">
+                <svg class="desktop-icon-image" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+                </svg>
+                <div class="desktop-icon-name">Recycle Bin</div>
+            </div>
+        </div>
+        
+        <!-- Desktop Icons for Desktop -->
+        <div class="desktop-icons-desktop">
+            <div class="desktop-icon" style="top: 20px; left: 20px;" onclick="openWindow('fileManager')">
+                <svg class="desktop-icon-image" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M10 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2h-8l-2-2z"/>
+                </svg>
+                <div class="desktop-icon-name">ClueForIT Services</div>
+            </div>
+            
+            <div class="desktop-icon" style="top: 120px; left: 20px;" onclick="openWindow('about')">
+                <svg class="desktop-icon-image" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                </svg>
+                <div class="desktop-icon-name">About Company</div>
+            </div>
+            
+            <div class="desktop-icon" style="top: 220px; left: 20px;" onclick="openWindow('contact')">
+                <svg class="desktop-icon-image" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                </svg>
+                <div class="desktop-icon-name">Contact Us</div>
+            </div>
+            
+            <div class="desktop-icon" style="top: 320px; left: 20px;" onclick="openWindow('calculator')">
+                <svg class="desktop-icon-image" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8-4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8-4H7V7h2v2zm4 0h-2V7h2v2zm4 0h-2V7h2v2z"/>
+                </svg>
+                <div class="desktop-icon-name">IT Cost Calculator</div>
+            </div>
+            
+            <div class="desktop-icon" style="top: 420px; left: 20px;" onclick="openWindow('games')">
+                <svg class="desktop-icon-image" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M21.58 16.09l-1.09-7.66C20.21 6.46 18.52 5 16.53 5H7.47C5.48 5 3.79 6.46 3.51 8.43l-1.09 7.66C2.2 17.63 3.39 19 4.94 19c.68 0 1.32-.27 1.8-.75L9 16h6l2.25 2.25c.48.48 1.13.75 1.8.75 1.56 0 2.75-1.37 2.53-2.91zM11 11H9v2H8v-2H6v-1h2V8h1v2h2v1zm4-0.5c-.28 0-.5-.22-.5-.5s.22-.5.5-.5.5.22.5.5-.22.5-.5.5zm2 3c-.28 0-.5-.22-.5-.5s.22-.5.5-.5.5.22.5.5-.22.5-.5.5z"/>
+                </svg>
+                <div class="desktop-icon-name">IT Quiz Game</div>
+            </div>
+            
+            <div class="desktop-icon" style="top: 120px; right: 20px;" onclick="openWindow('portfolio')">
+                <svg class="desktop-icon-image" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
+                <div class="desktop-icon-name">Success Stories</div>
+            </div>
+            
+            <div class="desktop-icon" style="top: 220px; right: 20px;" onclick="openWindow('chat')">
+                <svg class="desktop-icon-image" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h4v3c0 .6.4 1 1 1 .2 0 .5-.1.7-.3L14.4 18H20c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 12h-2v-2h2v2zm0-4h-2V6h2v4z"/>
+                </svg>
+                <div class="desktop-icon-name">Live Chat Support</div>
+            </div>
+            
+            <div class="desktop-icon" style="top: 20px; right: 20px;" onclick="openWindow('recycle')">
+                <svg class="desktop-icon-image" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+                </svg>
+                <div class="desktop-icon-name">Recycle Bin</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Taskbar -->
+    <div class="taskbar">
+        <div class="start-button" onclick="toggleStartMenu()">
+            <svg class="w-4 h-4 inline mr-2" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
+            </svg>
+            Start
+        </div>
+        
+        <div class="flex-1"></div>
+        
+        <div class="text-white text-sm" id="clock">12:00 PM</div>
+    </div>
+
+    <script>
+        let windowZIndex = 100;
+        let openWindows = [];
+        let draggedWindow = null;
+        let dragOffset = { x: 0, y: 0 };
+
+        // Update clock
+        function updateClock() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            document.getElementById('clock').textContent = timeString;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        function openWindow(type) {
+            const windowId = `window-${type}-${Date.now()}`;
+            const window = createWindow(windowId, type);
+            document.getElementById('desktop').appendChild(window);
+            
+            openWindows.push({ id: windowId, type: type, element: window });
+            updateTaskbar();
+            
+            // Position window
+            const windowCount = openWindows.length;
+            window.style.left = (50 + (windowCount * 30)) + 'px';
+            window.style.top = (50 + (windowCount * 30)) + 'px';
+            
+            bringToFront(window);
+        }
+
+        function createWindow(id, type) {
+            const window = document.createElement('div');
+            window.className = 'window';
+            window.id = id;
+            window.style.width = '800px';
+            window.style.height = '600px';
+            
+            const windowData = getWindowData(type);
+            
+            window.innerHTML = `
+                <div class="window-header" onmousedown="startDrag(event, '${id}')">
+                    <div class="window-title">
+                        <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                            ${windowData.icon}
+                        </svg>
+                        ${windowData.title}
+                    </div>
+                    <div class="window-controls">
+                        <div class="window-control minimize" onclick="minimizeWindow('${id}')"></div>
+                        <div class="window-control maximize" onclick="toggleMaximize('${id}')"></div>
+                        <div class="window-control close" onclick="closeWindow('${id}')"></div>
+                    </div>
+                </div>
+                ${windowData.content}
+            `;
+            
+            return window;
+        }
+
+        function getWindowData(type) {
+            const data = {
+                fileManager: {
+                    title: 'ClueForIT - IT Services',
+                    icon: '<path d="M10 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2h-8l-2-2z"/>',
+                    content: `
+                        <div class="window-toolbar">
+                            <button class="toolbar-btn" onclick="navigateBack()">← Back</button>
+                            <button class="toolbar-btn" onclick="navigateForward()">Forward →</button>
+                            <button class="toolbar-btn" onclick="navigateUp()">↑ Up</button>
+                            <button class="toolbar-btn" onclick="refreshFolder()">🔄 Refresh</button>
+                            <input class="address-bar" value="C:\\ClueForIT\\Services" readonly>
+                            <button class="toolbar-btn" onclick="changeView()">⊞ View</button>
+                        </div>
+                        <div class="window-content">
+                            <div class="sidebar">
+                                <div class="sidebar-section">
+                                    <div class="sidebar-title">Quick Access</div>
+                                    <div class="sidebar-item active">
+                                        <svg class="sidebar-icon" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/>
+                                        </svg>
+                                        IT Services
+                                    </div>
+                                    <div class="sidebar-item" onclick="switchFolder('managed')">
+                                        <svg class="sidebar-icon" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4z"/>
+                                        </svg>
+                                        Managed Services
+                                    </div>
+                                    <div class="sidebar-item" onclick="switchFolder('cloud')">
+                                        <svg class="sidebar-icon" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M5.5 16a3.5 3.5 0 01-.369-6.98 4 4 0 117.753-1.977A4.5 4.5 0 1113.5 16h-8z"/>
+                                        </svg>
+                                        Cloud Solutions
+                                    </div>
+                                    <div class="sidebar-item" onclick="switchFolder('security')">
+                                        <svg class="sidebar-icon" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001z"/>
+                                        </svg>
+                                        Security
+                                    </div>
+                                </div>
+                                <div class="sidebar-section">
+                                    <div class="sidebar-title">This PC</div>
+                                    <div class="sidebar-item">
+                                        <svg class="sidebar-icon" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4z"/>
+                                        </svg>
+                                        Local Disk (C:)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="file-area">
+                                <div class="file-grid" id="fileGrid">
+                                    <div class="file-item" onclick="openServiceDetails('managed')">
+                                        <svg class="file-icon" fill="#3b82f6" viewBox="0 0 24 24">
+                                            <path d="M10 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2h-8l-2-2z"/>
+                                        </svg>
+                                        <div class="file-name">IT Managed Services</div>
+                                    </div>
+                                    <div class="file-item" onclick="openServiceDetails('cloud')">
+                                        <svg class="file-icon" fill="#10b981" viewBox="0 0 24 24">
+                                            <path d="M10 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2h-8l-2-2z"/>
+                                        </svg>
+                                        <div class="file-name">Cloud Solutions</div>
+                                    </div>
+                                    <div class="file-item" onclick="openServiceDetails('security')">
+                                        <svg class="file-icon" fill="#ef4444" viewBox="0 0 24 24">
+                                            <path d="M10 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2h-8l-2-2z"/>
+                                        </svg>
+                                        <div class="file-name">Cybersecurity</div>
+                                    </div>
+                                    <div class="file-item" onclick="openServiceDetails('digital')">
+                                        <svg class="file-icon" fill="#8b5cf6" viewBox="0 0 24 24">
+                                            <path d="M10 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2h-8l-2-2z"/>
+                                        </svg>
+                                        <div class="file-name">Digital Transformation</div>
+                                    </div>
+                                    <div class="file-item" onclick="openServiceDetails('bi')">
+                                        <svg class="file-icon" fill="#f59e0b" viewBox="0 0 24 24">
+                                            <path d="M10 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2h-8l-2-2z"/>
+                                        </svg>
+                                        <div class="file-name">Business Intelligence</div>
+                                    </div>
+                                    <div class="file-item" onclick="openServiceDetails('support')">
+                                        <svg class="file-icon" fill="#06b6d4" viewBox="0 0 24 24">
+                                            <path d="M10 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2h-8l-2-2z"/>
+                                        </svg>
+                                        <div class="file-name">Support & Consulting</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="status-bar">
+                            6 items | Ready
+                        </div>
+                    `
+                },
+                calculator: {
+                    title: 'IT Cost Calculator',
+                    icon: '<path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8-4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8-4H7V7h2v2zm4 0h-2V7h2v2zm4 0h-2V7h2v2z"/>',
+                    content: `
+                        <div class="window-content">
+                            <div class="file-area" style="padding: 24px;">
+                                <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 16px; color: #1f2937;">💰 Hitung Biaya IT Bulanan</h2>
+                                <div style="background: #f9fafb; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                                    <div style="margin-bottom: 16px;">
+                                        <label style="display: block; margin-bottom: 4px; font-weight: 500;">Jumlah Karyawan:</label>
+                                        <input type="number" id="employees" value="10" style="width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px;" onchange="calculateCost()">
+                                    </div>
+                                    <div style="margin-bottom: 16px;">
+                                        <label style="display: block; margin-bottom: 4px; font-weight: 500;">Layanan yang Dipilih:</label>
+                                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                                            <label><input type="checkbox" id="managed" checked onchange="calculateCost()"> IT Support (Rp 500K/user)</label>
+                                            <label><input type="checkbox" id="cloud" onchange="calculateCost()"> Cloud Storage (Rp 200K/user)</label>
+                                            <label><input type="checkbox" id="security" onchange="calculateCost()"> Security (Rp 300K/user)</label>
+                                            <label><input type="checkbox" id="backup" onchange="calculateCost()"> Backup (Rp 150K/user)</label>
+                                        </div>
+                                    </div>
+                                    <div style="background: #dbeafe; padding: 16px; border-radius: 6px; text-align: center;">
+                                        <h3 style="color: #1d4ed8; margin-bottom: 8px;">Estimasi Biaya Bulanan:</h3>
+                                        <div id="totalCost" style="font-size: 24px; font-weight: bold; color: #1d4ed8;">Rp 5,000,000</div>
+                                        <p style="font-size: 12px; color: #6b7280; margin-top: 8px;">*Harga dapat berubah sesuai kebutuhan spesifik</p>
+                                    </div>
+                                </div>
+                                <button onclick="alert('Konsultasi gratis telah dijadwalkan! Tim kami akan menghubungi Anda dalam 24 jam.')" 
+                                        style="width: 100%; background: #3b82f6; color: white; padding: 12px; border: none; border-radius: 6px; font-weight: 500; cursor: pointer;">
+                                    📞 Konsultasi Gratis Sekarang
+                                </button>
+                            </div>
+                        </div>
+                    `
+                },
+                games: {
+                    title: 'IT Quiz Game',
+                    icon: '<path d="M21.58 16.09l-1.09-7.66C20.21 6.46 18.52 5 16.53 5H7.47C5.48 5 3.79 6.46 3.51 8.43l-1.09 7.66C2.2 17.63 3.39 19 4.94 19c.68 0 1.32-.27 1.8-.75L9 16h6l2.25 2.25c.48.48 1.13.75 1.8.75 1.56 0 2.75-1.37 2.53-2.91z"/>',
+                    content: `
+                        <div class="window-content">
+                            <div class="file-area" style="padding: 24px;">
+                                <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 16px; color: #1f2937;">🎮 IT Knowledge Quiz</h2>
+                                <div id="quizContainer">
+                                    <div style="background: #f3f4f6; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                                        <h3 id="questionTitle" style="margin-bottom: 16px; color: #374151;">Pertanyaan 1: Apa kepanjangan dari CPU?</h3>
+                                        <div id="answers" style="display: grid; gap: 8px;">
+                                            <button class="quiz-btn" onclick="selectAnswer(0)" style="padding: 12px; text-align: left; background: white; border: 2px solid #e5e7eb; border-radius: 6px; cursor: pointer;">A. Central Processing Unit</button>
+                                            <button class="quiz-btn" onclick="selectAnswer(1)" style="padding: 12px; text-align: left; background: white; border: 2px solid #e5e7eb; border-radius: 6px; cursor: pointer;">B. Computer Personal Unit</button>
+                                            <button class="quiz-btn" onclick="selectAnswer(2)" style="padding: 12px; text-align: left; background: white; border: 2px solid #e5e7eb; border-radius: 6px; cursor: pointer;">C. Central Program Unit</button>
+                                            <button class="quiz-btn" onclick="selectAnswer(3)" style="padding: 12px; text-align: left; background: white; border: 2px solid #e5e7eb; border-radius: 6px; cursor: pointer;">D. Computer Processing Unit</button>
+                                        </div>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <div>Skor: <span id="score" style="font-weight: bold; color: #3b82f6;">0</span>/5</div>
+                                        <button onclick="nextQuestion()" id="nextBtn" style="background: #10b981; color: white; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer;" disabled>Selanjutnya</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `
+                },
+                portfolio: {
+                    title: 'Success Stories',
+                    icon: '<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>',
+                    content: `
+                        <div class="window-content">
+                            <div class="file-area" style="padding: 24px; overflow-y: auto;">
+                                <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 20px; color: #1f2937;">⭐ Kisah Sukses Klien</h2>
+                                
+                                <div style="display: grid; gap: 16px;">
+                                    <div style="background: linear-gradient(135deg, #dbeafe, #bfdbfe); padding: 20px; border-radius: 8px; border-left: 4px solid #3b82f6;">
+                                        <h3 style="color: #1d4ed8; margin-bottom: 8px;">🏢 PT. Teknologi Maju</h3>
+                                        <p style="color: #1e40af; margin-bottom: 12px;">"Migrasi ke cloud menghemat 40% biaya IT kami. Server downtime berkurang dari 15 jam/bulan menjadi 0!"</p>
+                                        <div style="font-size: 12px; color: #6366f1;">✅ Cloud Migration • ✅ 24/7 Monitoring • ✅ Cost Optimization</div>
+                                    </div>
+                                    
+                                    <div style="background: linear-gradient(135deg, #d1fae5, #a7f3d0); padding: 20px; border-radius: 8px; border-left: 4px solid #10b981;">
+                                        <h3 style="color: #047857; margin-bottom: 8px;">🏥 RS. Sehat Sentosa</h3>
+                                        <p style="color: #065f46; margin-bottom: 12px;">"Sistem keamanan baru melindungi data pasien 100%. Tidak ada lagi kekhawatiran cyber attack!"</p>
+                                        <div style="font-size: 12px; color: #059669;">✅ Cybersecurity • ✅ Data Protection • ✅ Compliance</div>
+                                    </div>
+                                    
+                                    <div style="background: linear-gradient(135deg, #fef3c7, #fde68a); padding: 20px; border-radius: 8px; border-left: 4px solid #f59e0b;">
+                                        <h3 style="color: #92400e; margin-bottom: 8px;">🏪 Retail Chain ABC</h3>
+                                        <p style="color: #78350f; margin-bottom: 12px;">"Otomasi inventory meningkatkan efisiensi 60%. Stok selalu akurat di 50+ cabang!"</p>
+                                        <div style="font-size: 12px; color: #d97706;">✅ Digital Transformation • ✅ Process Automation • ✅ Integration</div>
+                                    </div>
+                                    
+                                    <div style="background: linear-gradient(135deg, #e0e7ff, #c7d2fe); padding: 20px; border-radius: 8px; border-left: 4px solid #8b5cf6;">
+                                        <h3 style="color: #6d28d9; margin-bottom: 8px;">🏭 Manufaktur XYZ</h3>
+                                        <p style="color: #5b21b6; margin-bottom: 12px;">"Dashboard BI memberikan insight real-time. Produktivitas naik 35% dalam 6 bulan!"</p>
+                                        <div style="font-size: 12px; color: #7c3aed;">✅ Business Intelligence • ✅ Data Analytics • ✅ Real-time Monitoring</div>
+                                    </div>
+                                </div>
+                                
+                                <div style="text-align: center; margin-top: 24px; padding: 20px; background: #f8fafc; border-radius: 8px;">
+                                    <h3 style="color: #374151; margin-bottom: 12px;">Ingin menjadi success story berikutnya?</h3>
+                                    <button onclick="alert('Tim sales akan menghubungi Anda untuk demo gratis!')" 
+                                            style="background: #3b82f6; color: white; padding: 12px 24px; border: none; border-radius: 6px; font-weight: 500; cursor: pointer;">
+                                        🚀 Jadwalkan Demo Gratis
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `
+                },
+                chat: {
+                    title: 'Live Chat Support',
+                    icon: '<path d="M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h4v3c0 .6.4 1 1 1 .2 0 .5-.1.7-.3L14.4 18H20c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/>',
+                    content: `
+                        <div class="window-content">
+                            <div style="display: flex; flex-direction: column; height: 100%;">
+                                <div style="background: #3b82f6; color: white; padding: 12px 16px; display: flex; align-items: center;">
+                                    <div style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; margin-right: 8px;"></div>
+                                    <span style="font-weight: 500;">Support Agent - Online</span>
+                                </div>
+                                
+                                <div id="chatMessages" style="flex: 1; padding: 16px; overflow-y: auto; background: #f9fafb;">
+                                    <div style="background: white; padding: 12px; border-radius: 8px; margin-bottom: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                                        <div style="font-weight: 500; color: #3b82f6; margin-bottom: 4px;">ClueForIT Support</div>
+                                        <div style="color: #374151;">Halo! 👋 Selamat datang di ClueForIT. Ada yang bisa saya bantu hari ini?</div>
+                                        <div style="font-size: 11px; color: #9ca3af; margin-top: 4px;">10:30 AM</div>
+                                    </div>
+                                    
+                                    <div style="background: white; padding: 12px; border-radius: 8px; margin-bottom: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                                        <div style="font-weight: 500; color: #3b82f6; margin-bottom: 4px;">ClueForIT Support</div>
+                                        <div style="color: #374151;">Saya bisa membantu Anda dengan:
+                                        <br>• 💬 Konsultasi IT gratis
+                                        <br>• 📊 Analisis kebutuhan sistem
+                                        <br>• 💰 Estimasi biaya proyek
+                                        <br>• 🔧 Troubleshooting teknis</div>
+                                        <div style="font-size: 11px; color: #9ca3af; margin-top: 4px;">10:31 AM</div>
+                                    </div>
+                                </div>
+                                
+                                <div style="padding: 16px; background: white; border-top: 1px solid #e5e7eb;">
+                                    <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+                                        <button onclick="sendQuickReply('Saya butuh konsultasi IT')" style="background: #f3f4f6; border: 1px solid #d1d5db; padding: 6px 12px; border-radius: 16px; font-size: 12px; cursor: pointer;">💬 Konsultasi IT</button>
+                                        <button onclick="sendQuickReply('Berapa harga cloud migration?')" style="background: #f3f4f6; border: 1px solid #d1d5db; padding: 6px 12px; border-radius: 16px; font-size: 12px; cursor: pointer;">💰 Harga Layanan</button>
+                                        <button onclick="sendQuickReply('Saya mau demo produk')" style="background: #f3f4f6; border: 1px solid #d1d5db; padding: 6px 12px; border-radius: 16px; font-size: 12px; cursor: pointer;">🚀 Demo Produk</button>
+                                    </div>
+                                    <div style="display: flex; gap: 8px;">
+                                        <input type="text" id="chatInput" placeholder="Ketik pesan Anda..." style="flex: 1; padding: 8px 12px; border: 1px solid #d1d5db; border-radius: 20px;" onkeypress="if(event.key==='Enter') sendMessage()">
+                                        <button onclick="sendMessage()" style="background: #3b82f6; color: white; padding: 8px 16px; border: none; border-radius: 20px; cursor: pointer;">Kirim</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `
+                },
+                about: {
+                    title: 'About ClueForIT',
+                    icon: '<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>',
+                    content: `
+                        <div class="window-content">
+                            <div class="file-area" style="padding: 32px;">
+                                <div style="max-width: 600px; margin: 0 auto;">
+                                    <h2 style="font-size: 24px; font-weight: bold; margin-bottom: 16px; color: #1f2937;">About ClueForIT</h2>
+                                    <p style="color: #6b7280; margin-bottom: 24px; line-height: 1.6;">
+                                        ClueForIT adalah perusahaan IT yang mengorganisir dan mengoptimalkan infrastruktur teknologi 
+                                        dengan presisi dan kejelasan seperti sistem file yang terstruktur dengan baik.
+                                    </p>
+                                    <div style="background: #f9fafb; padding: 24px; border-radius: 8px; margin-bottom: 24px;">
+                                        <h3 style="font-weight: 600; margin-bottom: 16px;">Keunggulan Kami:</h3>
+                                        <ul style="list-style: disc; margin-left: 20px; color: #6b7280; line-height: 1.8;">
+                                            <li>10+ Tahun Pengalaman IT</li>
+                                            <li>500+ Proyek Berhasil</li>
+                                            <li>Support 24/7</li>
+                                            <li>Tim Bersertifikat</li>
+                                            <li>Solusi Scalable</li>
+                                        </ul>
+                                    </div>
+                                    <div style="background: #dbeafe; padding: 24px; border-radius: 8px;">
+                                        <h3 style="font-weight: 600; margin-bottom: 16px; color: #1d4ed8;">Visi & Misi</h3>
+                                        <p style="color: #1e40af; line-height: 1.6;">
+                                            Menjadi partner terpercaya dalam transformasi digital dengan menyediakan 
+                                            solusi IT yang terorganisir, efisien, dan mudah diakses seperti sistem file manager yang intuitif.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `
+                },
+                contact: {
+                    title: 'Contact Information',
+                    icon: '<path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>',
+                    content: `
+                        <div class="window-content">
+                            <div class="file-area" style="padding: 32px;">
+                                <div style="max-width: 600px; margin: 0 auto;">
+                                    <h2 style="font-size: 24px; font-weight: bold; margin-bottom: 24px; color: #1f2937;">Hubungi Kami</h2>
+                                    
+                                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 32px;">
+                                        <div style="background: #f3f4f6; padding: 20px; border-radius: 8px;">
+                                            <h3 style="font-weight: 600; margin-bottom: 12px; color: #374151;">📍 Alamat Kantor</h3>
+                                            <p style="color: #6b7280; line-height: 1.6;">
+                                                Jl. Teknologi No. 123<br>
+                                                Jakarta Selatan 12345<br>
+                                                Indonesia
+                                            </p>
+                                        </div>
+                                        
+                                        <div style="background: #f3f4f6; padding: 20px; border-radius: 8px;">
+                                            <h3 style="font-weight: 600; margin-bottom: 12px; color: #374151;">📞 Kontak</h3>
+                                            <p style="color: #6b7280; line-height: 1.6;">
+                                                Telepon: +62 897 232 5030<br>
+                                                Email: henry.suryaman@gmail.com<br>
+                                                WhatsApp: +62 897 232 5030
+                                            </p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div style="background: #dbeafe; padding: 24px; border-radius: 8px;">
+                                        <h3 style="font-weight: 600; margin-bottom: 16px; color: #1d4ed8;">⏰ Jam Operasional</h3>
+                                        <p style="color: #1e40af; line-height: 1.6;">
+                                            Senin - Jumat: 09:00 - 18:00 WIB<br>
+                                            Sabtu: 09:00 - 15:00 WIB<br>
+                                            <strong>Emergency Support: 24/7</strong>
+                                        </p>
+                                    </div>
+                                    
+                                    <div style="margin-top: 24px; text-align: center;">
+                                        <button onclick="alert('Formulir kontak akan dibuka!')" 
+                                                style="background: #3b82f6; color: white; padding: 12px 24px; border: none; border-radius: 6px; cursor: pointer; font-weight: 500;">
+                                            Kirim Pesan
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `
+                },
+                recycle: {
+                    title: 'Recycle Bin',
+                    icon: '<path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>',
+                    content: `
+                        <div class="window-content">
+                            <div class="file-area" style="padding: 32px; text-align: center;">
+                                <svg style="width: 64px; height: 64px; color: #9ca3af; margin-bottom: 16px;" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+                                </svg>
+                                <h3 style="color: #6b7280; margin-bottom: 8px;">Recycle Bin is empty</h3>
+                                <p style="color: #9ca3af; font-size: 14px;">No deleted items to display</p>
+                            </div>
+                        </div>
+                    `
+                }
+            };
+            
+            return data[type] || data.fileManager;
+        }
+
+        function closeWindow(windowId) {
+            const window = document.getElementById(windowId);
+            if (window) {
+                window.remove();
+                openWindows = openWindows.filter(w => w.id !== windowId);
+                updateTaskbar();
+            }
+        }
+
+        function minimizeWindow(windowId) {
+            const window = document.getElementById(windowId);
+            if (window) {
+                window.style.display = 'none';
+                updateTaskbar();
+            }
+        }
+
+        function toggleMaximize(windowId) {
+            const window = document.getElementById(windowId);
+            if (window) {
+                window.classList.toggle('maximized');
+            }
+        }
+
+        function bringToFront(window) {
+            window.style.zIndex = ++windowZIndex;
+        }
+
+        function updateTaskbar() {
+            // Remove existing taskbar items
+            const existingItems = document.querySelectorAll('.taskbar-item');
+            existingItems.forEach(item => item.remove());
+            
+            // Add taskbar items for open windows
+            const taskbar = document.querySelector('.taskbar');
+            const clock = document.getElementById('clock');
+            
+            openWindows.forEach(window => {
+                const item = document.createElement('div');
+                item.className = 'taskbar-item';
+                item.textContent = getWindowData(window.type).title;
+                item.onclick = () => {
+                    if (window.element.style.display === 'none') {
+                        window.element.style.display = 'block';
+                    }
+                    bringToFront(window.element);
+                };
+                taskbar.insertBefore(item, clock);
+            });
+        }
+
+        // Drag functionality
+        function startDrag(event, windowId) {
+            const window = document.getElementById(windowId);
+            if (window.classList.contains('maximized')) return;
+            
+            draggedWindow = window;
+            const rect = window.getBoundingClientRect();
+            dragOffset.x = event.clientX - rect.left;
+            dragOffset.y = event.clientY - rect.top;
+            
+            window.classList.add('dragging');
+            bringToFront(window);
+            
+            document.addEventListener('mousemove', drag);
+            document.addEventListener('mouseup', stopDrag);
+            event.preventDefault();
+        }
+
+        function drag(event) {
+            if (draggedWindow) {
+                const x = event.clientX - dragOffset.x;
+                const y = event.clientY - dragOffset.y;
+                
+                draggedWindow.style.left = Math.max(0, x) + 'px';
+                draggedWindow.style.top = Math.max(0, y) + 'px';
+            }
+        }
+
+        function stopDrag() {
+            if (draggedWindow) {
+                draggedWindow.classList.remove('dragging');
+                draggedWindow = null;
+            }
+            document.removeEventListener('mousemove', drag);
+            document.removeEventListener('mouseup', stopDrag);
+        }
+
+        // File manager functions
+        function navigateBack() {
+            showNotification('Navigated back');
+        }
+
+        function navigateForward() {
+            showNotification('Navigated forward');
+        }
+
+        function navigateUp() {
+            showNotification('Navigated up');
+        }
+
+        function refreshFolder() {
+            showNotification('Folder refreshed');
+        }
+
+        function changeView() {
+            const grid = document.getElementById('fileGrid');
+            if (grid) {
+                if (grid.style.gridTemplateColumns.includes('1fr')) {
+                    grid.style.gridTemplateColumns = 'repeat(auto-fill, minmax(100px, 1fr))';
+                    showNotification('Changed to icon view');
+                } else {
+                    grid.style.gridTemplateColumns = '1fr';
+                    showNotification('Changed to list view');
+                }
+            }
+        }
+
+        function switchFolder(folder) {
+            showNotification(`Switched to ${folder} folder`);
+        }
+
+        function openServiceDetails(service) {
+            const serviceData = {
+                managed: {
+                    title: '🔧 IT Managed Services',
+                    description: 'Layanan pengelolaan IT komprehensif 24/7',
+                    features: [
+                        '• Monitoring server dan jaringan real-time',
+                        '• Maintenance rutin dan preventif',
+                        '• Help desk support untuk end-user',
+                        '• Patch management dan security updates',
+                        '• Backup dan disaster recovery',
+                        '• Performance optimization'
+                    ],
+                    benefits: 'Mengurangi downtime hingga 95%, menghemat biaya IT hingga 40%, dan meningkatkan produktivitas tim.'
+                },
+                cloud: {
+                    title: '☁️ Cloud Solutions',
+                    description: 'Migrasi dan pengelolaan infrastruktur cloud',
+                    features: [
+                        '• Cloud migration (AWS, Azure, Google Cloud)',
+                        '• Cloud architecture design',
+                        '• Auto-scaling dan load balancing',
+                        '• Cloud security dan compliance',
+                        '• Cost optimization',
+                        '• Hybrid cloud integration'
+                    ],
+                    benefits: 'Skalabilitas unlimited, akses dari mana saja, dan penghematan biaya infrastruktur hingga 50%.'
+                },
+                security: {
+                    title: '🛡️ Cybersecurity',
+                    description: 'Perlindungan keamanan siber menyeluruh',
+                    features: [
+                        '• Firewall dan intrusion detection',
+                        '• Antivirus dan anti-malware enterprise',
+                        '• Security audit dan penetration testing',
+                        '• Employee security training',
+                        '• Compliance management (ISO 27001)',
+                        '• Incident response dan forensik'
+                    ],
+                    benefits: 'Melindungi data bisnis 99.9%, mencegah kerugian finansial, dan menjaga reputasi perusahaan.'
+                },
+                digital: {
+                    title: '🚀 Digital Transformation',
+                    description: 'Transformasi proses bisnis dengan teknologi',
+                    features: [
+                        '• Process automation dan workflow',
+                        '• Digital document management',
+                        '• Customer relationship management (CRM)',
+                        '• Enterprise resource planning (ERP)',
+                        '• Mobile app development',
+                        '• IoT integration'
+                    ],
+                    benefits: 'Meningkatkan efisiensi operasional 60%, mengurangi human error, dan mempercepat time-to-market.'
+                },
+                bi: {
+                    title: '📊 Business Intelligence',
+                    description: 'Analisis data untuk insight bisnis strategis',
+                    features: [
+                        '• Data warehouse dan data lake setup',
+                        '• Real-time dashboard dan reporting',
+                        '• Predictive analytics dan forecasting',
+                        '• KPI monitoring dan alerting',
+                        '• Data visualization tools',
+                        '• Self-service analytics'
+                    ],
+                    benefits: 'Keputusan berbasis data, identifikasi peluang bisnis baru, dan peningkatan ROI hingga 25%.'
+                },
+                support: {
+                    title: '💬 Support & Consulting',
+                    description: 'Konsultasi ahli dan dukungan teknis berkelanjutan',
+                    features: [
+                        '• IT strategy consulting',
+                        '• Technology roadmap planning',
+                        '• Vendor selection dan procurement',
+                        '• Project management',
+                        '• Training dan knowledge transfer',
+                        '• 24/7 technical support'
+                    ],
+                    benefits: 'Strategi IT yang tepat sasaran, implementasi sukses, dan dukungan berkelanjutan.'
+                }
+            };
+            
+            const data = serviceData[service];
+            if (data) {
+                showServicePopup(data);
+            }
+        }
+
+        function showServicePopup(data) {
+            // Create popup overlay
+            const overlay = document.createElement('div');
+            overlay.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+                background: rgba(0, 0, 0, 0.7);
+                backdrop-filter: blur(5px);
+                z-index: 2000;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 20px;
+                box-sizing: border-box;
+            `;
+            
+            // Create popup content
+            const popup = document.createElement('div');
+            popup.style.cssText = `
+                background: white;
+                border-radius: 12px;
+                max-width: 600px;
+                width: 100%;
+                max-height: 80vh;
+                overflow-y: auto;
+                box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+                animation: popupOpen 0.3s ease-out;
+            `;
+            
+            popup.innerHTML = `
+                <div style="padding: 24px; border-bottom: 1px solid #e5e7eb;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <h2 style="font-size: 24px; font-weight: bold; color: #1f2937; margin: 0;">${data.title}</h2>
+                        <button onclick="closeServicePopup()" style="background: none; border: none; font-size: 24px; color: #6b7280; cursor: pointer; padding: 4px;">×</button>
+                    </div>
+                    <p style="color: #6b7280; margin: 8px 0 0 0; font-size: 16px;">${data.description}</p>
+                </div>
+                
+                <div style="padding: 24px;">
+                    <div style="margin-bottom: 24px;">
+                        <h3 style="font-size: 18px; font-weight: 600; color: #374151; margin-bottom: 12px;">✨ Fitur Utama:</h3>
+                        <div style="background: #f9fafb; padding: 16px; border-radius: 8px; border-left: 4px solid #3b82f6;">
+                            ${data.features.map(feature => `<div style="color: #4b5563; margin-bottom: 4px; line-height: 1.5;">${feature}</div>`).join('')}
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 24px;">
+                        <h3 style="font-size: 18px; font-weight: 600; color: #374151; margin-bottom: 12px;">🎯 Manfaat Bisnis:</h3>
+                        <div style="background: #ecfdf5; padding: 16px; border-radius: 8px; border-left: 4px solid #10b981;">
+                            <p style="color: #065f46; margin: 0; line-height: 1.6;">${data.benefits}</p>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                        <button onclick="alert('Tim sales akan menghubungi Anda untuk konsultasi gratis dalam 1 jam!'); closeServicePopup();" 
+                                style="background: #3b82f6; color: white; padding: 12px 20px; border: none; border-radius: 6px; font-weight: 500; cursor: pointer; flex: 1; min-width: 140px;">
+                            💬 Konsultasi Gratis
+                        </button>
+                        <button onclick="alert('Proposal detail akan dikirim ke email Anda!'); closeServicePopup();" 
+                                style="background: #10b981; color: white; padding: 12px 20px; border: none; border-radius: 6px; font-weight: 500; cursor: pointer; flex: 1; min-width: 140px;">
+                            📄 Minta Proposal
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            overlay.appendChild(popup);
+            document.body.appendChild(overlay);
+            
+            // Add animation styles
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes popupOpen {
+                    from {
+                        opacity: 0;
+                        transform: scale(0.9) translateY(-20px);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: scale(1) translateY(0);
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            // Close on overlay click
+            overlay.addEventListener('click', function(e) {
+                if (e.target === overlay) {
+                    closeServicePopup();
+                }
+            });
+            
+            // Store reference for closing
+            window.currentServicePopup = overlay;
+        }
+
+        function closeServicePopup() {
+            if (window.currentServicePopup) {
+                window.currentServicePopup.remove();
+                window.currentServicePopup = null;
+            }
+        }
+
+        // Calculator functions
+        function calculateCost() {
+            const employees = parseInt(document.getElementById('employees')?.value || 0);
+            const managed = document.getElementById('managed')?.checked ? 500000 : 0;
+            const cloud = document.getElementById('cloud')?.checked ? 200000 : 0;
+            const security = document.getElementById('security')?.checked ? 300000 : 0;
+            const backup = document.getElementById('backup')?.checked ? 150000 : 0;
+            
+            const totalPerUser = managed + cloud + security + backup;
+            const totalCost = totalPerUser * employees;
+            
+            const costElement = document.getElementById('totalCost');
+            if (costElement) {
+                costElement.textContent = 'Rp ' + totalCost.toLocaleString('id-ID');
+            }
+        }
+
+        // Quiz game functions
+        let currentQuestion = 0;
+        let score = 0;
+        const questions = [
+            {
+                question: "Apa kepanjangan dari CPU?",
+                answers: ["Central Processing Unit", "Computer Personal Unit", "Central Program Unit", "Computer Processing Unit"],
+                correct: 0
+            },
+            {
+                question: "Protokol keamanan mana yang paling aman untuk WiFi?",
+                answers: ["WEP", "WPA", "WPA2", "WPA3"],
+                correct: 3
+            },
+            {
+                question: "Apa fungsi utama firewall?",
+                answers: ["Mempercepat internet", "Melindungi dari virus", "Mengontrol lalu lintas jaringan", "Menyimpan data"],
+                correct: 2
+            },
+            {
+                question: "Cloud computing memberikan keuntungan utama berupa:",
+                answers: ["Harga lebih murah", "Skalabilitas dan fleksibilitas", "Kecepatan internet", "Desain yang bagus"],
+                correct: 1
+            },
+            {
+                question: "Backup data sebaiknya dilakukan:",
+                answers: ["Sekali setahun", "Setiap bulan", "Setiap minggu", "Setiap hari"],
+                correct: 3
+            }
+        ];
+
+        function selectAnswer(answerIndex) {
+            const buttons = document.querySelectorAll('.quiz-btn');
+            buttons.forEach(btn => {
+                btn.style.borderColor = '#e5e7eb';
+                btn.style.background = 'white';
+            });
+            
+            if (buttons[answerIndex]) {
+                buttons[answerIndex].style.borderColor = '#3b82f6';
+                buttons[answerIndex].style.background = '#dbeafe';
+            }
+            
+            const nextBtn = document.getElementById('nextBtn');
+            if (nextBtn) {
+                nextBtn.disabled = false;
+                nextBtn.onclick = () => checkAnswer(answerIndex);
+            }
+        }
+
+        function checkAnswer(selectedAnswer) {
+            const correct = questions[currentQuestion].correct;
+            const buttons = document.querySelectorAll('.quiz-btn');
+            
+            if (selectedAnswer === correct) {
+                score++;
+                if (buttons[selectedAnswer]) {
+                    buttons[selectedAnswer].style.background = '#dcfce7';
+                    buttons[selectedAnswer].style.borderColor = '#10b981';
+                }
+            } else {
+                if (buttons[selectedAnswer]) {
+                    buttons[selectedAnswer].style.background = '#fee2e2';
+                    buttons[selectedAnswer].style.borderColor = '#ef4444';
+                }
+                if (buttons[correct]) {
+                    buttons[correct].style.background = '#dcfce7';
+                    buttons[correct].style.borderColor = '#10b981';
+                }
+            }
+            
+            setTimeout(() => {
+                nextQuestion();
+            }, 1500);
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            const scoreElement = document.getElementById('score');
+            if (scoreElement) {
+                scoreElement.textContent = score;
+            }
+            
+            if (currentQuestion >= questions.length) {
+                showQuizResult();
+                return;
+            }
+            
+            const questionTitle = document.getElementById('questionTitle');
+            const answers = document.getElementById('answers');
+            const nextBtn = document.getElementById('nextBtn');
+            
+            if (questionTitle && answers && nextBtn) {
+                questionTitle.textContent = `Pertanyaan ${currentQuestion + 1}: ${questions[currentQuestion].question}`;
+                
+                answers.innerHTML = questions[currentQuestion].answers.map((answer, index) => 
+                    `<button class="quiz-btn" onclick="selectAnswer(${index})" style="padding: 12px; text-align: left; background: white; border: 2px solid #e5e7eb; border-radius: 6px; cursor: pointer;">${String.fromCharCode(65 + index)}. ${answer}</button>`
+                ).join('');
+                
+                nextBtn.disabled = true;
+                nextBtn.textContent = 'Selanjutnya';
+            }
+        }
+
+        function showQuizResult() {
+            const container = document.getElementById('quizContainer');
+            if (container) {
+                const percentage = Math.round((score / questions.length) * 100);
+                let message = '';
+                let color = '';
+                
+                if (percentage >= 80) {
+                    message = 'Excellent! Anda sangat paham IT! 🏆';
+                    color = '#10b981';
+                } else if (percentage >= 60) {
+                    message = 'Good job! Pengetahuan IT Anda cukup baik! 👍';
+                    color = '#3b82f6';
+                } else {
+                    message = 'Perlu belajar lagi! Konsultasi dengan expert kami? 📚';
+                    color = '#f59e0b';
+                }
+                
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 40px;">
+                        <h3 style="font-size: 24px; margin-bottom: 16px; color: ${color};">Quiz Selesai!</h3>
+                        <div style="font-size: 48px; font-weight: bold; color: ${color}; margin-bottom: 16px;">${score}/${questions.length}</div>
+                        <p style="font-size: 18px; margin-bottom: 24px; color: #374151;">${message}</p>
+                        <button onclick="restartQuiz()" style="background: #3b82f6; color: white; padding: 12px 24px; border: none; border-radius: 6px; margin-right: 8px; cursor: pointer;">🔄 Main Lagi</button>
+                        <button onclick="alert('Tim expert kami akan menghubungi Anda untuk konsultasi gratis!')" style="background: #10b981; color: white; padding: 12px 24px; border: none; border-radius: 6px; cursor: pointer;">💬 Konsultasi Expert</button>
+                    </div>
+                `;
+            }
+        }
+
+        function restartQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            nextQuestion();
+        }
+
+        // Chat functions
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            if (input && input.value.trim()) {
+                addChatMessage(input.value, 'user');
+                input.value = '';
+                
+                setTimeout(() => {
+                    const responses = [
+                        'Terima kasih atas pertanyaannya! Tim technical expert kami akan segera merespons.',
+                        'Saya akan menghubungkan Anda dengan specialist yang tepat. Mohon tunggu sebentar.',
+                        'Pertanyaan yang bagus! Mari kita jadwalkan konsultasi gratis untuk membahas lebih detail.',
+                        'Saya catat kebutuhan Anda. Tim sales akan menghubungi dalam 1 jam untuk follow up.'
+                    ];
+                    const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                    addChatMessage(randomResponse, 'agent');
+                }, 1000);
+            }
+        }
+
+        function sendQuickReply(message) {
+            addChatMessage(message, 'user');
+            
+            setTimeout(() => {
+                let response = '';
+                if (message.includes('konsultasi')) {
+                    response = 'Excellent! Konsultasi gratis tersedia setiap hari. Tim expert kami akan menghubungi Anda dalam 30 menit. Bisa share nomor WhatsApp?';
+                } else if (message.includes('harga')) {
+                    response = 'Harga bervariasi sesuai kebutuhan. Untuk estimasi akurat, silakan coba IT Cost Calculator di desktop atau chat langsung dengan sales team kami.';
+                } else if (message.includes('demo')) {
+                    response = 'Demo produk bisa dijadwalkan hari ini! Kami akan tunjukkan semua fitur secara live. Kapan waktu yang tepat untuk Anda?';
+                }
+                addChatMessage(response, 'agent');
+            }, 1000);
+        }
+
+        function addChatMessage(message, sender) {
+            const messagesContainer = document.getElementById('chatMessages');
+            if (messagesContainer) {
+                const time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                const isUser = sender === 'user';
+                
+                const messageDiv = document.createElement('div');
+                messageDiv.style.cssText = `
+                    background: ${isUser ? '#3b82f6' : 'white'};
+                    color: ${isUser ? 'white' : '#374151'};
+                    padding: 12px;
+                    border-radius: 8px;
+                    margin-bottom: 12px;
+                    margin-left: ${isUser ? '20%' : '0'};
+                    margin-right: ${isUser ? '0' : '20%'};
+                    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+                `;
+                
+                messageDiv.innerHTML = `
+                    ${!isUser ? `<div style="font-weight: 500; color: #3b82f6; margin-bottom: 4px;">ClueForIT Support</div>` : ''}
+                    <div>${message}</div>
+                    <div style="font-size: 11px; color: ${isUser ? 'rgba(255,255,255,0.7)' : '#9ca3af'}; margin-top: 4px;">${time}</div>
+                `;
+                
+                messagesContainer.appendChild(messageDiv);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
+        }
+
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: rgba(0, 0, 0, 0.8);
+                color: white;
+                padding: 12px 16px;
+                border-radius: 6px;
+                font-size: 14px;
+                z-index: 2000;
+                backdrop-filter: blur(10px);
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 2000);
+        }
+
+        function toggleStartMenu() {
+            const existingMenu = document.getElementById('startMenu');
+            if (existingMenu) {
+                existingMenu.remove();
+                return;
+            }
+            
+            createStartMenu();
+        }
+
+        function createStartMenu() {
+            const menu = document.createElement('div');
+            menu.id = 'startMenu';
+            menu.style.cssText = `
+                position: fixed;
+                bottom: 60px;
+                left: 12px;
+                width: 350px;
+                max-height: 500px;
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(20px);
+                border: 1px solid rgba(255, 255, 255, 0.3);
+                border-radius: 12px;
+                box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+                z-index: 2000;
+                overflow: hidden;
+                animation: menuSlideUp 0.3s ease-out;
+            `;
+            
+            menu.innerHTML = `
+                <div style="background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white; padding: 16px; display: flex; align-items: center; justify-content: space-between;">
+                    <div style="display: flex; align-items: center;">
+                        <div style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; margin-right: 8px; animation: pulse 2s infinite;"></div>
+                        <span style="font-weight: 600;">ClueForIT Assistant</span>
+                    </div>
+                    <button onclick="closeStartMenu()" style="background: none; border: none; color: white; font-size: 18px; cursor: pointer; padding: 4px;">×</button>
+                </div>
+                
+                <div id="chatbotMessages" style="height: 300px; overflow-y: auto; padding: 16px; background: #f9fafb;">
+                    <div style="background: white; padding: 12px; border-radius: 8px; margin-bottom: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                        <div style="font-weight: 500; color: #3b82f6; margin-bottom: 4px;">🤖 ClueForIT Bot</div>
+                        <div style="color: #374151; line-height: 1.5;">Halo! 👋 Saya asisten virtual ClueForIT. Saya bisa membantu Anda dengan informasi tentang:</div>
+                    </div>
+                </div>
+                
+                <div style="padding: 12px; background: white; border-top: 1px solid #e5e7eb;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 12px;">
+                        <button onclick="askBot('alamat')" style="background: #f3f4f6; border: 1px solid #d1d5db; padding: 8px; border-radius: 6px; font-size: 11px; cursor: pointer; transition: all 0.2s;">📍 Alamat</button>
+                        <button onclick="askBot('kontak')" style="background: #f3f4f6; border: 1px solid #d1d5db; padding: 8px; border-radius: 6px; font-size: 11px; cursor: pointer; transition: all 0.2s;">📞 Kontak</button>
+                        <button onclick="askBot('produk')" style="background: #f3f4f6; border: 1px solid #d1d5db; padding: 8px; border-radius: 6px; font-size: 11px; cursor: pointer; transition: all 0.2s;">💼 Produk</button>
+                        <button onclick="askBot('portofolio')" style="background: #f3f4f6; border: 1px solid #d1d5db; padding: 8px; border-radius: 6px; font-size: 11px; cursor: pointer; transition: all 0.2s;">⭐ Portfolio</button>
+                    </div>
+                    <div style="display: flex; gap: 6px;">
+                        <input type="text" id="botInput" placeholder="Tanya apa saja..." style="flex: 1; padding: 8px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 12px;" onkeypress="if(event.key==='Enter') sendBotMessage()">
+                        <button onclick="sendBotMessage()" style="background: #3b82f6; color: white; padding: 8px 12px; border: none; border-radius: 6px; cursor: pointer; font-size: 12px;">Kirim</button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(menu);
+            
+            // Add animation styles
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes menuSlideUp {
+                    from {
+                        opacity: 0;
+                        transform: translateY(20px) scale(0.95);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateY(0) scale(1);
+                    }
+                }
+                @keyframes pulse {
+                    0%, 100% { opacity: 1; }
+                    50% { opacity: 0.5; }
+                }
+                #startMenu button:hover {
+                    background: #e5e7eb !important;
+                }
+            `;
+            document.head.appendChild(style);
+            
+            // Close menu when clicking outside
+            setTimeout(() => {
+                document.addEventListener('click', handleMenuClick);
+            }, 100);
+        }
+
+        function closeStartMenu() {
+            const menu = document.getElementById('startMenu');
+            if (menu) {
+                menu.remove();
+                document.removeEventListener('click', handleMenuClick);
+            }
+        }
+
+        function handleMenuClick(event) {
+            const menu = document.getElementById('startMenu');
+            const startButton = document.querySelector('.start-button');
+            
+            if (menu && !menu.contains(event.target) && !startButton.contains(event.target)) {
+                closeStartMenu();
+            }
+        }
+
+        function askBot(topic) {
+            const questions = {
+                alamat: 'Dimana alamat kantor ClueForIT?',
+                kontak: 'Bagaimana cara menghubungi ClueForIT?',
+                produk: 'Apa saja produk dan layanan ClueForIT?',
+                portofolio: 'Bisa ceritakan tentang portfolio ClueForIT?'
+            };
+            
+            const question = questions[topic];
+            if (question) {
+                addBotMessage(question, 'user');
+                setTimeout(() => {
+                    respondToQuestion(topic);
+                }, 800);
+            }
+        }
+
+        function sendBotMessage() {
+            const input = document.getElementById('botInput');
+            if (input && input.value.trim()) {
+                const message = input.value.trim().toLowerCase();
+                addBotMessage(input.value, 'user');
+                input.value = '';
+                
+                setTimeout(() => {
+                    if (message.includes('alamat') || message.includes('kantor') || message.includes('lokasi')) {
+                        respondToQuestion('alamat');
+                    } else if (message.includes('kontak') || message.includes('telepon') || message.includes('hubungi') || message.includes('whatsapp')) {
+                        respondToQuestion('kontak');
+                    } else if (message.includes('produk') || message.includes('layanan') || message.includes('service')) {
+                        respondToQuestion('produk');
+                    } else if (message.includes('portfolio') || message.includes('portofolio') || message.includes('klien') || message.includes('project')) {
+                        respondToQuestion('portofolio');
+                    } else if (message.includes('harga') || message.includes('biaya') || message.includes('cost')) {
+                        addBotMessage('💰 Untuk informasi harga yang akurat, silakan gunakan IT Cost Calculator di desktop atau hubungi tim sales kami. Setiap solusi disesuaikan dengan kebutuhan spesifik perusahaan Anda.', 'bot');
+                    } else if (message.includes('demo') || message.includes('trial')) {
+                        addBotMessage('🚀 Demo gratis tersedia! Kami bisa tunjukkan semua fitur secara live. Klik tombol "Live Chat Support" di desktop untuk jadwalkan demo dengan tim technical kami.', 'bot');
+                    } else if (message.includes('jam') || message.includes('buka') || message.includes('operasional')) {
+                        addBotMessage('⏰ Jam operasional kami:\n• Senin-Jumat: 09:00-18:00 WIB\n• Sabtu: 09:00-15:00 WIB\n• Emergency Support: 24/7', 'bot');
+                    } else {
+                        addBotMessage('🤔 Maaf, saya belum mengerti pertanyaan Anda. Coba gunakan tombol quick reply di atas atau tanya tentang alamat, kontak, produk, atau portfolio kami.', 'bot');
+                    }
+                }, 1000);
+            }
+        }
+
+        function respondToQuestion(topic) {
+            const responses = {
+                alamat: `📍 **Meet Point ClueForIT:**
+                
+Gading Serpong
+Tangerang
+Indonesia
+
+Meet point kami berlokasi strategis di Gading Serpong dengan akses mudah transportasi umum. Lokasi nyaman dengan fasilitas lengkap untuk meeting dan presentasi.`,
+
+                kontak: `📞 **Kontak ClueForIT:**
+                
+• **Telepon:** +62 897 232 5030
+• **Email:** henry.suryaman@gmail.com  
+• **WhatsApp:** +62 897 232 5030
+• **Website:** https://clueforit.vercel.app
+
+Tim customer service kami siap membantu Anda 24/7 untuk emergency support!`,
+
+                produk: `💼 **Produk & Layanan ClueForIT:**
+
+🔧 **IT Managed Services**
+• Monitoring 24/7 • Help desk • Maintenance
+
+☁️ **Cloud Solutions** 
+• Migration • Architecture • Security
+
+🛡️ **Cybersecurity**
+• Firewall • Audit • Training
+
+🚀 **Digital Transformation**
+• Automation • CRM/ERP • Mobile apps
+
+📊 **Business Intelligence**
+• Dashboard • Analytics • Reporting
+
+💬 **Support & Consulting**
+• Strategy • Implementation • Training`,
+
+                portofolio: `⭐ **Portfolio ClueForIT:**
+
+🏢 **PT. Teknologi Maju**
+• Cloud migration → 40% cost saving
+• Zero downtime achievement
+
+🏥 **RS. Sehat Sentosa** 
+• 100% data protection
+• Full compliance security
+
+🏪 **Retail Chain ABC**
+• 60% efficiency boost
+• 50+ branches integrated  
+
+🏭 **Manufaktur XYZ**
+• Real-time BI dashboard
+• 35% productivity increase
+
+**500+ proyek sukses** dalam 10+ tahun pengalaman!`
+            };
+            
+            addBotMessage(responses[topic], 'bot');
+        }
+
+        function addBotMessage(message, sender) {
+            const messagesContainer = document.getElementById('chatbotMessages');
+            if (messagesContainer) {
+                const time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                const isUser = sender === 'user';
+                
+                const messageDiv = document.createElement('div');
+                messageDiv.style.cssText = `
+                    background: ${isUser ? '#3b82f6' : 'white'};
+                    color: ${isUser ? 'white' : '#374151'};
+                    padding: 12px;
+                    border-radius: 8px;
+                    margin-bottom: 12px;
+                    margin-left: ${isUser ? '15%' : '0'};
+                    margin-right: ${isUser ? '0' : '15%'};
+                    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+                    white-space: pre-line;
+                    line-height: 1.5;
+                `;
+                
+                messageDiv.innerHTML = `
+                    ${!isUser ? `<div style="font-weight: 500; color: #3b82f6; margin-bottom: 4px;">🤖 ClueForIT Bot</div>` : ''}
+                    <div style="font-size: 13px;">${message}</div>
+                    <div style="font-size: 10px; color: ${isUser ? 'rgba(255,255,255,0.7)' : '#9ca3af'}; margin-top: 6px;">${time}</div>
+                `;
+                
+                messagesContainer.appendChild(messageDiv);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
+        }
+
+        // Click to focus windows
+        document.addEventListener('click', function(event) {
+            const window = event.target.closest('.window');
+            if (window) {
+                bringToFront(window);
+            }
+        });
+
+        // Mobile layout handling
+        function handleMobileLayout() {
+            const isMobile = window.innerWidth <= 768;
+            const mobileContainer = document.querySelector('.desktop-icons-container');
+            const desktopContainer = document.querySelector('.desktop-icons-desktop');
+            
+            if (isMobile) {
+                mobileContainer.style.display = 'grid';
+                desktopContainer.style.display = 'none';
+            } else {
+                mobileContainer.style.display = 'none';
+                desktopContainer.style.display = 'block';
+            }
+        }
+
+        // Background slideshow functionality
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.background-slide');
+        
+        function nextSlide() {
+            if (slides.length === 0) return;
+            
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }
+        
+        function startSlideshow() {
+            if (slides.length > 1) {
+                setInterval(nextSlide, 5000); // Change slide every 5 seconds
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            handleMobileLayout();
+            startSlideshow();
+            
+            // Auto-open file manager on startup (only on desktop)
+            if (window.innerWidth > 768) {
+                setTimeout(() => {
+                    openWindow('fileManager');
+                }, 1000);
+            }
+        });
+
+        // Handle window resize
+        window.addEventListener('resize', handleMobileLayout);
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'987c978b85b4f936',t:'MTc1OTMyODMzNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
