@@ -477,15 +477,24 @@
         </div>
     </div>
 
-    <div class="flex h-[calc(100vh-200px)] relative">
+    <div class="flex h-[calc(100vh-240px)] relative">
         <!-- Mobile Sidebar Overlay -->
         <div id="sidebarOverlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden hidden"></div>
         
         <!-- Left Sidebar -->
-        <div id="sidebar" class="sidebar fixed md:relative left-0 top-0 h-[calc(100vh-200px)] w-64 bg-white bg-opacity-80 backdrop-filter backdrop-blur-xl border-r border-gray-200 overflow-y-auto z-50 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out">
+        <div id="sidebar" class="sidebar fixed md:relative left-0 top-0 h-[calc(100vh-240px)] w-64 bg-white bg-opacity-80 backdrop-filter backdrop-blur-xl border-r border-gray-200 overflow-y-auto z-50 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out">
             <!-- Logo Section -->
             <div class="p-4 border-b border-gray-200 bg-white bg-opacity-50">
-                <div class="flex items-center justify-end">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-lg flex items-center justify-center backdrop-blur-sm">
+                            <span class="text-white font-bold text-sm">C</span>
+                        </div>
+                        <div class="text-left">
+                            <div class="font-bold text-sm text-gray-800">Clueforit</div>
+                            <div class="text-xs text-gray-600">Technology Resource Center</div>
+                        </div>
+                    </div>
                     <!-- Close button for mobile -->
                     <button id="closeSidebarBtn" class="md:hidden p-2 text-gray-500 hover:text-gray-700">
                         <span class="text-lg">×</span>
@@ -511,6 +520,10 @@
                     <div class="folder-icon"></div>
                     <span class="text-sm">Studi Kasus</span>
                 </div>
+                <div class="tree-item flex items-center space-x-3 px-3 py-3 rounded" data-path="business-tools">
+                    <div class="folder-icon"></div>
+                    <span class="text-sm">📊 Business Tools</span>
+                </div>
                 <div class="tree-item flex items-center space-x-3 px-3 py-3 rounded" data-path="contact">
                     <div class="file-icon"></div>
                     <span class="text-sm">Kontak</span>
@@ -535,6 +548,10 @@
                         <div class="file-item p-4 text-center" data-path="case-studies" data-type="folder">
                             <div class="folder-icon mx-auto mb-2"></div>
                             <div class="text-xs md:text-xs">Studi Kasus</div>
+                        </div>
+                        <div class="file-item p-4 text-center" data-path="business-tools" data-type="folder">
+                            <div class="folder-icon mx-auto mb-2" style="background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%); box-shadow: 0 2px 8px rgba(79, 70, 229, 0.3);"></div>
+                            <div class="text-xs md:text-xs">📊 Business Tools</div>
                         </div>
                         <div class="file-item p-4 text-center" data-path="contact" data-type="file">
                             <div class="file-icon mx-auto mb-2"></div>
@@ -565,6 +582,40 @@
                     </div>
                 </div>
 
+                <!-- Business Tools Directory -->
+                <div id="business-tools-content" class="directory-content hidden">
+                    <div class="mb-6 p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg border border-blue-200">
+                        <h2 class="text-lg font-bold text-blue-800 mb-2">📊 Business Tools Suite</h2>
+                        <p class="text-sm text-gray-600">Powerful tools to analyze, calculate, and compare business solutions</p>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+                        <div class="file-item p-6 text-center bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200 rounded-lg" data-path="business-tools/analytics" data-type="file">
+                            <div class="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center text-white text-2xl shadow-lg">
+                                📊
+                            </div>
+                            <div class="text-sm font-semibold text-blue-800 mb-2">Analytics Dashboard</div>
+                            <div class="text-xs text-gray-600">Real-time business metrics and performance insights</div>
+                        </div>
+                        
+                        <div class="file-item p-6 text-center bg-gradient-to-br from-green-50 to-green-100 border border-green-200 rounded-lg" data-path="business-tools/calculator" data-type="file">
+                            <div class="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-green-500 to-green-600 rounded-lg flex items-center justify-center text-white text-2xl shadow-lg">
+                                🧮
+                            </div>
+                            <div class="text-sm font-semibold text-green-800 mb-2">Resource Calculator</div>
+                            <div class="text-xs text-gray-600">Estimate IT infrastructure needs and costs</div>
+                        </div>
+                        
+                        <div class="file-item p-6 text-center bg-gradient-to-br from-purple-50 to-purple-100 border border-purple-200 rounded-lg" data-path="business-tools/comparison" data-type="file">
+                            <div class="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg flex items-center justify-center text-white text-2xl shadow-lg">
+                                📋
+                            </div>
+                            <div class="text-sm font-semibold text-purple-800 mb-2">Service Comparison</div>
+                            <div class="text-xs text-gray-600">Compare service packages and features</div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Case Studies Directory -->
                 <div id="case-studies-content" class="directory-content hidden">
                     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-4">
@@ -585,43 +636,150 @@
 
                 <!-- About Us Directory -->
                 <div id="about-content" class="directory-content hidden">
-                    <div class="p-6 bg-gradient-to-br from-blue-50 to-indigo-100 rounded-lg">
-                        <h2 class="text-2xl font-bold text-blue-800 mb-4">Tentang Clueforit</h2>
-                        <div class="space-y-4 text-gray-700">
-                            <p class="leading-relaxed">
-                                Di Clueforit, kami mengkhususkan diri dalam menyediakan layanan IT terkelola yang komprehensif dan solusi bisnis digital yang memberdayakan organisasi untuk berkembang di era digital. Dengan pengalaman lebih dari satu dekade, kami telah membantu ratusan bisnis merampingkan operasi mereka, meningkatkan keamanan, dan mempercepat pertumbuhan melalui solusi teknologi inovatif.
+                    <!-- Hero Section -->
+                    <div class="relative overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 rounded-2xl mb-8">
+                        <div class="absolute inset-0 bg-black/20"></div>
+                        <div class="relative px-8 py-12 text-center">
+                            <div class="inline-flex items-center justify-center w-20 h-20 bg-white/10 backdrop-blur-sm rounded-2xl mb-6">
+                                <span class="text-3xl font-bold text-white">C</span>
+                            </div>
+                            <h1 class="text-4xl md:text-5xl font-bold text-white mb-4 tracking-tight">
+                                Tentang <span class="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">Clueforit</span>
+                            </h1>
+                            <p class="text-xl text-blue-100 max-w-3xl mx-auto leading-relaxed">
+                                Technology Partner yang menghadirkan solusi digital terdepan untuk transformasi bisnis Anda
                             </p>
-                            
-                            <div class="grid md:grid-cols-2 gap-6 mt-6">
-                                <div class="bg-white p-4 rounded-lg shadow-sm">
-                                    <h3 class="font-semibold text-blue-600 mb-2">Misi Kami</h3>
-                                    <p class="text-sm">Memberikan solusi IT terdepan yang mendorong kesuksesan bisnis dan transformasi digital untuk klien kami di seluruh dunia.</p>
+                        </div>
+                    </div>
+
+                    <!-- Main Content -->
+                    <div class="space-y-8">
+                        <!-- Company Story -->
+                        <div class="bg-white rounded-2xl p-8 shadow-lg border border-gray-100">
+                            <div class="flex items-start space-x-6">
+                                <div class="flex-shrink-0">
+                                    <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center">
+                                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-4m-5 0H9m0 0H5m0 0h2M7 7h10M7 11h10M7 15h10"></path>
+                                        </svg>
+                                    </div>
                                 </div>
-                                <div class="bg-white p-4 rounded-lg shadow-sm">
-                                    <h3 class="font-semibold text-blue-600 mb-2">Visi Kami</h3>
-                                    <p class="text-sm">Menjadi penyedia terdepan layanan IT terkelola yang inovatif, menetapkan standar baru untuk keunggulan dan keandalan.</p>
+                                <div class="flex-1">
+                                    <h2 class="text-2xl font-bold text-gray-900 mb-4">Cerita Kami</h2>
+                                    <p class="text-gray-600 leading-relaxed text-lg">
+                                        Di Clueforit, kami mengkhususkan diri dalam menyediakan layanan IT terkelola yang komprehensif dan solusi bisnis digital yang memberdayakan organisasi untuk berkembang di era digital. Dengan pengalaman lebih dari satu dekade, kami telah membantu ratusan bisnis merampingkan operasi mereka, meningkatkan keamanan, dan mempercepat pertumbuhan melalui solusi teknologi inovatif.
+                                    </p>
                                 </div>
                             </div>
+                        </div>
+
+                        <!-- Mission & Vision Cards -->
+                        <div class="grid md:grid-cols-2 gap-8">
+                            <div class="group relative overflow-hidden bg-gradient-to-br from-blue-50 to-indigo-100 rounded-2xl p-8 hover:shadow-xl transition-all duration-300">
+                                <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-400/20 to-transparent rounded-full -mr-16 -mt-16"></div>
+                                <div class="relative">
+                                    <div class="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                        </svg>
+                                    </div>
+                                    <h3 class="text-2xl font-bold text-blue-900 mb-4">Misi Kami</h3>
+                                    <p class="text-blue-800 leading-relaxed">
+                                        Memberikan solusi IT terdepan yang mendorong kesuksesan bisnis dan transformasi digital untuk klien kami di seluruh dunia.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="group relative overflow-hidden bg-gradient-to-br from-purple-50 to-pink-100 rounded-2xl p-8 hover:shadow-xl transition-all duration-300">
+                                <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-purple-400/20 to-transparent rounded-full -mr-16 -mt-16"></div>
+                                <div class="relative">
+                                    <div class="w-12 h-12 bg-purple-500 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                        </svg>
+                                    </div>
+                                    <h3 class="text-2xl font-bold text-purple-900 mb-4">Visi Kami</h3>
+                                    <p class="text-purple-800 leading-relaxed">
+                                        Menjadi penyedia terdepan layanan IT terkelola yang inovatif, menetapkan standar baru untuk keunggulan dan keandalan.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Why Choose Us Section -->
+                        <div class="bg-white rounded-2xl p-8 shadow-lg border border-gray-100">
+                            <div class="text-center mb-8">
+                                <h3 class="text-3xl font-bold text-gray-900 mb-4">Mengapa Memilih Clueforit?</h3>
+                                <p class="text-gray-600 text-lg">Keunggulan yang membuat kami berbeda dari yang lain</p>
+                            </div>
                             
-                            <div class="bg-white p-4 rounded-lg shadow-sm mt-4">
-                                <h3 class="font-semibold text-blue-600 mb-3">Mengapa Memilih Clueforit?</h3>
-                                <div class="grid sm:grid-cols-2 gap-3 text-sm">
-                                    <div class="flex items-center space-x-2">
-                                        <span class="w-2 h-2 bg-blue-500 rounded-full"></span>
-                                        <span>Pengalaman 10+ Tahun</span>
+                            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                                <div class="text-center group">
+                                    <div class="w-16 h-16 bg-gradient-to-br from-green-400 to-emerald-500 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
                                     </div>
-                                    <div class="flex items-center space-x-2">
-                                        <span class="w-2 h-2 bg-blue-500 rounded-full"></span>
-                                        <span>Dukungan Teknis 24/7</span>
+                                    <h4 class="font-bold text-gray-900 mb-2">Pengalaman 10+ Tahun</h4>
+                                    <p class="text-sm text-gray-600">Lebih dari satu dekade melayani berbagai industri</p>
+                                </div>
+
+                                <div class="text-center group">
+                                    <div class="w-16 h-16 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
                                     </div>
-                                    <div class="flex items-center space-x-2">
-                                        <span class="w-2 h-2 bg-blue-500 rounded-full"></span>
-                                        <span>Jaminan Uptime 99.9%</span>
+                                    <h4 class="font-bold text-gray-900 mb-2">Dukungan Teknis 24/7</h4>
+                                    <p class="text-sm text-gray-600">Tim ahli siap membantu kapan saja</p>
+                                </div>
+
+                                <div class="text-center group">
+                                    <div class="w-16 h-16 bg-gradient-to-br from-purple-400 to-pink-500 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                                        </svg>
                                     </div>
-                                    <div class="flex items-center space-x-2">
-                                        <span class="w-2 h-2 bg-blue-500 rounded-full"></span>
-                                        <span>Kepatuhan Industri</span>
+                                    <h4 class="font-bold text-gray-900 mb-2">Jaminan Uptime 99.9%</h4>
+                                    <p class="text-sm text-gray-600">Sistem selalu tersedia untuk bisnis Anda</p>
+                                </div>
+
+                                <div class="text-center group">
+                                    <div class="w-16 h-16 bg-gradient-to-br from-orange-400 to-red-500 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                                        </svg>
                                     </div>
+                                    <h4 class="font-bold text-gray-900 mb-2">Kepatuhan Industri</h4>
+                                    <p class="text-sm text-gray-600">Memenuhi standar keamanan internasional</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Stats Section -->
+                        <div class="bg-gradient-to-r from-gray-900 to-gray-800 rounded-2xl p-8 text-white">
+                            <div class="text-center mb-8">
+                                <h3 class="text-3xl font-bold mb-4">Pencapaian Kami</h3>
+                                <p class="text-gray-300">Angka yang menunjukkan komitmen kami terhadap keunggulan</p>
+                            </div>
+                            
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                                <div class="text-center">
+                                    <div class="text-4xl font-bold text-blue-400 mb-2">150+</div>
+                                    <div class="text-gray-300 text-sm">Klien Aktif</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-4xl font-bold text-green-400 mb-2">99.9%</div>
+                                    <div class="text-gray-300 text-sm">System Uptime</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-4xl font-bold text-purple-400 mb-2">45</div>
+                                    <div class="text-gray-300 text-sm">Proyek Aktif</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-4xl font-bold text-orange-400 mb-2">4.8/5</div>
+                                    <div class="text-gray-300 text-sm">Kepuasan Klien</div>
                                 </div>
                             </div>
                         </div>
@@ -630,90 +788,143 @@
 
                 <!-- Contact Directory -->
                 <div id="contact-content" class="directory-content hidden">
-                    <div class="p-6 bg-gradient-to-br from-green-50 to-emerald-100 rounded-lg">
-                        <h2 class="text-2xl font-bold text-green-800 mb-4">Kontak Clueforit</h2>
-                        <div class="grid md:grid-cols-2 gap-6">
-                            <div class="bg-white p-6 rounded-lg shadow-sm">
-                                <div class="flex items-center justify-between mb-4">
-                                    <h3 class="font-semibold text-green-600">Asisten Pintar</h3>
-                                    <div class="flex items-center space-x-2">
-                                        <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                                        <span class="text-xs text-green-600">Online</span>
+                    <!-- Hero Section -->
+                    <div class="relative overflow-hidden bg-gradient-to-br from-blue-900 via-indigo-900 to-purple-900 rounded-2xl mb-8">
+                        <div class="absolute inset-0 bg-black/20"></div>
+                        <div class="relative px-8 py-12 text-center">
+                            <div class="inline-flex items-center justify-center w-20 h-20 bg-white/10 backdrop-blur-sm rounded-2xl mb-6">
+                                <span class="text-3xl">📞</span>
+                            </div>
+                            <h1 class="text-4xl md:text-5xl font-bold text-white mb-4 tracking-tight">
+                                Hubungi <span class="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">Clueforit</span>
+                            </h1>
+                            <p class="text-xl text-blue-100 max-w-3xl mx-auto leading-relaxed">
+                                Siap membantu transformasi digital bisnis Anda dengan solusi teknologi terdepan
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="grid lg:grid-cols-2 gap-8">
+                        <!-- AI Assistant Chat -->
+                        <div class="bg-white rounded-2xl p-8 shadow-lg border border-gray-100">
+                            <div class="flex items-center justify-between mb-6">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center">
+                                        <span class="text-white text-xl">🤖</span>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-xl font-bold text-gray-900">Asisten AI Clueforit</h3>
+                                        <p class="text-sm text-gray-600">Tanyakan apa saja tentang layanan kami</p>
                                     </div>
                                 </div>
-                                
-                                <div id="chatContainer" class="h-80 border border-gray-200 rounded-lg mb-4 overflow-y-auto p-3 bg-gray-50">
-                                    <div class="chat-message bot-message mb-3">
-                                        <div class="flex items-start space-x-2">
-                                            <div class="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-white text-xs">🤖</div>
-                                            <div class="bg-white p-3 rounded-lg shadow-sm max-w-xs">
-                                                <p class="text-sm">Halo! Saya asisten AI Clueforit. Saya dapat membantu Anda mempelajari layanan kami, studi kasus, dan menjawab pertanyaan tentang perusahaan kami. Apa yang ingin Anda ketahui?</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="flex space-x-2">
-                                    <input type="text" id="chatInput" placeholder="Tanyakan tentang layanan Clueforit..." class="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent min-w-0">
-                                    <button id="sendChatBtn" class="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-md text-sm font-medium transition-colors flex-shrink-0">Kirim</button>
-                                </div>
-                                
-                                <div class="mt-3 flex flex-wrap gap-2">
-                                    <button class="quick-question bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-xs transition-colors" data-question="Layanan apa yang Anda tawarkan?">Layanan apa yang Anda tawarkan?</button>
-                                    <button class="quick-question bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-xs transition-colors" data-question="Ceritakan tentang studi kasus Anda">Studi kasus</button>
-                                    <button class="quick-question bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-xs transition-colors" data-question="Apa detail kontak Anda?">Info kontak</button>
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                                    <span class="text-sm font-medium text-green-600">Online</span>
                                 </div>
                             </div>
                             
-                            <div class="space-y-6">
-                                <div class="bg-white p-6 rounded-lg shadow-sm">
-                                    <h3 class="font-semibold text-green-600 mb-4">Informasi Kontak</h3>
-                                    <div class="space-y-3 text-sm">
-                                        <div class="flex items-center space-x-3">
-                                            <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                                                <span class="text-green-600">📧</span>
-                                            </div>
-                                            <div>
-                                                <div class="font-medium">Email</div>
-                                                <div class="text-gray-600">henry.suryaman@gmail.com</div>
-                                            </div>
-                                        </div>
-                                        <div class="flex items-center space-x-3">
-                                            <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                                                <span class="text-green-600">📞</span>
-                                            </div>
-                                            <div>
-                                                <div class="font-medium">Telepon</div>
-                                                <div class="text-gray-600">+62 897 232 5030</div>
-                                            </div>
-                                        </div>
-                                        <div class="flex items-center space-x-3">
-                                            <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                                                <span class="text-green-600">📍</span>
-                                            </div>
-                                            <div>
-                                                <div class="font-medium">Alamat</div>
-                                                <div class="text-gray-600">Gading Serpong<br>Tangerang, Indonesia</div>
-                            </div>
-                                        </div>
-                                        <div class="flex items-center space-x-3">
-                                            <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                                                <span class="text-green-600">🕒</span>
-                                            </div>
-                                            <div>
-                                                <div class="font-medium">Jam Operasional</div>
-                                                <div class="text-gray-600">Sen-Jum: 8AM-6PM EST</div>
-                                            </div>
+                            <div id="chatContainer" class="h-96 bg-gradient-to-b from-gray-50 to-white border border-gray-200 rounded-xl mb-6 overflow-y-auto p-4">
+                                <div class="chat-message bot-message mb-4">
+                                    <div class="flex items-start space-x-3">
+                                        <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white text-sm flex-shrink-0">🤖</div>
+                                        <div class="bg-white p-4 rounded-2xl shadow-sm max-w-xs border border-gray-100">
+                                            <p class="text-sm text-gray-700 leading-relaxed">Halo! Saya asisten AI Clueforit. Saya dapat membantu Anda mempelajari layanan kami, studi kasus, dan menjawab pertanyaan tentang perusahaan kami. Apa yang ingin Anda ketahui?</p>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                            
+                            <div class="flex space-x-3">
+                                <input type="text" id="chatInput" placeholder="Tanyakan tentang layanan Clueforit..." class="flex-1 px-4 py-3 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent bg-gray-50 min-w-0">
+                                <button id="sendChatBtn" class="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-6 py-3 rounded-xl text-sm font-medium transition-all duration-200 flex-shrink-0 shadow-lg hover:shadow-xl">
+                                    <span class="hidden sm:inline">Kirim</span>
+                                    <span class="sm:hidden">📤</span>
+                                </button>
+                            </div>
+                            
+                            <div class="mt-4 flex flex-wrap gap-2">
+                                <button class="quick-question bg-gradient-to-r from-blue-50 to-indigo-50 hover:from-blue-100 hover:to-indigo-100 text-blue-700 px-4 py-2 rounded-full text-xs font-medium transition-all duration-200 border border-blue-200" data-question="Layanan apa yang Anda tawarkan?">Layanan apa yang Anda tawarkan?</button>
+                                <button class="quick-question bg-gradient-to-r from-purple-50 to-pink-50 hover:from-purple-100 hover:to-pink-100 text-purple-700 px-4 py-2 rounded-full text-xs font-medium transition-all duration-200 border border-purple-200" data-question="Ceritakan tentang studi kasus Anda">Studi kasus</button>
+                                <button class="quick-question bg-gradient-to-r from-green-50 to-emerald-50 hover:from-green-100 hover:to-emerald-100 text-green-700 px-4 py-2 rounded-full text-xs font-medium transition-all duration-200 border border-green-200" data-question="Apa detail kontak Anda?">Info kontak</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Contact Information -->
+                        <div class="space-y-6">
+                            <!-- Contact Details Card -->
+                            <div class="bg-white rounded-2xl p-8 shadow-lg border border-gray-100">
+                                <div class="flex items-center space-x-3 mb-6">
+                                    <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center">
+                                        <span class="text-white text-xl">📋</span>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-xl font-bold text-gray-900">Informasi Kontak</h3>
+                                        <p class="text-sm text-gray-600">Hubungi kami melalui berbagai cara</p>
+                                    </div>
+                                </div>
                                 
-                                <div class="bg-white p-6 rounded-lg shadow-sm">
-                                    <h3 class="font-semibold text-green-600 mb-3">Respon Cepat</h3>
-                                    <p class="text-sm text-gray-600 mb-3">Butuh bantuan? Hubungi kami selama jam operasional untuk dukungan yang cepat.</p>
-                                    <button class="w-full bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-md text-sm font-medium transition-colors">Hubungi Dukungan</button>
+                                <div class="space-y-4">
+                                    <div class="group flex items-center space-x-4 p-4 rounded-xl hover:bg-blue-50 transition-colors duration-200">
+                                        <div class="w-12 h-12 bg-gradient-to-br from-blue-100 to-blue-200 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
+                                            <span class="text-blue-600 text-xl">📧</span>
+                                        </div>
+                                        <div class="flex-1">
+                                            <div class="font-semibold text-gray-900">Email</div>
+                                            <a href="mailto:henry.suryaman@gmail.com" class="text-blue-600 hover:text-blue-700 transition-colors">henry.suryaman@gmail.com</a>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="group flex items-center space-x-4 p-4 rounded-xl hover:bg-green-50 transition-colors duration-200">
+                                        <div class="w-12 h-12 bg-gradient-to-br from-green-100 to-green-200 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
+                                            <span class="text-green-600 text-xl">📞</span>
+                                        </div>
+                                        <div class="flex-1">
+                                            <div class="font-semibold text-gray-900">Telepon</div>
+                                            <a href="tel:+6289723250300" class="text-green-600 hover:text-green-700 transition-colors">+62 897 232 5030</a>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="group flex items-center space-x-4 p-4 rounded-xl hover:bg-purple-50 transition-colors duration-200">
+                                        <div class="w-12 h-12 bg-gradient-to-br from-purple-100 to-purple-200 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
+                                            <span class="text-purple-600 text-xl">📍</span>
+                                        </div>
+                                        <div class="flex-1">
+                                            <div class="font-semibold text-gray-900">Alamat</div>
+                                            <div class="text-gray-600">Gading Serpong<br>Tangerang, Indonesia</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="group flex items-center space-x-4 p-4 rounded-xl hover:bg-orange-50 transition-colors duration-200">
+                                        <div class="w-12 h-12 bg-gradient-to-br from-orange-100 to-orange-200 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
+                                            <span class="text-orange-600 text-xl">🕒</span>
+                                        </div>
+                                        <div class="flex-1">
+                                            <div class="font-semibold text-gray-900">Jam Operasional</div>
+                                            <div class="text-gray-600">Sen-Jum: 8AM-6PM WIB</div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+
+
+                        </div>
+                    </div>
+
+                    <!-- Call to Action Section -->
+                    <div class="mt-8 bg-gradient-to-r from-gray-900 to-gray-800 rounded-2xl p-8 text-white text-center">
+                        <h3 class="text-2xl font-bold mb-4">Siap Memulai Transformasi Digital?</h3>
+                        <p class="text-gray-300 mb-6 max-w-2xl mx-auto">
+                            Tim ahli kami siap membantu Anda merancang solusi IT yang tepat untuk kebutuhan bisnis Anda. Konsultasi gratis tersedia!
+                        </p>
+                        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                            <a href="tel:+6289723250300" class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl font-medium transition-colors inline-flex items-center justify-center space-x-2">
+                                <span>📞</span>
+                                <span>Hubungi Sekarang</span>
+                            </a>
+                            <a href="mailto:henry.suryaman@gmail.com" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-medium transition-colors inline-flex items-center justify-center space-x-2">
+                                <span>📧</span>
+                                <span>Kirim Email</span>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -723,7 +934,7 @@
 
     <!-- Status Bar -->
     <div class="bg-white bg-opacity-70 backdrop-filter backdrop-blur-lg border-t border-gray-200 px-3 py-2 flex items-center justify-between text-xs text-gray-600">
-        <div id="statusLeft">4 item</div>
+        <div id="statusLeft">5 items</div>
         <div class="hidden sm:block">Clueforit © 2020 | Technology Resource Center</div>
         <div class="sm:hidden">Clueforit © 2020</div>
     </div>
@@ -772,7 +983,7 @@
                         <p><sup>10</sup> Email: <a href="mailto:henry.suryaman@gmail.com" class="text-blue-600 hover:underline">henry.suryaman@gmail.com</a></p>
                         <p><sup>11</sup> Telepon: <a href="tel:+6289723250300" class="text-blue-600 hover:underline">+62 897 232 5030</a></p>
                         <p><sup>12</sup> Alamat: Gading Serpong, Tangerang, Indonesia</p>
-                        <p><sup>13</sup> <a href="#" onclick="navigateToPath('contact')" class="text-blue-600 hover:underline">Jam Operasional</a> - Sen-Jum: 8AM-6PM EST</p>
+                        <p><sup>13</sup> <a href="#" onclick="navigateToPath('contact')" class="text-blue-600 hover:underline">Jam Operasional</a> - Sen-Jum: 8AM-6PM WIB</p>
                     </div>
                 </div>
             </div>
@@ -788,6 +999,9 @@
                     </button>
                     <button onclick="navigateToPath('case-studies')" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded shadow-sm transition-colors">
                         📊 Studi Kasus
+                    </button>
+                    <button onclick="navigateToPath('business-tools')" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded shadow-sm transition-colors">
+                        🧮 Business Tools
                     </button>
                 </div>
             </div>
@@ -817,6 +1031,309 @@
         <div class="context-menu-item" data-action="open">Open</div>
         <div class="context-menu-item" data-action="info">Properties</div>
         <div class="context-menu-item" data-action="contact">Contact About This</div>
+    </div>
+
+    <!-- Business Tools Windows -->
+    <div id="analyticsWindow" class="window-content">
+        <div class="window-header">
+            <span class="text-xs font-medium">Analytics Dashboard.app - Clueforit</span>
+            <button class="window-close" onclick="closeWindow('analyticsWindow')"></button>
+        </div>
+        <div class="window-body">
+            <h3 class="font-semibold mb-4 text-blue-600">Business Analytics Dashboard</h3>
+            
+            <!-- Key Metrics Cards -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                <div class="bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-lg border border-blue-200">
+                    <div class="text-2xl font-bold text-blue-600" id="clientsCount">150+</div>
+                    <div class="text-xs text-blue-700">Active Clients</div>
+                    <div class="text-xs text-green-600 mt-1">↗ +12% this month</div>
+                </div>
+                <div class="bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-lg border border-green-200">
+                    <div class="text-2xl font-bold text-green-600" id="uptimePercent">99.9%</div>
+                    <div class="text-xs text-green-700">System Uptime</div>
+                    <div class="text-xs text-green-600 mt-1">↗ Above target</div>
+                </div>
+                <div class="bg-gradient-to-br from-purple-50 to-purple-100 p-4 rounded-lg border border-purple-200">
+                    <div class="text-2xl font-bold text-purple-600" id="projectsCount">45</div>
+                    <div class="text-xs text-purple-700">Active Projects</div>
+                    <div class="text-xs text-green-600 mt-1">↗ +8 this quarter</div>
+                </div>
+                <div class="bg-gradient-to-br from-orange-50 to-orange-100 p-4 rounded-lg border border-orange-200">
+                    <div class="text-2xl font-bold text-orange-600" id="satisfactionScore">4.8/5</div>
+                    <div class="text-xs text-orange-700">Client Satisfaction</div>
+                    <div class="text-xs text-green-600 mt-1">↗ +0.2 improvement</div>
+                </div>
+            </div>
+
+            <!-- Service Performance Chart -->
+            <div class="bg-white p-4 rounded-lg border border-gray-200 mb-4">
+                <h4 class="font-medium mb-3 text-gray-800">Service Performance Overview</h4>
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-600">IT Managed Services</span>
+                        <div class="flex items-center space-x-2">
+                            <div class="w-32 bg-gray-200 rounded-full h-2">
+                                <div class="bg-blue-600 h-2 rounded-full" style="width: 95%"></div>
+                            </div>
+                            <span class="text-sm font-medium text-blue-600">95%</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-600">Cloud Solutions</span>
+                        <div class="flex items-center space-x-2">
+                            <div class="w-32 bg-gray-200 rounded-full h-2">
+                                <div class="bg-green-600 h-2 rounded-full" style="width: 88%"></div>
+                            </div>
+                            <span class="text-sm font-medium text-green-600">88%</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-600">Cybersecurity</span>
+                        <div class="flex items-center space-x-2">
+                            <div class="w-32 bg-gray-200 rounded-full h-2">
+                                <div class="bg-purple-600 h-2 rounded-full" style="width: 92%"></div>
+                            </div>
+                            <span class="text-sm font-medium text-purple-600">92%</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-600">Digital Transformation</span>
+                        <div class="flex items-center space-x-2">
+                            <div class="w-32 bg-gray-200 rounded-full h-2">
+                                <div class="bg-orange-600 h-2 rounded-full" style="width: 85%"></div>
+                            </div>
+                            <span class="text-sm font-medium text-orange-600">85%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activities -->
+            <div class="bg-white p-4 rounded-lg border border-gray-200">
+                <h4 class="font-medium mb-3 text-gray-800">Recent Activities</h4>
+                <div class="space-y-2 text-sm">
+                    <div class="flex items-center space-x-3 p-2 bg-green-50 rounded">
+                        <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                        <span class="text-green-700">New client onboarded - Healthcare Network</span>
+                        <span class="text-xs text-gray-500 ml-auto">2 hours ago</span>
+                    </div>
+                    <div class="flex items-center space-x-3 p-2 bg-blue-50 rounded">
+                        <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+                        <span class="text-blue-700">Cloud migration completed - Manufacturing Co.</span>
+                        <span class="text-xs text-gray-500 ml-auto">1 day ago</span>
+                    </div>
+                    <div class="flex items-center space-x-3 p-2 bg-purple-50 rounded">
+                        <div class="w-2 h-2 bg-purple-500 rounded-full"></div>
+                        <span class="text-purple-700">Security audit passed - Financial Services</span>
+                        <span class="text-xs text-gray-500 ml-auto">3 days ago</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="calculatorWindow" class="window-content">
+        <div class="window-header">
+            <span class="text-xs font-medium">Resource Calculator.tool - Clueforit</span>
+            <button class="window-close" onclick="closeWindow('calculatorWindow')"></button>
+        </div>
+        <div class="window-body">
+            <h3 class="font-semibold mb-4 text-blue-600">IT Resource Calculator</h3>
+            <p class="text-sm text-gray-600 mb-6">Estimate your IT infrastructure needs and costs based on your business requirements.</p>
+            
+            <form id="resourceCalculatorForm" class="space-y-4">
+                <!-- Company Size -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Company Size</label>
+                    <select id="companySize" class="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="small">Small (1-50 employees)</option>
+                        <option value="medium">Medium (51-200 employees)</option>
+                        <option value="large">Large (201-500 employees)</option>
+                        <option value="enterprise">Enterprise (500+ employees)</option>
+                    </select>
+                </div>
+
+                <!-- Services Needed -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Services Needed</label>
+                    <div class="space-y-2">
+                        <label class="flex items-center">
+                            <input type="checkbox" id="managedServices" class="mr-2" checked>
+                            <span class="text-sm">IT Managed Services</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" id="cloudServices" class="mr-2">
+                            <span class="text-sm">Cloud Solutions</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" id="securityServices" class="mr-2">
+                            <span class="text-sm">Cybersecurity</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" id="digitalServices" class="mr-2">
+                            <span class="text-sm">Digital Transformation</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Support Level -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Support Level</label>
+                    <select id="supportLevel" class="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="basic">Basic (Business Hours)</option>
+                        <option value="extended">Extended (12x5)</option>
+                        <option value="premium">Premium (24x7)</option>
+                    </select>
+                </div>
+
+                <!-- Calculate Button -->
+                <button type="button" onclick="calculateResources()" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded text-sm font-medium transition-colors">
+                    Calculate Estimate
+                </button>
+            </form>
+
+            <!-- Results -->
+            <div id="calculatorResults" class="mt-6 p-4 bg-gray-50 rounded-lg hidden">
+                <h4 class="font-medium mb-3 text-gray-800">Estimated Monthly Cost</h4>
+                <div class="space-y-2">
+                    <div class="flex justify-between">
+                        <span class="text-sm text-gray-600">Base Services:</span>
+                        <span class="text-sm font-medium" id="baseCost">$0</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-sm text-gray-600">Additional Services:</span>
+                        <span class="text-sm font-medium" id="additionalCost">$0</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-sm text-gray-600">Support Level:</span>
+                        <span class="text-sm font-medium" id="supportCost">$0</span>
+                    </div>
+                    <hr class="my-2">
+                    <div class="flex justify-between">
+                        <span class="text-sm font-semibold text-gray-800">Total Monthly:</span>
+                        <span class="text-lg font-bold text-blue-600" id="totalCost">$0</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-sm text-gray-600">Annual Cost:</span>
+                        <span class="text-sm font-medium text-green-600" id="annualCost">$0</span>
+                    </div>
+                </div>
+                <div class="mt-4 p-3 bg-green-50 rounded border border-green-200">
+                    <p class="text-sm text-green-700">💡 <strong>Potential Savings:</strong> Our clients typically save 30-40% on IT costs while improving service quality.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="comparisonWindow" class="window-content">
+        <div class="window-header">
+            <span class="text-xs font-medium">Service Comparison.xlsx - Clueforit</span>
+            <button class="window-close" onclick="closeWindow('comparisonWindow')"></button>
+        </div>
+        <div class="window-body">
+            <h3 class="font-semibold mb-4 text-blue-600">Service Package Comparison</h3>
+            <p class="text-sm text-gray-600 mb-6">Compare our service packages to find the best fit for your business needs.</p>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm border-collapse border border-gray-300">
+                    <thead>
+                        <tr class="bg-gray-50">
+                            <th class="border border-gray-300 px-3 py-2 text-left font-medium">Features</th>
+                            <th class="border border-gray-300 px-3 py-2 text-center font-medium text-blue-600">Starter</th>
+                            <th class="border border-gray-300 px-3 py-2 text-center font-medium text-green-600">Professional</th>
+                            <th class="border border-gray-300 px-3 py-2 text-center font-medium text-purple-600">Enterprise</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="border border-gray-300 px-3 py-2 font-medium">Monthly Price</td>
+                            <td class="border border-gray-300 px-3 py-2 text-center text-blue-600 font-semibold">$2,500</td>
+                            <td class="border border-gray-300 px-3 py-2 text-center text-green-600 font-semibold">$5,000</td>
+                            <td class="border border-gray-300 px-3 py-2 text-center text-purple-600 font-semibold">Custom</td>
+                        </tr>
+                        <tr class="bg-gray-25">
+                            <td class="border border-gray-300 px-3 py-2">Company Size</td>
+                            <td class="border border-gray-300 px-3 py-2 text-center">1-50 users</td>
+                            <td class="border border-gray-300 px-3 py-2 text-center">51-200 users</td>
+                            <td class="border border-gray-300 px-3 py-2 text-center">200+ users</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-300 px-3 py-2">24/7 Monitoring</td>
+                            <td class="border border-gray-300 px-3 py-2 text-center text-green-600">✓</td>
+                            <td class="border border-gray-300 px-3 py-2 text-center text-green-600">✓</td>
+                            <td class="border border-gray-300 px-3 py-2 text-center text-green-600">✓</td>
+                        </tr>
+                        <tr class="bg-gray-25">
+                            <td class="border border-gray-300 px-3 py-2">Help Desk Support</td>
+                            <td class="border border-gray-300 px-3 py-2 text-center">Business Hours</td>
+                            <td class="border border-gray-300 px-3 py-2 text-center text-green-600">24/7</td>
+                            <td class="border border-gray-300 px-3 py-2 text-center text-green-600">24/7 Priority</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-300 px-3 py-2">Cloud Services</td>
+                            <td class="border border-gray-300 px-3 py-2 text-center">Basic</td>
+                            <td class="border border-gray-300 px-3 py-2 text-center text-green-600">Advanced</td>
+                            <td class="border border-gray-300 px-3 py-2 text-center text-green-600">Enterprise</td>
+                        </tr>
+                        <tr class="bg-gray-25">
+                            <td class="border border-gray-300 px-3 py-2">Security Services</td>
+                            <td class="border border-gray-300 px-3 py-2 text-center">Standard</td>
+                            <td class="border border-gray-300 px-3 py-2 text-center text-green-600">Advanced</td>
+                            <td class="border border-gray-300 px-3 py-2 text-center text-green-600">Premium</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-300 px-3 py-2">Backup & Recovery</td>
+                            <td class="border border-gray-300 px-3 py-2 text-center text-green-600">✓</td>
+                            <td class="border border-gray-300 px-3 py-2 text-center text-green-600">✓</td>
+                            <td class="border border-gray-300 px-3 py-2 text-center text-green-600">✓</td>
+                        </tr>
+                        <tr class="bg-gray-25">
+                            <td class="border border-gray-300 px-3 py-2">Compliance Support</td>
+                            <td class="border border-gray-300 px-3 py-2 text-center">Basic</td>
+                            <td class="border border-gray-300 px-3 py-2 text-center text-green-600">✓</td>
+                            <td class="border border-gray-300 px-3 py-2 text-center text-green-600">Full</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-300 px-3 py-2">Dedicated Account Manager</td>
+                            <td class="border border-gray-300 px-3 py-2 text-center text-red-500">✗</td>
+                            <td class="border border-gray-300 px-3 py-2 text-center text-green-600">✓</td>
+                            <td class="border border-gray-300 px-3 py-2 text-center text-green-600">✓</td>
+                        </tr>
+                        <tr class="bg-gray-25">
+                            <td class="border border-gray-300 px-3 py-2">Custom Integrations</td>
+                            <td class="border border-gray-300 px-3 py-2 text-center text-red-500">✗</td>
+                            <td class="border border-gray-300 px-3 py-2 text-center">Limited</td>
+                            <td class="border border-gray-300 px-3 py-2 text-center text-green-600">Unlimited</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-300 px-3 py-2">SLA Uptime</td>
+                            <td class="border border-gray-300 px-3 py-2 text-center">99.5%</td>
+                            <td class="border border-gray-300 px-3 py-2 text-center">99.9%</td>
+                            <td class="border border-gray-300 px-3 py-2 text-center text-green-600">99.99%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mt-6 grid md:grid-cols-3 gap-4">
+                <div class="text-center p-4 border border-blue-200 rounded-lg bg-blue-50">
+                    <h4 class="font-semibold text-blue-600 mb-2">Starter Package</h4>
+                    <p class="text-sm text-gray-600 mb-3">Perfect for small businesses getting started with managed IT services.</p>
+                    <button onclick="navigateToPath('contact')" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm transition-colors">Get Started</button>
+                </div>
+                <div class="text-center p-4 border border-green-200 rounded-lg bg-green-50">
+                    <h4 class="font-semibold text-green-600 mb-2">Professional Package</h4>
+                    <p class="text-sm text-gray-600 mb-3">Comprehensive solution for growing businesses with advanced needs.</p>
+                    <button onclick="navigateToPath('contact')" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded text-sm transition-colors">Contact Sales</button>
+                </div>
+                <div class="text-center p-4 border border-purple-200 rounded-lg bg-purple-50">
+                    <h4 class="font-semibold text-purple-600 mb-2">Enterprise Package</h4>
+                    <p class="text-sm text-gray-600 mb-3">Fully customized solutions for large organizations with complex requirements.</p>
+                    <button onclick="navigateToPath('contact')" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded text-sm transition-colors">Custom Quote</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- File Content Windows -->
@@ -1229,6 +1746,9 @@
                 } else if (part === 'contact') {
                     displayName = 'Kontak';
                     icon = '📞';
+                } else if (part === 'business-tools') {
+                    displayName = 'Business Tools';
+                    icon = '📊';
                 } else {
                     displayName = part.charAt(0).toUpperCase() + part.slice(1);
                     icon = '📁';
@@ -1380,6 +1900,60 @@
             });
         });
 
+        // Resource Calculator Function
+        function calculateResources() {
+            const companySize = document.getElementById('companySize').value;
+            const managedServices = document.getElementById('managedServices').checked;
+            const cloudServices = document.getElementById('cloudServices').checked;
+            const securityServices = document.getElementById('securityServices').checked;
+            const digitalServices = document.getElementById('digitalServices').checked;
+            const supportLevel = document.getElementById('supportLevel').value;
+
+            // Base costs by company size
+            const baseCosts = {
+                small: 1500,
+                medium: 3000,
+                large: 6000,
+                enterprise: 12000
+            };
+
+            // Additional service costs
+            const serviceCosts = {
+                managed: { small: 500, medium: 1000, large: 2000, enterprise: 4000 },
+                cloud: { small: 300, medium: 600, large: 1200, enterprise: 2400 },
+                security: { small: 400, medium: 800, large: 1600, enterprise: 3200 },
+                digital: { small: 600, medium: 1200, large: 2400, enterprise: 4800 }
+            };
+
+            // Support level multipliers
+            const supportMultipliers = {
+                basic: 1.0,
+                extended: 1.3,
+                premium: 1.6
+            };
+
+            let baseCost = baseCosts[companySize];
+            let additionalCost = 0;
+
+            if (managedServices) additionalCost += serviceCosts.managed[companySize];
+            if (cloudServices) additionalCost += serviceCosts.cloud[companySize];
+            if (securityServices) additionalCost += serviceCosts.security[companySize];
+            if (digitalServices) additionalCost += serviceCosts.digital[companySize];
+
+            const supportCost = (baseCost + additionalCost) * (supportMultipliers[supportLevel] - 1);
+            const totalMonthlyCost = baseCost + additionalCost + supportCost;
+            const annualCost = totalMonthlyCost * 12;
+
+            // Update UI
+            document.getElementById('baseCost').textContent = `$${baseCost.toLocaleString()}`;
+            document.getElementById('additionalCost').textContent = `$${additionalCost.toLocaleString()}`;
+            document.getElementById('supportCost').textContent = `$${Math.round(supportCost).toLocaleString()}`;
+            document.getElementById('totalCost').textContent = `$${Math.round(totalMonthlyCost).toLocaleString()}`;
+            document.getElementById('annualCost').textContent = `$${Math.round(annualCost).toLocaleString()}`;
+
+            document.getElementById('calculatorResults').classList.remove('hidden');
+        }
+
         // File opening with animation
         function openFile(path) {
             let windowId;
@@ -1402,6 +1976,12 @@
                 windowId = 'manufacturingWindow';
             } else if (path === 'case-studies/finance') {
                 windowId = 'financeWindow';
+            } else if (path === 'business-tools/analytics') {
+                windowId = 'analyticsWindow';
+            } else if (path === 'business-tools/calculator') {
+                windowId = 'calculatorWindow';
+            } else if (path === 'business-tools/comparison') {
+                windowId = 'comparisonWindow';
             } else {
                 alert(`Opening: ${path}\n\nThis would contain detailed information about ${path.split('/').pop()}.`);
                 return;
@@ -1445,7 +2025,7 @@
             },
             contact: {
                 keywords: ['contact', 'phone', 'email', 'address', 'reach', 'call', 'location'],
-                response: "Here's how you can reach Clueforit:\n\n📧 **Email:** henry.suryaman@gmail.com\n📞 **Phone:** +62 897 232 5030\n📍 **Address:** Gading Serpong, Tangerang, Indonesia\n🕒 **Hours:** Mon-Fri: 8AM-6PM EST\n\nWould you like me to help you with anything specific about our services?"
+                response: "Here's how you can reach Clueforit:\n\n📧 **Email:** henry.suryaman@gmail.com\n📞 **Phone:** +62 897 232 5030\n📍 **Address:** Gading Serpong, Tangerang, Indonesia\n🕒 **Hours:** Mon-Fri: 8AM-6PM WIB\n\nWould you like me to help you with anything specific about our services?"
             },
             casestudies: {
                 keywords: ['case study', 'case studies', 'examples', 'clients', 'success', 'results'],
@@ -1454,6 +2034,10 @@
             pricing: {
                 keywords: ['price', 'pricing', 'cost', 'how much', 'budget', 'rates'],
                 response: "Our pricing is customized based on your specific needs and requirements. Factors include:\n\n• Size of your organization\n• Complexity of IT infrastructure\n• Required service levels\n• Compliance requirements\n\nWe typically help clients **reduce IT costs by 30-40%** while improving service quality.\n\nFor a personalized quote, I'd recommend speaking with our team. Would you like me to connect you with a specialist?"
+            },
+            businesstools: {
+                keywords: ['business tools', 'calculator', 'analytics', 'dashboard', 'comparison', 'estimate', 'tools'],
+                response: "We offer several business tools to help you make informed decisions:\n\n📊 **Analytics Dashboard** - View real-time business metrics, service performance, and client satisfaction scores\n\n🧮 **Resource Calculator** - Estimate your IT infrastructure needs and costs based on company size and requirements\n\n📋 **Service Comparison** - Compare our Starter, Professional, and Enterprise packages side-by-side\n\nThese tools are available in the Business Tools folder. Would you like me to help you navigate to any specific tool?"
             },
             support: {
                 keywords: ['support', 'help', 'assistance', 'technical', 'issue', 'problem'],
@@ -1597,5 +2181,5 @@
             });
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'987dc989c490fe18',t:'MTc1OTM0MDg2OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'987df309d58a2925',t:'MTc1OTM0MjU2OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
