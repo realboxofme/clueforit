@@ -70,46 +70,46 @@
         }
         
         .folder-icon {
-            width: 24px;
-            height: 18px;
+            width: 32px;
+            height: 24px;
             background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
             position: relative;
-            border-radius: 2px;
+            border-radius: 3px;
             border: 1px solid #e65100;
         }
         
         .folder-icon::before {
             content: '';
             position: absolute;
-            top: -4px;
-            left: 2px;
-            width: 8px;
-            height: 4px;
+            top: -5px;
+            left: 3px;
+            width: 10px;
+            height: 5px;
             background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
             border: 1px solid #e65100;
             border-bottom: none;
-            border-radius: 2px 2px 0 0;
+            border-radius: 3px 3px 0 0;
         }
         
         .folder-icon::after {
             content: '';
             position: absolute;
-            top: 2px;
-            left: 2px;
-            right: 2px;
-            bottom: 2px;
+            top: 3px;
+            left: 3px;
+            right: 3px;
+            bottom: 3px;
             background: linear-gradient(135deg, #fff3c4 0%, #ffecb3 100%);
-            border-radius: 1px;
+            border-radius: 2px;
         }
         
         .file-icon {
-            width: 24px;
-            height: 24px;
+            width: 32px;
+            height: 32px;
             background: white;
             border: 1px solid #666;
-            border-radius: 1px;
+            border-radius: 2px;
             position: relative;
-            box-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+            box-shadow: 1px 1px 3px rgba(0,0,0,0.1);
         }
         
         .file-icon::before {
@@ -117,8 +117,8 @@
             position: absolute;
             top: -1px;
             right: -1px;
-            width: 6px;
-            height: 6px;
+            width: 8px;
+            height: 8px;
             background: #e0e0e0;
             border-left: 1px solid #666;
             border-bottom: 1px solid #666;
@@ -128,12 +128,12 @@
         .file-icon::after {
             content: '';
             position: absolute;
-            top: 4px;
-            left: 3px;
-            right: 8px;
+            top: 6px;
+            left: 4px;
+            right: 10px;
             height: 1px;
             background: #ccc;
-            box-shadow: 0 3px 0 #ccc, 0 6px 0 #ccc, 0 9px 0 #ccc;
+            box-shadow: 0 4px 0 #ccc, 0 8px 0 #ccc, 0 12px 0 #ccc;
         }
         
         .context-menu {
@@ -597,6 +597,113 @@
         <div class="hidden sm:block">Clueforit © 2025 | Managed Services & Digital Business</div>
         <div class="sm:hidden">Clueforit © 2025</div>
     </div>
+
+    <!-- Footer Section -->
+    <footer class="bg-gradient-to-r from-blue-900 to-blue-800 text-white">
+        <div class="max-w-7xl mx-auto px-4 py-12">
+            <!-- Main Footer Content -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+                <!-- Company Info -->
+                <div class="lg:col-span-2">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-12 h-12 bg-white rounded-lg flex items-center justify-center">
+                            <span class="text-blue-600 font-bold text-xl">C</span>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold">Clueforit</h3>
+                            <p class="text-blue-200 text-sm">Technology Partner</p>
+                        </div>
+                    </div>
+                    <div class="mb-6">
+                        <h4 class="text-xl font-semibold text-blue-100 mb-2">"Empowering Your Digital Future"</h4>
+                        <p class="text-blue-200 text-sm leading-relaxed">
+                            At Clueforit, we don't just manage your IT - we transform your business. With cutting-edge solutions and unwavering support, we turn technology challenges into competitive advantages.
+                        </p>
+                    </div>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 bg-blue-700 hover:bg-blue-600 rounded-full flex items-center justify-center transition-colors">
+                            <span class="text-sm">📧</span>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-blue-700 hover:bg-blue-600 rounded-full flex items-center justify-center transition-colors">
+                            <span class="text-sm">💼</span>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-blue-700 hover:bg-blue-600 rounded-full flex items-center justify-center transition-colors">
+                            <span class="text-sm">🐦</span>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-blue-700 hover:bg-blue-600 rounded-full flex items-center justify-center transition-colors">
+                            <span class="text-sm">📱</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Services -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-4 text-blue-100">Our Services</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="text-blue-200 hover:text-white transition-colors cursor-pointer" onclick="navigateToPath('services')">IT Managed Services</a></li>
+                        <li><a href="#" class="text-blue-200 hover:text-white transition-colors cursor-pointer" onclick="navigateToPath('services')">Cloud Solutions</a></li>
+                        <li><a href="#" class="text-blue-200 hover:text-white transition-colors cursor-pointer" onclick="navigateToPath('services')">Cybersecurity</a></li>
+                        <li><a href="#" class="text-blue-200 hover:text-white transition-colors cursor-pointer" onclick="navigateToPath('services')">Digital Business</a></li>
+                        <li><a href="#" class="text-blue-200 hover:text-white transition-colors cursor-pointer" onclick="navigateToPath('case-studies')">Case Studies</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact Info -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-4 text-blue-100">Get in Touch</h4>
+                    <div class="space-y-3 text-sm">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-blue-300">📧</span>
+                            <span class="text-blue-200">contact@clueforit.com</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-blue-300">📞</span>
+                            <span class="text-blue-200">+1 (555) 123-4567</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-blue-300">📍</span>
+                            <span class="text-blue-200">123 Tech Street<br>Digital City, DC 12345</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-blue-300">🕒</span>
+                            <span class="text-blue-200">24/7 Emergency Support</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Footer -->
+            <div class="border-t border-blue-700 pt-6">
+                <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+                    <div class="text-center md:text-left">
+                        <p class="text-blue-200 text-sm">
+                            © 2025 Clueforit. All rights reserved. | 
+                            <span class="text-blue-100 font-medium">Empowering Your Digital Future</span>
+                        </p>
+                    </div>
+                    <div class="flex space-x-6 text-sm">
+                        <a href="#" class="text-blue-200 hover:text-white transition-colors cursor-pointer" onclick="navigateToPath('about')">Privacy Policy</a>
+                        <a href="#" class="text-blue-200 hover:text-white transition-colors cursor-pointer" onclick="navigateToPath('about')">Terms of Service</a>
+                        <a href="#" class="text-blue-200 hover:text-white transition-colors cursor-pointer" onclick="navigateToPath('contact')">Support</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Call to Action Banner -->
+            <div class="mt-8 bg-gradient-to-r from-green-600 to-green-500 rounded-lg p-6 text-center">
+                <h4 class="text-xl font-bold mb-2">Ready to Transform Your Business?</h4>
+                <p class="text-green-100 mb-4">Join hundreds of satisfied clients who trust Clueforit with their digital transformation.</p>
+                <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                    <button onclick="navigateToPath('contact')" class="bg-white text-green-600 hover:bg-green-50 px-6 py-2 rounded-lg font-medium transition-colors">
+                        Get Free Consultation
+                    </button>
+                    <button onclick="navigateToPath('services')" class="border-2 border-white text-white hover:bg-white hover:text-green-600 px-6 py-2 rounded-lg font-medium transition-colors">
+                        Explore Services
+                    </button>
+                </div>
+            </div>
+        </div>
+    </footer>
 
     <!-- Context Menu -->
     <div id="contextMenu" class="context-menu">
@@ -1556,5 +1663,5 @@
             });
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'987d3cf50702fe18',t:'MTc1OTMzNTExMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'987d49de56b82925',t:'MTc1OTMzNTYzOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
