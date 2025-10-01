@@ -3,2085 +3,1558 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ClueForIT - File Manager</title>
+    <title>Clueforit - Technology Partner</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
             box-sizing: border-box;
         }
         
-        .desktop {
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 25%, #334155 50%, #475569 75%, #64748b 100%);
-            min-height: 100vh;
-            position: relative;
-            overflow: hidden;
+        .file-manager {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-size: 13px;
         }
         
-        .background-slideshow {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
+        .toolbar-button {
+            background: linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%);
+            border: 1px solid #dee2e6;
+            transition: all 0.1s ease;
         }
         
-        .background-slide {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0;
-            transition: opacity 2s ease-in-out;
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
+        .toolbar-button:hover:not(:disabled) {
+            background: linear-gradient(180deg, #e9ecef 0%, #dee2e6 100%);
         }
         
-        .background-slide.active {
-            opacity: 0.3;
+        .toolbar-button:active:not(:disabled) {
+            background: linear-gradient(180deg, #dee2e6 0%, #ced4da 100%);
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
         }
         
-        .background-slide::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(30, 58, 138, 0.8) 0%, rgba(59, 130, 246, 0.6) 50%, rgba(30, 64, 175, 0.8) 100%);
-        }
-        
-        @media (max-width: 768px) {
-            .desktop {
-                overflow-y: auto;
-                padding-bottom: 60px;
-            }
-        }
-        
-        .taskbar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 56px;
-            background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.95) 100%);
-            backdrop-filter: blur(20px);
-            border-top: 1px solid rgba(255, 255, 255, 0.15);
-            display: flex;
-            align-items: center;
-            padding: 0 16px;
-            z-index: 1000;
-            overflow-x: auto;
-            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
-        }
-        
-        @media (max-width: 768px) {
-            .taskbar {
-                height: 56px;
-                padding: 0 8px;
-            }
-        }
-        
-        .start-button {
-            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-            font-size: 14px;
-        }
-        
-        .start-button:hover {
-            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-            transform: translateY(-1px);
-            box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
-        }
-        
-        .taskbar-item {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            padding: 8px 12px;
-            margin-left: 8px;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-size: 14px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .taskbar-item:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-        
-        .taskbar-item.active {
-            background: rgba(59, 130, 246, 0.6);
-            border-color: rgba(59, 130, 246, 0.8);
-        }
-        
-        .window {
-            position: absolute;
-            background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
-            border-radius: 16px;
-            box-shadow: 
-                0 32px 64px -12px rgba(0, 0, 0, 0.4),
-                0 0 0 1px rgba(255, 255, 255, 0.05),
-                inset 0 1px 0 rgba(255, 255, 255, 0.1);
-            overflow: hidden;
-            min-width: 600px;
-            min-height: 400px;
-            z-index: 100;
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        @media (max-width: 768px) {
-            .window {
-                position: fixed !important;
-                top: 0 !important;
-                left: 0 !important;
-                width: 100vw !important;
-                height: calc(100vh - 56px) !important;
-                min-width: unset;
-                min-height: unset;
-                border-radius: 0;
-                max-width: 100vw;
-                max-height: calc(100vh - 56px);
-            }
-        }
-        
-        .window.maximized {
-            top: 0 !important;
-            left: 0 !important;
-            width: 100vw !important;
-            height: calc(100vh - 48px) !important;
-            border-radius: 0;
-        }
-        
-        .window-header {
-            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
-            padding: 16px 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            cursor: move;
-            user-select: none;
-            backdrop-filter: blur(20px);
-        }
-        
-        .window-title {
-            display: flex;
-            align-items: center;
-            font-weight: 600;
-            color: #f1f5f9;
-            font-size: 15px;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-        }
-        
-        .window-controls {
-            display: flex;
-            gap: 8px;
-        }
-        
-        .window-control {
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        }
-        
-        .window-control:hover {
-            transform: scale(1.15);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-        }
-        
-        .window-control.close { 
-            background: linear-gradient(135deg, #ef4444, #dc2626);
-        }
-        .window-control.minimize { 
-            background: linear-gradient(135deg, #f59e0b, #d97706);
-        }
-        .window-control.maximize { 
-            background: linear-gradient(135deg, #10b981, #059669);
-        }
-        
-        .window-toolbar {
-            background: #f8fafc;
-            padding: 8px 16px;
-            border-bottom: 1px solid #e2e8f0;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .toolbar-btn {
-            padding: 6px 12px;
-            background: white;
-            border: 1px solid #d1d5db;
-            border-radius: 4px;
-            font-size: 12px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .toolbar-btn:hover {
-            background: #f3f4f6;
-        }
-        
-        .toolbar-btn:disabled {
+        .toolbar-button:disabled {
             opacity: 0.5;
             cursor: not-allowed;
         }
         
-        .address-bar {
-            flex: 1;
-            margin: 0 16px;
-            padding: 6px 12px;
-            border: 1px solid #d1d5db;
+        .tree-item {
+            user-select: none;
+            cursor: pointer;
+        }
+        
+        .tree-item:hover {
+            background-color: #e3f2fd;
+        }
+        
+        .tree-item.selected {
+            background-color: #1976d2;
+            color: white;
+        }
+        
+        .file-item {
+            cursor: pointer;
+            user-select: none;
             border-radius: 4px;
+            transition: background-color 0.1s ease;
+        }
+        
+        .file-item:hover {
+            background-color: #e3f2fd;
+        }
+        
+        .file-item.selected {
+            background-color: #1976d2;
+            color: white;
+        }
+        
+        .file-item:active {
+            background-color: #1565c0;
+        }
+        
+        .folder-icon {
+            width: 24px;
+            height: 18px;
+            background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+            position: relative;
+            border-radius: 2px;
+            border: 1px solid #e65100;
+        }
+        
+        .folder-icon::before {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: 2px;
+            width: 8px;
+            height: 4px;
+            background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+            border: 1px solid #e65100;
+            border-bottom: none;
+            border-radius: 2px 2px 0 0;
+        }
+        
+        .folder-icon::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            right: 2px;
+            bottom: 2px;
+            background: linear-gradient(135deg, #fff3c4 0%, #ffecb3 100%);
+            border-radius: 1px;
+        }
+        
+        .file-icon {
+            width: 24px;
+            height: 24px;
             background: white;
-            font-size: 13px;
+            border: 1px solid #666;
+            border-radius: 1px;
+            position: relative;
+            box-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .file-icon::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            right: -1px;
+            width: 6px;
+            height: 6px;
+            background: #e0e0e0;
+            border-left: 1px solid #666;
+            border-bottom: 1px solid #666;
+            clip-path: polygon(0 100%, 100% 0, 100% 100%);
+        }
+        
+        .file-icon::after {
+            content: '';
+            position: absolute;
+            top: 4px;
+            left: 3px;
+            right: 8px;
+            height: 1px;
+            background: #ccc;
+            box-shadow: 0 3px 0 #ccc, 0 6px 0 #ccc, 0 9px 0 #ccc;
+        }
+        
+        .context-menu {
+            position: absolute;
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            min-width: 150px;
+            display: none;
+        }
+        
+        .context-menu-item {
+            padding: 6px 12px;
+            cursor: pointer;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .context-menu-item:hover {
+            background-color: #e3f2fd;
+        }
+        
+        .context-menu-item:last-child {
+            border-bottom: none;
+        }
+        
+        .breadcrumb-separator::after {
+            content: '>';
+            margin: 0 4px;
+            color: #666;
+        }
+        
+        .breadcrumb-separator:last-child::after {
+            display: none;
         }
         
         .window-content {
-            display: flex;
-            height: calc(100% - 120px);
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2000;
+            min-width: 300px;
+            max-width: 95vw;
+            max-height: 90vh;
+            overflow: hidden;
+            display: none;
         }
         
-        .sidebar {
-            width: 200px;
-            background: #f8fafc;
-            border-right: 1px solid #e2e8f0;
-            padding: 16px;
+        @media (min-width: 768px) {
+            .window-content {
+                min-width: 500px;
+                max-width: 80vw;
+                max-height: 80vh;
+            }
+        }
+        
+        .window-header {
+            background: linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%);
+            border-bottom: 1px solid #dee2e6;
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .window-close {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ff5f57;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .window-body {
+            padding: 20px;
             overflow-y: auto;
+            max-height: 60vh;
         }
         
         @media (max-width: 768px) {
             .sidebar {
-                width: 100%;
-                border-right: none;
-                border-bottom: 1px solid #e2e8f0;
-                padding: 12px;
-                max-height: 150px;
-            }
-            
-            .window-content {
-                flex-direction: column;
-            }
-        }
-        
-        .sidebar-section {
-            margin-bottom: 24px;
-        }
-        
-        .sidebar-title {
-            font-size: 11px;
-            font-weight: 600;
-            color: #6b7280;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 8px;
-        }
-        
-        .sidebar-item {
-            display: flex;
-            align-items: center;
-            padding: 8px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 13px;
-            color: #374151;
-            margin-bottom: 2px;
-            transition: all 0.2s;
-        }
-        
-        .sidebar-item:hover {
-            background: #e5e7eb;
-        }
-        
-        .sidebar-item.active {
-            background: #dbeafe;
-            color: #1d4ed8;
-        }
-        
-        .sidebar-icon {
-            width: 16px;
-            height: 16px;
-            margin-right: 8px;
-        }
-        
-        .file-area {
-            flex: 1;
-            padding: 16px;
-            background: white;
-            overflow-y: auto;
-        }
-        
-        .file-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-            gap: 16px;
-        }
-        
-        @media (max-width: 768px) {
-            .file-grid {
-                grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
-                gap: 12px;
-            }
-            
-            .file-area {
-                padding: 12px;
-            }
-        }
-        
-        .file-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
-            border: 2px solid transparent;
-            user-select: none;
-        }
-        
-        .file-item:hover {
-            background: #f3f4f6;
-            border-color: #3b82f6;
-        }
-        
-        .file-item.selected {
-            background: #dbeafe;
-            border-color: #3b82f6;
-        }
-        
-        .file-icon {
-            width: 48px;
-            height: 48px;
-            margin-bottom: 8px;
-        }
-        
-        .file-name {
-            font-size: 12px;
-            text-align: center;
-            color: #374151;
-            line-height: 1.3;
-            max-width: 80px;
-            word-wrap: break-word;
-        }
-        
-        .desktop-icon {
-            position: absolute;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 12px;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            color: white;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
-            z-index: 60;
-            backdrop-filter: blur(10px);
-        }
-        
-        @media (max-width: 768px) {
-            .desktop-icon {
-                position: relative;
-                margin: 8px;
-                padding: 12px;
-                background: rgba(255, 255, 255, 0.1);
-                backdrop-filter: blur(10px);
-                border: 1px solid rgba(255, 255, 255, 0.2);
-            }
-            
-            .desktop-icons-container {
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-                gap: 12px;
-                padding: 20px;
-                margin-bottom: 60px;
-            }
-            
-            .desktop-icons-desktop {
-                display: none !important;
-            }
-            
-            .window-header {
-                padding: 8px 12px;
-                touch-action: none;
-            }
-            
-            .window-toolbar {
-                padding: 6px 12px;
-                overflow-x: auto;
-            }
-            
-            .toolbar-btn {
-                padding: 4px 8px;
-                font-size: 11px;
-                white-space: nowrap;
-            }
-            
-            .address-bar {
-                margin: 0 8px;
-                padding: 4px 8px;
-                font-size: 12px;
-            }
-            
-            .taskbar-item {
-                padding: 6px 8px;
-                font-size: 12px;
-                white-space: nowrap;
-            }
-            
-            .start-button {
-                padding: 6px 12px;
-                font-size: 12px;
-            }
-        }
-        
-        .desktop-icon:hover {
-            background: rgba(255, 255, 255, 0.15);
-            transform: translateY(-2px) scale(1.05);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-        }
-        
-        .desktop-icon-image {
-            width: 48px;
-            height: 48px;
-            margin-bottom: 4px;
-        }
-        
-        .desktop-icon-name {
-            font-size: 12px;
-            text-align: center;
-            max-width: 80px;
-            word-wrap: break-word;
-        }
-        
-        .context-menu {
-            position: fixed;
-            background: white;
-            border: 1px solid #d1d5db;
-            border-radius: 6px;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            padding: 4px 0;
-            z-index: 1000;
-            min-width: 150px;
-        }
-        
-        .context-menu-item {
-            padding: 8px 16px;
-            font-size: 13px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .context-menu-item:hover {
-            background: #f3f4f6;
-        }
-        
-        .status-bar {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 24px;
-            background: #f8fafc;
-            border-top: 1px solid #e2e8f0;
-            display: flex;
-            align-items: center;
-            padding: 0 16px;
-            font-size: 11px;
-            color: #6b7280;
-        }
-        
-        @keyframes windowOpen {
-            from {
-                opacity: 0;
-                transform: scale(0.8);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-        
-        @keyframes glow {
-            0% {
-                filter: drop-shadow(0 0 5px rgba(251, 191, 36, 0.5));
-            }
-            100% {
-                filter: drop-shadow(0 0 20px rgba(251, 191, 36, 0.8)) drop-shadow(0 0 30px rgba(245, 158, 11, 0.4));
-            }
-        }
-        
-        .window {
-            animation: windowOpen 0.3s ease-out;
-        }
-        
-        .dragging {
-            z-index: 1000;
-        }
-        
-        .company-branding {
-            position: absolute;
-            top: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 50;
-            text-align: center;
-            backdrop-filter: blur(20px);
-            background: rgba(255, 255, 255, 0.05);
-            padding: 20px 30px;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-        }
-        
-        @media (max-width: 768px) {
-            .company-branding {
-                position: relative;
-                top: 0;
-                left: 0;
-                transform: none;
-                padding: 20px;
-                background: rgba(255, 255, 255, 0.1);
-                backdrop-filter: blur(10px);
-                border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-                margin-bottom: 20px;
-            }
-        }
-        
-        .logo-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 12px;
-        }
-        
-        @media (max-width: 768px) {
-            .logo-container {
-                gap: 8px;
-            }
-        }
-        
-        .company-logo {
-            width: 180px;
-            height: 60px;
-            filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
-        }
-        
-        @media (max-width: 768px) {
-            .company-logo {
                 width: 200px;
-                height: 67px;
             }
-        }
-        
-        .company-slogan {
-            color: white;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
-        }
-        
-        .main-slogan {
-            font-size: 32px;
-            font-weight: 900;
-            margin: 0 0 16px 0;
-            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
-            letter-spacing: 1px;
-            animation: glow 4s ease-in-out infinite alternate;
-            text-transform: uppercase;
-        }
-        
-        @media (max-width: 768px) {
-            .main-slogan {
-                font-size: 18px;
-                margin: 0 0 6px 0;
-            }
-        }
-        
-        .sub-slogan {
-            font-size: 16px;
-            margin: 0;
-            font-weight: 600;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.95) 100%);
-            color: #1e293b;
-            padding: 12px 24px;
-            border-radius: 30px;
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-            display: inline-block;
-            text-shadow: none;
-        }
-        
-        @media (max-width: 768px) {
-            .sub-slogan {
-                font-size: 12px;
+            .window-content {
+                min-width: 90vw;
+                max-width: 95vw;
             }
         }
     </style>
 </head>
-<body>
-    <div class="desktop" id="desktop">
-        <!-- Background Product Photos Slideshow -->
-        <div class="background-slideshow" id="backgroundSlideshow">
-            <div class="background-slide active" style="background-image: url('https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');"></div>
-            <div class="background-slide" style="background-image: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');"></div>
-            <div class="background-slide" style="background-image: url('https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');"></div>
-            <div class="background-slide" style="background-image: url('https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');"></div>
-            <div class="background-slide" style="background-image: url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');"></div>
+<body class="bg-gray-100 file-manager">
+    <!-- Top Toolbar -->
+    <div class="bg-gray-200 border-b border-gray-300 px-3 py-2 flex items-center space-x-2">
+        <!-- Mobile Menu Button -->
+        <button id="mobileMenuBtn" class="md:hidden toolbar-button px-3 py-2 rounded text-sm">
+            <span class="hamburger-icon">☰</span>
+        </button>
+        <button id="backBtn" class="toolbar-button px-3 py-2 rounded text-xs md:text-xs" disabled>← Back</button>
+        <button id="forwardBtn" class="toolbar-button px-3 py-2 rounded text-xs md:text-xs" disabled>Forward →</button>
+        <button id="upBtn" class="toolbar-button px-3 py-2 rounded text-xs md:text-xs">↑ Up</button>
+        <button id="refreshBtn" class="toolbar-button px-3 py-2 rounded text-xs md:text-xs">⟳ Refresh</button>
+        
+        <div class="flex-1 mx-2 md:mx-4">
+            <input type="text" id="searchInput" placeholder="Search..." 
+                   class="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500">
         </div>
         
-        <!-- Company Logo and Slogan -->
-        <div class="company-branding">
-            <div class="logo-container">
-                <svg class="company-logo" viewBox="0 0 180 60" fill="none">
-                    <!-- Logo Background -->
-                    <rect width="180" height="60" rx="12" fill="rgba(255,255,255,0.95)" stroke="rgba(59,130,246,0.3)" stroke-width="1"/>
-                    
-                    <!-- Icon -->
-                    <g transform="translate(12,12)">
-                        <rect x="0" y="0" width="36" height="36" rx="6" fill="#3b82f6"/>
-                        <path d="M9 12h18v3H9v-3zm0 6h18v3H9v-3zm0 6h12v3H9v-3z" fill="white"/>
-                        <circle cx="30" cy="9" r="3" fill="#10b981"/>
-                    </g>
-                    
-                    <!-- Company Name -->
-                    <text x="60" y="26" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#1f2937">ClueForIT</text>
-                    <text x="60" y="42" font-family="Arial, sans-serif" font-size="12" fill="#6b7280">IT Solutions</text>
-                </svg>
-                
-                <div class="company-slogan">
-                    <p class="sub-slogan">Technology Resource Center</p>
+        <div class="hidden md:flex items-center space-x-2 text-xs text-gray-600">
+            <span>View:</span>
+            <button id="listViewBtn" class="toolbar-button px-2 py-1 rounded">List</button>
+            <button id="iconViewBtn" class="toolbar-button px-2 py-1 rounded">Icons</button>
+        </div>
+    </div>
+
+    <!-- Address Bar -->
+    <div class="bg-white border-b border-gray-300 px-3 py-2">
+        <div id="addressBar" class="flex items-center text-xs text-gray-700">
+            <span class="breadcrumb-separator cursor-pointer hover:text-blue-600" data-path="home">Clueforit</span>
+        </div>
+    </div>
+
+    <div class="flex h-screen relative">
+        <!-- Mobile Sidebar Overlay -->
+        <div id="sidebarOverlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden hidden"></div>
+        
+        <!-- Left Sidebar -->
+        <div id="sidebar" class="sidebar fixed md:relative left-0 top-0 h-full w-64 bg-gray-50 border-r border-gray-300 overflow-y-auto z-50 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out">
+            <!-- Logo Section -->
+            <div class="p-4 border-b border-gray-300">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-8 h-8 bg-blue-600 rounded flex items-center justify-center">
+                            <span class="text-white font-bold text-sm">C</span>
+                        </div>
+                        <div>
+                            <div class="font-semibold text-sm text-gray-800">Clueforit</div>
+                            <div class="text-xs text-gray-500">Technology Partner</div>
+                        </div>
+                    </div>
+                    <!-- Close button for mobile -->
+                    <button id="closeSidebarBtn" class="md:hidden p-2 text-gray-500 hover:text-gray-700">
+                        <span class="text-lg">×</span>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Tree View -->
+            <div class="p-2">
+                <div class="tree-item flex items-center space-x-3 px-3 py-3 rounded selected" data-path="home">
+                    <div class="folder-icon"></div>
+                    <span class="text-sm">Home</span>
+                </div>
+                <div class="tree-item flex items-center space-x-3 px-3 py-3 rounded" data-path="about">
+                    <div class="file-icon"></div>
+                    <span class="text-sm">About Us</span>
+                </div>
+                <div class="tree-item flex items-center space-x-3 px-3 py-3 rounded" data-path="services">
+                    <div class="folder-icon"></div>
+                    <span class="text-sm">Services</span>
+                </div>
+                <div class="tree-item flex items-center space-x-3 px-3 py-3 rounded" data-path="case-studies">
+                    <div class="folder-icon"></div>
+                    <span class="text-sm">Case Studies</span>
+                </div>
+                <div class="tree-item flex items-center space-x-3 px-3 py-3 rounded" data-path="clients">
+                    <div class="folder-icon"></div>
+                    <span class="text-sm">Clients</span>
+                </div>
+                <div class="tree-item flex items-center space-x-3 px-3 py-3 rounded" data-path="careers">
+                    <div class="folder-icon"></div>
+                    <span class="text-sm">Careers</span>
+                </div>
+                <div class="tree-item flex items-center space-x-3 px-3 py-3 rounded" data-path="contact">
+                    <div class="file-icon"></div>
+                    <span class="text-sm">Contact</span>
                 </div>
             </div>
         </div>
-        
-        <!-- Desktop Icons Container for Mobile -->
-        <div class="desktop-icons-container" style="display: none;">
-            <div class="desktop-icon" onclick="openWindow('fileManager')">
-                <svg class="desktop-icon-image" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M10 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2h-8l-2-2z"/>
-                </svg>
-                <div class="desktop-icon-name">ClueForIT Services</div>
-            </div>
-            
-            <div class="desktop-icon" onclick="openWindow('about')">
-                <svg class="desktop-icon-image" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                </svg>
-                <div class="desktop-icon-name">About Company</div>
-            </div>
-            
-            <div class="desktop-icon" onclick="openWindow('contact')">
-                <svg class="desktop-icon-image" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
-                </svg>
-                <div class="desktop-icon-name">Contact Us</div>
-            </div>
-            
-            <div class="desktop-icon" onclick="openWindow('calculator')">
-                <svg class="desktop-icon-image" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8-4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8-4H7V7h2v2zm4 0h-2V7h2v2zm4 0h-2V7h2v2z"/>
-                </svg>
-                <div class="desktop-icon-name">IT Cost Calculator</div>
-            </div>
-            
-            <div class="desktop-icon" onclick="openWindow('games')">
-                <svg class="desktop-icon-image" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M21.58 16.09l-1.09-7.66C20.21 6.46 18.52 5 16.53 5H7.47C5.48 5 3.79 6.46 3.51 8.43l-1.09 7.66C2.2 17.63 3.39 19 4.94 19c.68 0 1.32-.27 1.8-.75L9 16h6l2.25 2.25c.48.48 1.13.75 1.8.75 1.56 0 2.75-1.37 2.53-2.91zM11 11H9v2H8v-2H6v-1h2V8h1v2h2v1zm4-0.5c-.28 0-.5-.22-.5-.5s.22-.5.5-.5.5.22.5.5-.22.5-.5.5zm2 3c-.28 0-.5-.22-.5-.5s.22-.5.5-.5.5.22.5.5-.22.5-.5.5z"/>
-                </svg>
-                <div class="desktop-icon-name">IT Quiz Game</div>
-            </div>
-            
-            <div class="desktop-icon" onclick="openWindow('portfolio')">
-                <svg class="desktop-icon-image" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                </svg>
-                <div class="desktop-icon-name">Success Stories</div>
-            </div>
-            
-            <div class="desktop-icon" onclick="openWindow('chat')">
-                <svg class="desktop-icon-image" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h4v3c0 .6.4 1 1 1 .2 0 .5-.1.7-.3L14.4 18H20c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 12h-2v-2h2v2zm0-4h-2V6h2v4z"/>
-                </svg>
-                <div class="desktop-icon-name">Live Chat Support</div>
-            </div>
-            
-            <div class="desktop-icon" onclick="openWindow('recycle')">
-                <svg class="desktop-icon-image" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
-                </svg>
-                <div class="desktop-icon-name">Recycle Bin</div>
-            </div>
-        </div>
-        
-        <!-- Desktop Icons for Desktop -->
-        <div class="desktop-icons-desktop">
-            <div class="desktop-icon" style="top: 20px; left: 20px;" onclick="openWindow('fileManager')">
-                <svg class="desktop-icon-image" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M10 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2h-8l-2-2z"/>
-                </svg>
-                <div class="desktop-icon-name">ClueForIT Services</div>
-            </div>
-            
-            <div class="desktop-icon" style="top: 120px; left: 20px;" onclick="openWindow('about')">
-                <svg class="desktop-icon-image" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                </svg>
-                <div class="desktop-icon-name">About Company</div>
-            </div>
-            
-            <div class="desktop-icon" style="top: 220px; left: 20px;" onclick="openWindow('contact')">
-                <svg class="desktop-icon-image" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
-                </svg>
-                <div class="desktop-icon-name">Contact Us</div>
-            </div>
-            
-            <div class="desktop-icon" style="top: 320px; left: 20px;" onclick="openWindow('calculator')">
-                <svg class="desktop-icon-image" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8-4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8-4H7V7h2v2zm4 0h-2V7h2v2zm4 0h-2V7h2v2z"/>
-                </svg>
-                <div class="desktop-icon-name">IT Cost Calculator</div>
-            </div>
-            
-            <div class="desktop-icon" style="top: 420px; left: 20px;" onclick="openWindow('games')">
-                <svg class="desktop-icon-image" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M21.58 16.09l-1.09-7.66C20.21 6.46 18.52 5 16.53 5H7.47C5.48 5 3.79 6.46 3.51 8.43l-1.09 7.66C2.2 17.63 3.39 19 4.94 19c.68 0 1.32-.27 1.8-.75L9 16h6l2.25 2.25c.48.48 1.13.75 1.8.75 1.56 0 2.75-1.37 2.53-2.91zM11 11H9v2H8v-2H6v-1h2V8h1v2h2v1zm4-0.5c-.28 0-.5-.22-.5-.5s.22-.5.5-.5.5.22.5.5-.22.5-.5.5zm2 3c-.28 0-.5-.22-.5-.5s.22-.5.5-.5.5.22.5.5-.22.5-.5.5z"/>
-                </svg>
-                <div class="desktop-icon-name">IT Quiz Game</div>
-            </div>
-            
-            <div class="desktop-icon" style="top: 120px; right: 20px;" onclick="openWindow('portfolio')">
-                <svg class="desktop-icon-image" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                </svg>
-                <div class="desktop-icon-name">Success Stories</div>
-            </div>
-            
-            <div class="desktop-icon" style="top: 220px; right: 20px;" onclick="openWindow('chat')">
-                <svg class="desktop-icon-image" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h4v3c0 .6.4 1 1 1 .2 0 .5-.1.7-.3L14.4 18H20c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 12h-2v-2h2v2zm0-4h-2V6h2v4z"/>
-                </svg>
-                <div class="desktop-icon-name">Live Chat Support</div>
-            </div>
-            
-            <div class="desktop-icon" style="top: 20px; right: 20px;" onclick="openWindow('recycle')">
-                <svg class="desktop-icon-image" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
-                </svg>
-                <div class="desktop-icon-name">Recycle Bin</div>
+
+        <!-- Main Content Area -->
+        <div class="flex-1 bg-white overflow-auto md:ml-0">
+            <div id="fileArea" class="p-3 md:p-4">
+                <!-- Home Directory -->
+                <div id="home-content" class="directory-content">
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-4">
+                        <div class="file-item p-4 text-center" data-path="about" data-type="file">
+                            <div class="file-icon mx-auto mb-2"></div>
+                            <div class="text-xs md:text-xs">About Us.txt</div>
+                        </div>
+                        <div class="file-item p-4 text-center" data-path="services" data-type="folder">
+                            <div class="folder-icon mx-auto mb-2"></div>
+                            <div class="text-xs md:text-xs">Services</div>
+                        </div>
+                        <div class="file-item p-4 text-center" data-path="case-studies" data-type="folder">
+                            <div class="folder-icon mx-auto mb-2"></div>
+                            <div class="text-xs md:text-xs">Case Studies</div>
+                        </div>
+                        <div class="file-item p-4 text-center" data-path="clients" data-type="folder">
+                            <div class="folder-icon mx-auto mb-2"></div>
+                            <div class="text-xs md:text-xs">Clients</div>
+                        </div>
+                        <div class="file-item p-4 text-center" data-path="careers" data-type="folder">
+                            <div class="folder-icon mx-auto mb-2"></div>
+                            <div class="text-xs md:text-xs">Careers</div>
+                        </div>
+                        <div class="file-item p-4 text-center" data-path="contact" data-type="file">
+                            <div class="file-icon mx-auto mb-2"></div>
+                            <div class="text-xs md:text-xs">Contact.form</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Services Directory -->
+                <div id="services-content" class="directory-content hidden">
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-4">
+                        <div class="file-item p-3 text-center" data-path="services/managed" data-type="file">
+                            <div class="file-icon mx-auto mb-2"></div>
+                            <div class="text-xs">IT Managed Services.pdf</div>
+                        </div>
+                        <div class="file-item p-3 text-center" data-path="services/cloud" data-type="file">
+                            <div class="file-icon mx-auto mb-2"></div>
+                            <div class="text-xs">Cloud Solutions.pdf</div>
+                        </div>
+                        <div class="file-item p-3 text-center" data-path="services/security" data-type="file">
+                            <div class="file-icon mx-auto mb-2"></div>
+                            <div class="text-xs">Cybersecurity.pdf</div>
+                        </div>
+                        <div class="file-item p-3 text-center" data-path="services/digital" data-type="file">
+                            <div class="file-icon mx-auto mb-2"></div>
+                            <div class="text-xs">Digital Business.pdf</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Case Studies Directory -->
+                <div id="case-studies-content" class="directory-content hidden">
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-4">
+                        <div class="file-item p-3 text-center" data-path="case-studies/healthcare" data-type="file">
+                            <div class="file-icon mx-auto mb-2"></div>
+                            <div class="text-xs">Healthcare Network.case</div>
+                        </div>
+                        <div class="file-item p-3 text-center" data-path="case-studies/manufacturing" data-type="file">
+                            <div class="file-icon mx-auto mb-2"></div>
+                            <div class="text-xs">Manufacturing IoT.case</div>
+                        </div>
+                        <div class="file-item p-3 text-center" data-path="case-studies/finance" data-type="file">
+                            <div class="file-icon mx-auto mb-2"></div>
+                            <div class="text-xs">Financial Security.case</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Clients Directory -->
+                <div id="clients-content" class="directory-content hidden">
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-4">
+                        <div class="file-item p-3 text-center" data-path="clients/healthcare-corp" data-type="file">
+                            <div class="w-16 h-16 bg-blue-100 rounded mx-auto mb-2 flex items-center justify-center">
+                                <span class="text-blue-600 font-bold text-xs">HC</span>
+                            </div>
+                            <div class="text-xs">Healthcare Corp.client</div>
+                        </div>
+                        <div class="file-item p-3 text-center" data-path="clients/tech-industries" data-type="file">
+                            <div class="w-16 h-16 bg-green-100 rounded mx-auto mb-2 flex items-center justify-center">
+                                <span class="text-green-600 font-bold text-xs">TI</span>
+                            </div>
+                            <div class="text-xs">Tech Industries.client</div>
+                        </div>
+                        <div class="file-item p-3 text-center" data-path="clients/financial-services" data-type="file">
+                            <div class="w-16 h-16 bg-purple-100 rounded mx-auto mb-2 flex items-center justify-center">
+                                <span class="text-purple-600 font-bold text-xs">FS</span>
+                            </div>
+                            <div class="text-xs">Financial Services.client</div>
+                        </div>
+                        <div class="file-item p-3 text-center" data-path="clients/manufacturing" data-type="file">
+                            <div class="w-16 h-16 bg-orange-100 rounded mx-auto mb-2 flex items-center justify-center">
+                                <span class="text-orange-600 font-bold text-xs">MG</span>
+                            </div>
+                            <div class="text-xs">Manufacturing Group.client</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- About Us Directory -->
+                <div id="about-content" class="directory-content hidden">
+                    <div class="p-6 bg-gradient-to-br from-blue-50 to-indigo-100 rounded-lg">
+                        <h2 class="text-2xl font-bold text-blue-800 mb-4">About Clueforit</h2>
+                        <div class="space-y-4 text-gray-700">
+                            <p class="leading-relaxed">
+                                At Clueforit, we specialize in providing comprehensive IT managed services and digital business solutions that empower organizations to thrive in the digital age. With over a decade of experience, we've helped hundreds of businesses streamline their operations, enhance security, and accelerate growth through innovative technology solutions.
+                            </p>
+                            
+                            <div class="grid md:grid-cols-2 gap-6 mt-6">
+                                <div class="bg-white p-4 rounded-lg shadow-sm">
+                                    <h3 class="font-semibold text-blue-600 mb-2">Our Mission</h3>
+                                    <p class="text-sm">To deliver cutting-edge IT solutions that drive business success and digital transformation for our clients worldwide.</p>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg shadow-sm">
+                                    <h3 class="font-semibold text-blue-600 mb-2">Our Vision</h3>
+                                    <p class="text-sm">To be the leading provider of innovative IT managed services, setting new standards for excellence and reliability.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-white p-4 rounded-lg shadow-sm mt-4">
+                                <h3 class="font-semibold text-blue-600 mb-3">Why Choose Clueforit?</h3>
+                                <div class="grid sm:grid-cols-2 gap-3 text-sm">
+                                    <div class="flex items-center space-x-2">
+                                        <span class="w-2 h-2 bg-blue-500 rounded-full"></span>
+                                        <span>10+ Years of Experience</span>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <span class="w-2 h-2 bg-blue-500 rounded-full"></span>
+                                        <span>24/7 Technical Support</span>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <span class="w-2 h-2 bg-blue-500 rounded-full"></span>
+                                        <span>99.9% Uptime Guarantee</span>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <span class="w-2 h-2 bg-blue-500 rounded-full"></span>
+                                        <span>Industry Compliance</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Directory -->
+                <div id="contact-content" class="directory-content hidden">
+                    <div class="p-6 bg-gradient-to-br from-green-50 to-emerald-100 rounded-lg">
+                        <h2 class="text-2xl font-bold text-green-800 mb-4">Contact Clueforit</h2>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="bg-white p-6 rounded-lg shadow-sm">
+                                <div class="flex items-center justify-between mb-4">
+                                    <h3 class="font-semibold text-green-600">Smart Assistant</h3>
+                                    <div class="flex items-center space-x-2">
+                                        <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                                        <span class="text-xs text-green-600">Online</span>
+                                    </div>
+                                </div>
+                                
+                                <div id="chatContainer" class="h-80 border border-gray-200 rounded-lg mb-4 overflow-y-auto p-3 bg-gray-50">
+                                    <div class="chat-message bot-message mb-3">
+                                        <div class="flex items-start space-x-2">
+                                            <div class="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-white text-xs">🤖</div>
+                                            <div class="bg-white p-3 rounded-lg shadow-sm max-w-xs">
+                                                <p class="text-sm">Hi! I'm Clueforit's AI assistant. I can help you learn about our services, case studies, and answer any questions about our company. What would you like to know?</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex space-x-2">
+                                    <input type="text" id="chatInput" placeholder="Ask me about Clueforit's services..." class="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent min-w-0">
+                                    <button id="sendChatBtn" class="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-md text-sm font-medium transition-colors flex-shrink-0">Send</button>
+                                </div>
+                                
+                                <div class="mt-3 flex flex-wrap gap-2">
+                                    <button class="quick-question bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-xs transition-colors" data-question="What services do you offer?">What services do you offer?</button>
+                                    <button class="quick-question bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-xs transition-colors" data-question="Tell me about your case studies">Case studies</button>
+                                    <button class="quick-question bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-xs transition-colors" data-question="What are your contact details?">Contact info</button>
+                                </div>
+                            </div>
+                            
+                            <div class="space-y-6">
+                                <div class="bg-white p-6 rounded-lg shadow-sm">
+                                    <h3 class="font-semibold text-green-600 mb-4">Contact Information</h3>
+                                    <div class="space-y-3 text-sm">
+                                        <div class="flex items-center space-x-3">
+                                            <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                                                <span class="text-green-600">📧</span>
+                                            </div>
+                                            <div>
+                                                <div class="font-medium">Email</div>
+                                                <div class="text-gray-600">contact@clueforit.com</div>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center space-x-3">
+                                            <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                                                <span class="text-green-600">📞</span>
+                                            </div>
+                                            <div>
+                                                <div class="font-medium">Phone</div>
+                                                <div class="text-gray-600">+1 (555) 123-4567</div>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center space-x-3">
+                                            <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                                                <span class="text-green-600">📍</span>
+                                            </div>
+                                            <div>
+                                                <div class="font-medium">Address</div>
+                                                <div class="text-gray-600">123 Tech Street<br>Digital City, DC 12345</div>
+                            </div>
+                                        </div>
+                                        <div class="flex items-center space-x-3">
+                                            <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                                                <span class="text-green-600">🕒</span>
+                                            </div>
+                                            <div>
+                                                <div class="font-medium">Business Hours</div>
+                                                <div class="text-gray-600">Mon-Fri: 8AM-6PM EST<br>24/7 Emergency Support</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="bg-white p-6 rounded-lg shadow-sm">
+                                    <h3 class="font-semibold text-green-600 mb-3">Quick Response</h3>
+                                    <p class="text-sm text-gray-600 mb-3">Need immediate assistance? Our support team is available 24/7 for emergency IT issues.</p>
+                                    <button class="w-full bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-md text-sm font-medium transition-colors">Emergency Support</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Careers Directory -->
+                <div id="careers-content" class="directory-content hidden">
+                    <div class="space-y-3">
+                        <div class="file-item flex items-center space-x-3 p-4 border-b border-gray-100" data-path="careers/cloud-engineer" data-type="file">
+                            <div class="file-icon"></div>
+                            <div class="flex-1">
+                                <div class="text-sm font-medium">Senior Cloud Engineer.job</div>
+                                <div class="text-xs text-gray-500">Full-time • Remote • $90k-120k</div>
+                            </div>
+                            <div class="text-xs text-gray-400 hidden sm:block">2 days ago</div>
+                        </div>
+                        <div class="file-item flex items-center space-x-3 p-4 border-b border-gray-100" data-path="careers/security-analyst" data-type="file">
+                            <div class="file-icon"></div>
+                            <div class="flex-1">
+                                <div class="text-sm font-medium">Cybersecurity Analyst.job</div>
+                                <div class="text-xs text-gray-500">Full-time • Hybrid • $75k-95k</div>
+                            </div>
+                            <div class="text-xs text-gray-400 hidden sm:block">1 week ago</div>
+                        </div>
+                        <div class="file-item flex items-center space-x-3 p-4 border-b border-gray-100" data-path="careers/support-specialist" data-type="file">
+                            <div class="file-icon"></div>
+                            <div class="flex-1">
+                                <div class="text-sm font-medium">IT Support Specialist.job</div>
+                                <div class="text-xs text-gray-500">Full-time • On-site • $45k-60k</div>
+                            </div>
+                            <div class="text-xs text-gray-400 hidden sm:block">2 weeks ago</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Taskbar -->
-    <div class="taskbar">
-        <div class="start-button" onclick="toggleStartMenu()">
-            <svg class="w-4 h-4 inline mr-2" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
-            </svg>
-            Start
+    <!-- Status Bar -->
+    <div class="bg-gray-200 border-t border-gray-300 px-3 py-2 flex items-center justify-between text-xs text-gray-600">
+        <div id="statusLeft">6 items</div>
+        <div class="hidden sm:block">Clueforit © 2025 | Managed Services & Digital Business</div>
+        <div class="sm:hidden">Clueforit © 2025</div>
+    </div>
+
+    <!-- Context Menu -->
+    <div id="contextMenu" class="context-menu">
+        <div class="context-menu-item" data-action="open">Open</div>
+        <div class="context-menu-item" data-action="info">Properties</div>
+        <div class="context-menu-item" data-action="contact">Contact About This</div>
+    </div>
+
+    <!-- File Content Windows -->
+    <div id="aboutWindow" class="window-content">
+        <div class="window-header">
+            <span class="text-xs font-medium">About Us.txt - Clueforit</span>
+            <button class="window-close" onclick="closeWindow('aboutWindow')"></button>
         </div>
-        
-        <div class="flex-1"></div>
-        
-        <div class="text-white text-sm" id="clock">12:00 PM</div>
+        <div class="window-body">
+            <h3 class="font-semibold mb-3 text-blue-600">Clueforit - Your Digital Transformation Partner</h3>
+            <p class="text-sm text-gray-700 mb-4 leading-relaxed">
+                At Clueforit, we specialize in providing comprehensive IT managed services and digital business solutions that empower organizations to thrive in the digital age. With over a decade of experience, we've helped hundreds of businesses streamline their operations, enhance security, and accelerate growth through innovative technology solutions.
+            </p>
+            <div class="grid md:grid-cols-2 gap-4 text-sm">
+                <div>
+                    <h4 class="font-medium mb-2">Our Mission</h4>
+                    <p class="text-gray-600">To deliver cutting-edge IT solutions that drive business success and digital transformation for our clients worldwide.</p>
+                </div>
+                <div>
+                    <h4 class="font-medium mb-2">Our Vision</h4>
+                    <p class="text-gray-600">To be the leading provider of innovative IT managed services, setting new standards for excellence and reliability.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="contactWindow" class="window-content">
+        <div class="window-header">
+            <span class="text-xs font-medium">Contact.form - Clueforit</span>
+            <button class="window-close" onclick="closeWindow('contactWindow')"></button>
+        </div>
+        <div class="window-body">
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="font-semibold mb-4">Get in Touch</h3>
+                    <form id="contactForm" class="space-y-3">
+                        <div>
+                            <label class="block text-xs font-medium text-gray-700 mb-1">Name</label>
+                            <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded text-xs focus:outline-none focus:ring-1 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-700 mb-1">Email</label>
+                            <input type="email" class="w-full px-3 py-2 border border-gray-300 rounded text-xs focus:outline-none focus:ring-1 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-700 mb-1">Message</label>
+                            <textarea rows="4" class="w-full px-3 py-2 border border-gray-300 rounded text-xs focus:outline-none focus:ring-1 focus:ring-blue-500"></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded text-xs">Send Message</button>
+                    </form>
+                </div>
+                <div>
+                    <h3 class="font-semibold mb-4">Contact Information</h3>
+                    <div class="space-y-3 text-xs">
+                        <div class="flex items-center space-x-2">
+                            <span class="w-4 h-4 bg-blue-100 rounded flex items-center justify-center">📧</span>
+                            <span>contact@clueforit.com</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="w-4 h-4 bg-blue-100 rounded flex items-center justify-center">📞</span>
+                            <span>+1 (555) 123-4567</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="w-4 h-4 bg-blue-100 rounded flex items-center justify-center">📍</span>
+                            <span>123 Tech Street, Digital City, DC 12345</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Services Windows -->
+    <div id="managedWindow" class="window-content">
+        <div class="window-header">
+            <span class="text-xs font-medium">IT Managed Services.pdf - Clueforit</span>
+            <button class="window-close" onclick="closeWindow('managedWindow')"></button>
+        </div>
+        <div class="window-body">
+            <h3 class="font-semibold mb-3 text-blue-600">IT Managed Services</h3>
+            <p class="text-sm text-gray-700 mb-4">
+                Comprehensive IT infrastructure management, monitoring, and support services designed to keep your business running smoothly 24/7.
+            </p>
+            <div class="space-y-3 text-sm">
+                <div>
+                    <h4 class="font-medium mb-1">Key Features:</h4>
+                    <ul class="list-disc list-inside text-gray-600 space-y-1">
+                        <li>24/7 Network Monitoring & Support</li>
+                        <li>Proactive System Maintenance</li>
+                        <li>Help Desk & Technical Support</li>
+                        <li>Server & Infrastructure Management</li>
+                        <li>Backup & Disaster Recovery</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-medium mb-1">Benefits:</h4>
+                    <p class="text-gray-600">Reduce IT costs by up to 40%, improve system uptime to 99.9%, and focus on your core business while we handle your technology needs.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="cloudWindow" class="window-content">
+        <div class="window-header">
+            <span class="text-xs font-medium">Cloud Solutions.pdf - Clueforit</span>
+            <button class="window-close" onclick="closeWindow('cloudWindow')"></button>
+        </div>
+        <div class="window-body">
+            <h3 class="font-semibold mb-3 text-blue-600">Cloud Solutions</h3>
+            <p class="text-sm text-gray-700 mb-4">
+                Scalable cloud migration, management, and optimization services to modernize your infrastructure and enable remote work capabilities.
+            </p>
+            <div class="space-y-3 text-sm">
+                <div>
+                    <h4 class="font-medium mb-1">Services Include:</h4>
+                    <ul class="list-disc list-inside text-gray-600 space-y-1">
+                        <li>Cloud Migration Strategy & Implementation</li>
+                        <li>Multi-Cloud Management</li>
+                        <li>Cloud Security & Compliance</li>
+                        <li>Cost Optimization</li>
+                        <li>Hybrid Cloud Solutions</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-medium mb-1">Supported Platforms:</h4>
+                    <p class="text-gray-600">AWS, Microsoft Azure, Google Cloud Platform, and private cloud solutions.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="securityWindow" class="window-content">
+        <div class="window-header">
+            <span class="text-xs font-medium">Cybersecurity.pdf - Clueforit</span>
+            <button class="window-close" onclick="closeWindow('securityWindow')"></button>
+        </div>
+        <div class="window-body">
+            <h3 class="font-semibold mb-3 text-blue-600">Cybersecurity Solutions</h3>
+            <p class="text-sm text-gray-700 mb-4">
+                Advanced security solutions to protect your digital assets, ensure compliance, and defend against evolving cyber threats.
+            </p>
+            <div class="space-y-3 text-sm">
+                <div>
+                    <h4 class="font-medium mb-1">Security Services:</h4>
+                    <ul class="list-disc list-inside text-gray-600 space-y-1">
+                        <li>Threat Detection & Response</li>
+                        <li>Vulnerability Assessment</li>
+                        <li>Security Awareness Training</li>
+                        <li>Compliance Management</li>
+                        <li>Incident Response Planning</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-medium mb-1">Compliance Standards:</h4>
+                    <p class="text-gray-600">GDPR, HIPAA, SOX, PCI-DSS, and industry-specific regulations.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="digitalWindow" class="window-content">
+        <div class="window-header">
+            <span class="text-xs font-medium">Digital Business.pdf - Clueforit</span>
+            <button class="window-close" onclick="closeWindow('digitalWindow')"></button>
+        </div>
+        <div class="window-body">
+            <h3 class="font-semibold mb-3 text-blue-600">Digital Business Transformation</h3>
+            <p class="text-sm text-gray-700 mb-4">
+                Strategic digital transformation initiatives to optimize business processes, improve customer experience, and drive innovation.
+            </p>
+            <div class="space-y-3 text-sm">
+                <div>
+                    <h4 class="font-medium mb-1">Transformation Areas:</h4>
+                    <ul class="list-disc list-inside text-gray-600 space-y-1">
+                        <li>Process Automation & Optimization</li>
+                        <li>Customer Experience Enhancement</li>
+                        <li>Data Analytics & Business Intelligence</li>
+                        <li>Digital Workplace Solutions</li>
+                        <li>IoT & Smart Technology Integration</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-medium mb-1">Expected Outcomes:</h4>
+                    <p class="text-gray-600">Increase operational efficiency by 30-50%, improve customer satisfaction, and accelerate time-to-market for new products and services.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Case Study Windows -->
+    <div id="healthcareWindow" class="window-content">
+        <div class="window-header">
+            <span class="text-xs font-medium">Healthcare Network.case - Clueforit</span>
+            <button class="window-close" onclick="closeWindow('healthcareWindow')"></button>
+        </div>
+        <div class="window-body">
+            <h3 class="font-semibold mb-3 text-blue-600">Healthcare Network Modernization</h3>
+            <div class="space-y-3 text-sm">
+                <div>
+                    <h4 class="font-medium mb-1">Challenge:</h4>
+                    <p class="text-gray-600">A regional healthcare network with 15 facilities needed to modernize their IT infrastructure to improve patient data security and system reliability.</p>
+                </div>
+                <div>
+                    <h4 class="font-medium mb-1">Solution:</h4>
+                    <p class="text-gray-600">Implemented a comprehensive cloud-based infrastructure with enhanced security protocols, real-time monitoring, and automated backup systems.</p>
+                </div>
+                <div>
+                    <h4 class="font-medium mb-1">Results:</h4>
+                    <ul class="list-disc list-inside text-gray-600 space-y-1">
+                        <li>99.9% system uptime achieved</li>
+                        <li>50% reduction in IT-related incidents</li>
+                        <li>HIPAA compliance maintained</li>
+                        <li>30% cost savings on IT operations</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="manufacturingWindow" class="window-content">
+        <div class="window-header">
+            <span class="text-xs font-medium">Manufacturing IoT.case - Clueforit</span>
+            <button class="window-close" onclick="closeWindow('manufacturingWindow')"></button>
+        </div>
+        <div class="window-body">
+            <h3 class="font-semibold mb-3 text-blue-600">Manufacturing Digital Transformation</h3>
+            <div class="space-y-3 text-sm">
+                <div>
+                    <h4 class="font-medium mb-1">Challenge:</h4>
+                    <p class="text-gray-600">A manufacturing company needed to reduce equipment downtime and improve operational efficiency through predictive maintenance.</p>
+                </div>
+                <div>
+                    <h4 class="font-medium mb-1">Solution:</h4>
+                    <p class="text-gray-600">Deployed IoT sensors, implemented predictive analytics, and created a real-time dashboard for equipment monitoring and maintenance scheduling.</p>
+                </div>
+                <div>
+                    <h4 class="font-medium mb-1">Results:</h4>
+                    <ul class="list-disc list-inside text-gray-600 space-y-1">
+                        <li>40% reduction in unplanned downtime</li>
+                        <li>25% increase in overall equipment effectiveness</li>
+                        <li>$2M annual savings in maintenance costs</li>
+                        <li>Real-time visibility into production metrics</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="financeWindow" class="window-content">
+        <div class="window-header">
+            <span class="text-xs font-medium">Financial Security.case - Clueforit</span>
+            <button class="window-close" onclick="closeWindow('financeWindow')"></button>
+        </div>
+        <div class="window-body">
+            <h3 class="font-semibold mb-3 text-blue-600">Financial Services Security Enhancement</h3>
+            <div class="space-y-3 text-sm">
+                <div>
+                    <h4 class="font-medium mb-1">Challenge:</h4>
+                    <p class="text-gray-600">A financial services firm needed to enhance cybersecurity measures and ensure compliance with banking regulations.</p>
+                </div>
+                <div>
+                    <h4 class="font-medium mb-1">Solution:</h4>
+                    <p class="text-gray-600">Implemented multi-layered security architecture, advanced threat detection, employee training programs, and compliance monitoring systems.</p>
+                </div>
+                <div>
+                    <h4 class="font-medium mb-1">Results:</h4>
+                    <ul class="list-disc list-inside text-gray-600 space-y-1">
+                        <li>Zero security breaches in 24 months</li>
+                        <li>100% compliance with SOX and PCI-DSS</li>
+                        <li>90% reduction in security incidents</li>
+                        <li>Enhanced customer trust and confidence</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Client Windows -->
+    <div id="clientWindow" class="window-content">
+        <div class="window-header">
+            <span class="text-xs font-medium" id="clientWindowTitle">Client Information - Clueforit</span>
+            <button class="window-close" onclick="closeWindow('clientWindow')"></button>
+        </div>
+        <div class="window-body">
+            <div id="clientWindowContent">
+                <!-- Content will be populated dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Career Windows -->
+    <div id="careerWindow" class="window-content">
+        <div class="window-header">
+            <span class="text-xs font-medium" id="careerWindowTitle">Job Details - Clueforit</span>
+            <button class="window-close" onclick="closeWindow('careerWindow')"></button>
+        </div>
+        <div class="window-body">
+            <div id="careerWindowContent">
+                <!-- Content will be populated dynamically -->
+            </div>
+        </div>
     </div>
 
     <script>
-        let windowZIndex = 100;
-        let openWindows = [];
-        let draggedWindow = null;
-        let dragOffset = { x: 0, y: 0 };
+        // Navigation state
+        let currentPath = 'home';
+        let navigationHistory = ['home'];
+        let historyIndex = 0;
 
-        // Update clock
-        function updateClock() {
-            const now = new Date();
-            const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            document.getElementById('clock').textContent = timeString;
-        }
-        setInterval(updateClock, 1000);
-        updateClock();
-
-        function openWindow(type) {
-            const windowId = `window-${type}-${Date.now()}`;
-            const window = createWindow(windowId, type);
-            document.getElementById('desktop').appendChild(window);
-            
-            openWindows.push({ id: windowId, type: type, element: window });
-            updateTaskbar();
-            
-            // Position window
-            const windowCount = openWindows.length;
-            window.style.left = (50 + (windowCount * 30)) + 'px';
-            window.style.top = (50 + (windowCount * 30)) + 'px';
-            
-            bringToFront(window);
-        }
-
-        function createWindow(id, type) {
-            const window = document.createElement('div');
-            window.className = 'window';
-            window.id = id;
-            window.style.width = '800px';
-            window.style.height = '600px';
-            
-            const windowData = getWindowData(type);
-            
-            window.innerHTML = `
-                <div class="window-header" onmousedown="startDrag(event, '${id}')">
-                    <div class="window-title">
-                        <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                            ${windowData.icon}
-                        </svg>
-                        ${windowData.title}
-                    </div>
-                    <div class="window-controls">
-                        <div class="window-control minimize" onclick="minimizeWindow('${id}')"></div>
-                        <div class="window-control maximize" onclick="toggleMaximize('${id}')"></div>
-                        <div class="window-control close" onclick="closeWindow('${id}')"></div>
-                    </div>
-                </div>
-                ${windowData.content}
-            `;
-            
-            return window;
-        }
-
-        function getWindowData(type) {
-            const data = {
-                fileManager: {
-                    title: 'ClueForIT - IT Services',
-                    icon: '<path d="M10 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2h-8l-2-2z"/>',
-                    content: `
-                        <div class="window-toolbar">
-                            <button class="toolbar-btn" onclick="navigateBack()">← Back</button>
-                            <button class="toolbar-btn" onclick="navigateForward()">Forward →</button>
-                            <button class="toolbar-btn" onclick="navigateUp()">↑ Up</button>
-                            <button class="toolbar-btn" onclick="refreshFolder()">🔄 Refresh</button>
-                            <input class="address-bar" value="C:\\ClueForIT\\Services" readonly>
-                            <button class="toolbar-btn" onclick="changeView()">⊞ View</button>
-                        </div>
-                        <div class="window-content">
-                            <div class="sidebar">
-                                <div class="sidebar-section">
-                                    <div class="sidebar-title">Quick Access</div>
-                                    <div class="sidebar-item active">
-                                        <svg class="sidebar-icon" fill="currentColor" viewBox="0 0 20 20">
-                                            <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/>
-                                        </svg>
-                                        IT Services
-                                    </div>
-                                    <div class="sidebar-item" onclick="switchFolder('managed')">
-                                        <svg class="sidebar-icon" fill="currentColor" viewBox="0 0 20 20">
-                                            <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4z"/>
-                                        </svg>
-                                        Managed Services
-                                    </div>
-                                    <div class="sidebar-item" onclick="switchFolder('cloud')">
-                                        <svg class="sidebar-icon" fill="currentColor" viewBox="0 0 20 20">
-                                            <path d="M5.5 16a3.5 3.5 0 01-.369-6.98 4 4 0 117.753-1.977A4.5 4.5 0 1113.5 16h-8z"/>
-                                        </svg>
-                                        Cloud Solutions
-                                    </div>
-                                    <div class="sidebar-item" onclick="switchFolder('security')">
-                                        <svg class="sidebar-icon" fill="currentColor" viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001z"/>
-                                        </svg>
-                                        Security
-                                    </div>
-                                </div>
-                                <div class="sidebar-section">
-                                    <div class="sidebar-title">This PC</div>
-                                    <div class="sidebar-item">
-                                        <svg class="sidebar-icon" fill="currentColor" viewBox="0 0 20 20">
-                                            <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4z"/>
-                                        </svg>
-                                        Local Disk (C:)
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="file-area">
-                                <div class="file-grid" id="fileGrid">
-                                    <div class="file-item" onclick="openServiceDetails('managed')">
-                                        <svg class="file-icon" fill="#3b82f6" viewBox="0 0 24 24">
-                                            <path d="M10 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2h-8l-2-2z"/>
-                                        </svg>
-                                        <div class="file-name">IT Managed Services</div>
-                                    </div>
-                                    <div class="file-item" onclick="openServiceDetails('cloud')">
-                                        <svg class="file-icon" fill="#10b981" viewBox="0 0 24 24">
-                                            <path d="M10 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2h-8l-2-2z"/>
-                                        </svg>
-                                        <div class="file-name">Cloud Solutions</div>
-                                    </div>
-                                    <div class="file-item" onclick="openServiceDetails('security')">
-                                        <svg class="file-icon" fill="#ef4444" viewBox="0 0 24 24">
-                                            <path d="M10 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2h-8l-2-2z"/>
-                                        </svg>
-                                        <div class="file-name">Cybersecurity</div>
-                                    </div>
-                                    <div class="file-item" onclick="openServiceDetails('digital')">
-                                        <svg class="file-icon" fill="#8b5cf6" viewBox="0 0 24 24">
-                                            <path d="M10 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2h-8l-2-2z"/>
-                                        </svg>
-                                        <div class="file-name">Digital Transformation</div>
-                                    </div>
-                                    <div class="file-item" onclick="openServiceDetails('bi')">
-                                        <svg class="file-icon" fill="#f59e0b" viewBox="0 0 24 24">
-                                            <path d="M10 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2h-8l-2-2z"/>
-                                        </svg>
-                                        <div class="file-name">Business Intelligence</div>
-                                    </div>
-                                    <div class="file-item" onclick="openServiceDetails('support')">
-                                        <svg class="file-icon" fill="#06b6d4" viewBox="0 0 24 24">
-                                            <path d="M10 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2h-8l-2-2z"/>
-                                        </svg>
-                                        <div class="file-name">Support & Consulting</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="status-bar">
-                            6 items | Ready
-                        </div>
-                    `
-                },
-                calculator: {
-                    title: 'IT Cost Calculator',
-                    icon: '<path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8-4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8-4H7V7h2v2zm4 0h-2V7h2v2zm4 0h-2V7h2v2z"/>',
-                    content: `
-                        <div class="window-content">
-                            <div class="file-area" style="padding: 24px;">
-                                <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 16px; color: #1f2937;">💰 Hitung Biaya IT Bulanan</h2>
-                                <div style="background: #f9fafb; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-                                    <div style="margin-bottom: 16px;">
-                                        <label style="display: block; margin-bottom: 4px; font-weight: 500;">Jumlah Karyawan:</label>
-                                        <input type="number" id="employees" value="10" style="width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px;" onchange="calculateCost()">
-                                    </div>
-                                    <div style="margin-bottom: 16px;">
-                                        <label style="display: block; margin-bottom: 4px; font-weight: 500;">Layanan yang Dipilih:</label>
-                                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-                                            <label><input type="checkbox" id="managed" checked onchange="calculateCost()"> IT Support (Rp 500K/user)</label>
-                                            <label><input type="checkbox" id="cloud" onchange="calculateCost()"> Cloud Storage (Rp 200K/user)</label>
-                                            <label><input type="checkbox" id="security" onchange="calculateCost()"> Security (Rp 300K/user)</label>
-                                            <label><input type="checkbox" id="backup" onchange="calculateCost()"> Backup (Rp 150K/user)</label>
-                                        </div>
-                                    </div>
-                                    <div style="background: #dbeafe; padding: 16px; border-radius: 6px; text-align: center;">
-                                        <h3 style="color: #1d4ed8; margin-bottom: 8px;">Estimasi Biaya Bulanan:</h3>
-                                        <div id="totalCost" style="font-size: 24px; font-weight: bold; color: #1d4ed8;">Rp 5,000,000</div>
-                                        <p style="font-size: 12px; color: #6b7280; margin-top: 8px;">*Harga dapat berubah sesuai kebutuhan spesifik</p>
-                                    </div>
-                                </div>
-                                <button onclick="alert('Konsultasi gratis telah dijadwalkan! Tim kami akan menghubungi Anda dalam 24 jam.')" 
-                                        style="width: 100%; background: #3b82f6; color: white; padding: 12px; border: none; border-radius: 6px; font-weight: 500; cursor: pointer;">
-                                    📞 Konsultasi Gratis Sekarang
-                                </button>
-                            </div>
-                        </div>
-                    `
-                },
-                games: {
-                    title: 'IT Quiz Game',
-                    icon: '<path d="M21.58 16.09l-1.09-7.66C20.21 6.46 18.52 5 16.53 5H7.47C5.48 5 3.79 6.46 3.51 8.43l-1.09 7.66C2.2 17.63 3.39 19 4.94 19c.68 0 1.32-.27 1.8-.75L9 16h6l2.25 2.25c.48.48 1.13.75 1.8.75 1.56 0 2.75-1.37 2.53-2.91z"/>',
-                    content: `
-                        <div class="window-content">
-                            <div class="file-area" style="padding: 24px;">
-                                <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 16px; color: #1f2937;">🎮 IT Knowledge Quiz</h2>
-                                <div id="quizContainer">
-                                    <div style="background: #f3f4f6; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-                                        <h3 id="questionTitle" style="margin-bottom: 16px; color: #374151;">Pertanyaan 1: Apa kepanjangan dari CPU?</h3>
-                                        <div id="answers" style="display: grid; gap: 8px;">
-                                            <button class="quiz-btn" onclick="selectAnswer(0)" style="padding: 12px; text-align: left; background: white; border: 2px solid #e5e7eb; border-radius: 6px; cursor: pointer;">A. Central Processing Unit</button>
-                                            <button class="quiz-btn" onclick="selectAnswer(1)" style="padding: 12px; text-align: left; background: white; border: 2px solid #e5e7eb; border-radius: 6px; cursor: pointer;">B. Computer Personal Unit</button>
-                                            <button class="quiz-btn" onclick="selectAnswer(2)" style="padding: 12px; text-align: left; background: white; border: 2px solid #e5e7eb; border-radius: 6px; cursor: pointer;">C. Central Program Unit</button>
-                                            <button class="quiz-btn" onclick="selectAnswer(3)" style="padding: 12px; text-align: left; background: white; border: 2px solid #e5e7eb; border-radius: 6px; cursor: pointer;">D. Computer Processing Unit</button>
-                                        </div>
-                                    </div>
-                                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                                        <div>Skor: <span id="score" style="font-weight: bold; color: #3b82f6;">0</span>/5</div>
-                                        <button onclick="nextQuestion()" id="nextBtn" style="background: #10b981; color: white; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer;" disabled>Selanjutnya</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    `
-                },
-                portfolio: {
-                    title: 'Success Stories',
-                    icon: '<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>',
-                    content: `
-                        <div class="window-content">
-                            <div class="file-area" style="padding: 24px; overflow-y: auto;">
-                                <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 20px; color: #1f2937;">⭐ Kisah Sukses Klien</h2>
-                                
-                                <div style="display: grid; gap: 16px;">
-                                    <div style="background: linear-gradient(135deg, #dbeafe, #bfdbfe); padding: 20px; border-radius: 8px; border-left: 4px solid #3b82f6;">
-                                        <h3 style="color: #1d4ed8; margin-bottom: 8px;">🏢 PT. Teknologi Maju</h3>
-                                        <p style="color: #1e40af; margin-bottom: 12px;">"Migrasi ke cloud menghemat 40% biaya IT kami. Server downtime berkurang dari 15 jam/bulan menjadi 0!"</p>
-                                        <div style="font-size: 12px; color: #6366f1;">✅ Cloud Migration • ✅ 24/7 Monitoring • ✅ Cost Optimization</div>
-                                    </div>
-                                    
-                                    <div style="background: linear-gradient(135deg, #d1fae5, #a7f3d0); padding: 20px; border-radius: 8px; border-left: 4px solid #10b981;">
-                                        <h3 style="color: #047857; margin-bottom: 8px;">🏥 RS. Sehat Sentosa</h3>
-                                        <p style="color: #065f46; margin-bottom: 12px;">"Sistem keamanan baru melindungi data pasien 100%. Tidak ada lagi kekhawatiran cyber attack!"</p>
-                                        <div style="font-size: 12px; color: #059669;">✅ Cybersecurity • ✅ Data Protection • ✅ Compliance</div>
-                                    </div>
-                                    
-                                    <div style="background: linear-gradient(135deg, #fef3c7, #fde68a); padding: 20px; border-radius: 8px; border-left: 4px solid #f59e0b;">
-                                        <h3 style="color: #92400e; margin-bottom: 8px;">🏪 Retail Chain ABC</h3>
-                                        <p style="color: #78350f; margin-bottom: 12px;">"Otomasi inventory meningkatkan efisiensi 60%. Stok selalu akurat di 50+ cabang!"</p>
-                                        <div style="font-size: 12px; color: #d97706;">✅ Digital Transformation • ✅ Process Automation • ✅ Integration</div>
-                                    </div>
-                                    
-                                    <div style="background: linear-gradient(135deg, #e0e7ff, #c7d2fe); padding: 20px; border-radius: 8px; border-left: 4px solid #8b5cf6;">
-                                        <h3 style="color: #6d28d9; margin-bottom: 8px;">🏭 Manufaktur XYZ</h3>
-                                        <p style="color: #5b21b6; margin-bottom: 12px;">"Dashboard BI memberikan insight real-time. Produktivitas naik 35% dalam 6 bulan!"</p>
-                                        <div style="font-size: 12px; color: #7c3aed;">✅ Business Intelligence • ✅ Data Analytics • ✅ Real-time Monitoring</div>
-                                    </div>
-                                </div>
-                                
-                                <div style="text-align: center; margin-top: 24px; padding: 20px; background: #f8fafc; border-radius: 8px;">
-                                    <h3 style="color: #374151; margin-bottom: 12px;">Ingin menjadi success story berikutnya?</h3>
-                                    <button onclick="alert('Tim sales akan menghubungi Anda untuk demo gratis!')" 
-                                            style="background: #3b82f6; color: white; padding: 12px 24px; border: none; border-radius: 6px; font-weight: 500; cursor: pointer;">
-                                        🚀 Jadwalkan Demo Gratis
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    `
-                },
-                chat: {
-                    title: 'Live Chat Support',
-                    icon: '<path d="M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h4v3c0 .6.4 1 1 1 .2 0 .5-.1.7-.3L14.4 18H20c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/>',
-                    content: `
-                        <div class="window-content">
-                            <div style="display: flex; flex-direction: column; height: 100%;">
-                                <div style="background: #3b82f6; color: white; padding: 12px 16px; display: flex; align-items: center;">
-                                    <div style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; margin-right: 8px;"></div>
-                                    <span style="font-weight: 500;">Support Agent - Online</span>
-                                </div>
-                                
-                                <div id="chatMessages" style="flex: 1; padding: 16px; overflow-y: auto; background: #f9fafb;">
-                                    <div style="background: white; padding: 12px; border-radius: 8px; margin-bottom: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
-                                        <div style="font-weight: 500; color: #3b82f6; margin-bottom: 4px;">ClueForIT Support</div>
-                                        <div style="color: #374151;">Halo! 👋 Selamat datang di ClueForIT. Ada yang bisa saya bantu hari ini?</div>
-                                        <div style="font-size: 11px; color: #9ca3af; margin-top: 4px;">10:30 AM</div>
-                                    </div>
-                                    
-                                    <div style="background: white; padding: 12px; border-radius: 8px; margin-bottom: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
-                                        <div style="font-weight: 500; color: #3b82f6; margin-bottom: 4px;">ClueForIT Support</div>
-                                        <div style="color: #374151;">Saya bisa membantu Anda dengan:
-                                        <br>• 💬 Konsultasi IT gratis
-                                        <br>• 📊 Analisis kebutuhan sistem
-                                        <br>• 💰 Estimasi biaya proyek
-                                        <br>• 🔧 Troubleshooting teknis</div>
-                                        <div style="font-size: 11px; color: #9ca3af; margin-top: 4px;">10:31 AM</div>
-                                    </div>
-                                </div>
-                                
-                                <div style="padding: 16px; background: white; border-top: 1px solid #e5e7eb;">
-                                    <div style="display: flex; gap: 8px; margin-bottom: 12px;">
-                                        <button onclick="sendQuickReply('Saya butuh konsultasi IT')" style="background: #f3f4f6; border: 1px solid #d1d5db; padding: 6px 12px; border-radius: 16px; font-size: 12px; cursor: pointer;">💬 Konsultasi IT</button>
-                                        <button onclick="sendQuickReply('Berapa harga cloud migration?')" style="background: #f3f4f6; border: 1px solid #d1d5db; padding: 6px 12px; border-radius: 16px; font-size: 12px; cursor: pointer;">💰 Harga Layanan</button>
-                                        <button onclick="sendQuickReply('Saya mau demo produk')" style="background: #f3f4f6; border: 1px solid #d1d5db; padding: 6px 12px; border-radius: 16px; font-size: 12px; cursor: pointer;">🚀 Demo Produk</button>
-                                    </div>
-                                    <div style="display: flex; gap: 8px;">
-                                        <input type="text" id="chatInput" placeholder="Ketik pesan Anda..." style="flex: 1; padding: 8px 12px; border: 1px solid #d1d5db; border-radius: 20px;" onkeypress="if(event.key==='Enter') sendMessage()">
-                                        <button onclick="sendMessage()" style="background: #3b82f6; color: white; padding: 8px 16px; border: none; border-radius: 20px; cursor: pointer;">Kirim</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    `
-                },
-                about: {
-                    title: 'About ClueForIT',
-                    icon: '<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>',
-                    content: `
-                        <div class="window-content">
-                            <div class="file-area" style="padding: 32px;">
-                                <div style="max-width: 600px; margin: 0 auto;">
-                                    <h2 style="font-size: 24px; font-weight: bold; margin-bottom: 16px; color: #1f2937;">About ClueForIT</h2>
-                                    <p style="color: #6b7280; margin-bottom: 24px; line-height: 1.6;">
-                                        ClueForIT adalah perusahaan IT yang mengorganisir dan mengoptimalkan infrastruktur teknologi 
-                                        dengan presisi dan kejelasan seperti sistem file yang terstruktur dengan baik.
-                                    </p>
-                                    <div style="background: #f9fafb; padding: 24px; border-radius: 8px; margin-bottom: 24px;">
-                                        <h3 style="font-weight: 600; margin-bottom: 16px;">Keunggulan Kami:</h3>
-                                        <ul style="list-style: disc; margin-left: 20px; color: #6b7280; line-height: 1.8;">
-                                            <li>10+ Tahun Pengalaman IT</li>
-                                            <li>500+ Proyek Berhasil</li>
-                                            <li>Support 24/7</li>
-                                            <li>Tim Bersertifikat</li>
-                                            <li>Solusi Scalable</li>
-                                        </ul>
-                                    </div>
-                                    <div style="background: #dbeafe; padding: 24px; border-radius: 8px;">
-                                        <h3 style="font-weight: 600; margin-bottom: 16px; color: #1d4ed8;">Visi & Misi</h3>
-                                        <p style="color: #1e40af; line-height: 1.6;">
-                                            Menjadi partner terpercaya dalam transformasi digital dengan menyediakan 
-                                            solusi IT yang terorganisir, efisien, dan mudah diakses seperti sistem file manager yang intuitif.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    `
-                },
-                contact: {
-                    title: 'Contact Information',
-                    icon: '<path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>',
-                    content: `
-                        <div class="window-content">
-                            <div class="file-area" style="padding: 32px;">
-                                <div style="max-width: 600px; margin: 0 auto;">
-                                    <h2 style="font-size: 24px; font-weight: bold; margin-bottom: 24px; color: #1f2937;">Hubungi Kami</h2>
-                                    
-                                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 32px;">
-                                        <div style="background: #f3f4f6; padding: 20px; border-radius: 8px;">
-                                            <h3 style="font-weight: 600; margin-bottom: 12px; color: #374151;">📍 Alamat Kantor</h3>
-                                            <p style="color: #6b7280; line-height: 1.6;">
-                                                Jl. Teknologi No. 123<br>
-                                                Jakarta Selatan 12345<br>
-                                                Indonesia
-                                            </p>
-                                        </div>
-                                        
-                                        <div style="background: #f3f4f6; padding: 20px; border-radius: 8px;">
-                                            <h3 style="font-weight: 600; margin-bottom: 12px; color: #374151;">📞 Kontak</h3>
-                                            <p style="color: #6b7280; line-height: 1.6;">
-                                                Telepon: +62 21 1234 5678<br>
-                                                Email: henry.suryaman@gmail.com<br>
-                                                WhatsApp: +62 897 23 5030
-                                            </p>
-                                        </div>
-                                    </div>
-                                    
-                                    <div style="background: #dbeafe; padding: 24px; border-radius: 8px;">
-                                        <h3 style="font-weight: 600; margin-bottom: 16px; color: #1d4ed8;">⏰ Jam Operasional</h3>
-                                        <p style="color: #1e40af; line-height: 1.6;">
-                                            Senin - Jumat: 09:00 - 18:00 WIB<br>
-                                            Sabtu: 09:00 - 15:00 WIB<br>
-                                            <strong>Emergency Support: 24/7</strong>
-                                        </p>
-                                    </div>
-                                    
-                                    <div style="margin-top: 24px; text-align: center;">
-                                        <button onclick="alert('Formulir kontak akan dibuka!')" 
-                                                style="background: #3b82f6; color: white; padding: 12px 24px; border: none; border-radius: 6px; cursor: pointer; font-weight: 500;">
-                                            Kirim Pesan
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    `
-                },
-                recycle: {
-                    title: 'Recycle Bin',
-                    icon: '<path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>',
-                    content: `
-                        <div class="window-content">
-                            <div class="file-area" style="padding: 32px; text-align: center;">
-                                <svg style="width: 64px; height: 64px; color: #9ca3af; margin-bottom: 16px;" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
-                                </svg>
-                                <h3 style="color: #6b7280; margin-bottom: 8px;">Recycle Bin is empty</h3>
-                                <p style="color: #9ca3af; font-size: 14px;">No deleted items to display</p>
-                            </div>
-                        </div>
-                    `
-                }
-            };
-            
-            return data[type] || data.fileManager;
-        }
-
-        function closeWindow(windowId) {
-            const window = document.getElementById(windowId);
-            if (window) {
-                window.remove();
-                openWindows = openWindows.filter(w => w.id !== windowId);
-                updateTaskbar();
-            }
-        }
-
-        function minimizeWindow(windowId) {
-            const window = document.getElementById(windowId);
-            if (window) {
-                window.style.display = 'none';
-                updateTaskbar();
-            }
-        }
-
-        function toggleMaximize(windowId) {
-            const window = document.getElementById(windowId);
-            if (window) {
-                window.classList.toggle('maximized');
-            }
-        }
-
-        function bringToFront(window) {
-            window.style.zIndex = ++windowZIndex;
-        }
-
-        function updateTaskbar() {
-            // Remove existing taskbar items
-            const existingItems = document.querySelectorAll('.taskbar-item');
-            existingItems.forEach(item => item.remove());
-            
-            // Add taskbar items for open windows
-            const taskbar = document.querySelector('.taskbar');
-            const clock = document.getElementById('clock');
-            
-            openWindows.forEach(window => {
-                const item = document.createElement('div');
-                item.className = 'taskbar-item';
-                item.textContent = getWindowData(window.type).title;
-                item.onclick = () => {
-                    if (window.element.style.display === 'none') {
-                        window.element.style.display = 'block';
-                    }
-                    bringToFront(window.element);
-                };
-                taskbar.insertBefore(item, clock);
-            });
-        }
-
-        // Drag functionality
-        function startDrag(event, windowId) {
-            const window = document.getElementById(windowId);
-            if (window.classList.contains('maximized')) return;
-            
-            draggedWindow = window;
-            const rect = window.getBoundingClientRect();
-            dragOffset.x = event.clientX - rect.left;
-            dragOffset.y = event.clientY - rect.top;
-            
-            window.classList.add('dragging');
-            bringToFront(window);
-            
-            document.addEventListener('mousemove', drag);
-            document.addEventListener('mouseup', stopDrag);
-            event.preventDefault();
-        }
-
-        function drag(event) {
-            if (draggedWindow) {
-                const x = event.clientX - dragOffset.x;
-                const y = event.clientY - dragOffset.y;
-                
-                draggedWindow.style.left = Math.max(0, x) + 'px';
-                draggedWindow.style.top = Math.max(0, y) + 'px';
-            }
-        }
-
-        function stopDrag() {
-            if (draggedWindow) {
-                draggedWindow.classList.remove('dragging');
-                draggedWindow = null;
-            }
-            document.removeEventListener('mousemove', drag);
-            document.removeEventListener('mouseup', stopDrag);
-        }
-
-        // File manager functions
-        function navigateBack() {
-            showNotification('Navigated back');
-        }
-
-        function navigateForward() {
-            showNotification('Navigated forward');
-        }
-
-        function navigateUp() {
-            showNotification('Navigated up');
-        }
-
-        function refreshFolder() {
-            showNotification('Folder refreshed');
-        }
-
-        function changeView() {
-            const grid = document.getElementById('fileGrid');
-            if (grid) {
-                if (grid.style.gridTemplateColumns.includes('1fr')) {
-                    grid.style.gridTemplateColumns = 'repeat(auto-fill, minmax(100px, 1fr))';
-                    showNotification('Changed to icon view');
-                } else {
-                    grid.style.gridTemplateColumns = '1fr';
-                    showNotification('Changed to list view');
-                }
-            }
-        }
-
-        function switchFolder(folder) {
-            showNotification(`Switched to ${folder} folder`);
-        }
-
-        function openServiceDetails(service) {
-            const serviceData = {
-                managed: {
-                    title: '🔧 IT Managed Services',
-                    description: 'Layanan pengelolaan IT komprehensif 24/7',
-                    features: [
-                        '• Monitoring server dan jaringan real-time',
-                        '• Maintenance rutin dan preventif',
-                        '• Help desk support untuk end-user',
-                        '• Patch management dan security updates',
-                        '• Backup dan disaster recovery',
-                        '• Performance optimization'
-                    ],
-                    benefits: 'Mengurangi downtime hingga 95%, menghemat biaya IT hingga 40%, dan meningkatkan produktivitas tim.'
-                },
-                cloud: {
-                    title: '☁️ Cloud Solutions',
-                    description: 'Migrasi dan pengelolaan infrastruktur cloud',
-                    features: [
-                        '• Cloud migration (AWS, Azure, Google Cloud)',
-                        '• Cloud architecture design',
-                        '• Auto-scaling dan load balancing',
-                        '• Cloud security dan compliance',
-                        '• Cost optimization',
-                        '• Hybrid cloud integration'
-                    ],
-                    benefits: 'Skalabilitas unlimited, akses dari mana saja, dan penghematan biaya infrastruktur hingga 50%.'
-                },
-                security: {
-                    title: '🛡️ Cybersecurity',
-                    description: 'Perlindungan keamanan siber menyeluruh',
-                    features: [
-                        '• Firewall dan intrusion detection',
-                        '• Antivirus dan anti-malware enterprise',
-                        '• Security audit dan penetration testing',
-                        '• Employee security training',
-                        '• Compliance management (ISO 27001)',
-                        '• Incident response dan forensik'
-                    ],
-                    benefits: 'Melindungi data bisnis 99.9%, mencegah kerugian finansial, dan menjaga reputasi perusahaan.'
-                },
-                digital: {
-                    title: '🚀 Digital Transformation',
-                    description: 'Transformasi proses bisnis dengan teknologi',
-                    features: [
-                        '• Process automation dan workflow',
-                        '• Digital document management',
-                        '• Customer relationship management (CRM)',
-                        '• Enterprise resource planning (ERP)',
-                        '• Mobile app development',
-                        '• IoT integration'
-                    ],
-                    benefits: 'Meningkatkan efisiensi operasional 60%, mengurangi human error, dan mempercepat time-to-market.'
-                },
-                bi: {
-                    title: '📊 Business Intelligence',
-                    description: 'Analisis data untuk insight bisnis strategis',
-                    features: [
-                        '• Data warehouse dan data lake setup',
-                        '• Real-time dashboard dan reporting',
-                        '• Predictive analytics dan forecasting',
-                        '• KPI monitoring dan alerting',
-                        '• Data visualization tools',
-                        '• Self-service analytics'
-                    ],
-                    benefits: 'Keputusan berbasis data, identifikasi peluang bisnis baru, dan peningkatan ROI hingga 25%.'
-                },
-                support: {
-                    title: '💬 Support & Consulting',
-                    description: 'Konsultasi ahli dan dukungan teknis berkelanjutan',
-                    features: [
-                        '• IT strategy consulting',
-                        '• Technology roadmap planning',
-                        '• Vendor selection dan procurement',
-                        '• Project management',
-                        '• Training dan knowledge transfer',
-                        '• 24/7 technical support'
-                    ],
-                    benefits: 'Strategi IT yang tepat sasaran, implementasi sukses, dan dukungan berkelanjutan.'
-                }
-            };
-            
-            const data = serviceData[service];
-            if (data) {
-                showServicePopup(data);
-            }
-        }
-
-        function showServicePopup(data) {
-            // Create popup overlay
-            const overlay = document.createElement('div');
-            overlay.style.cssText = `
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100vw;
-                height: 100vh;
-                background: rgba(0, 0, 0, 0.7);
-                backdrop-filter: blur(5px);
-                z-index: 2000;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                padding: 20px;
-                box-sizing: border-box;
-            `;
-            
-            // Create popup content
-            const popup = document.createElement('div');
-            popup.style.cssText = `
-                background: white;
-                border-radius: 12px;
-                max-width: 600px;
-                width: 100%;
-                max-height: 80vh;
-                overflow-y: auto;
-                box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-                animation: popupOpen 0.3s ease-out;
-            `;
-            
-            popup.innerHTML = `
-                <div style="padding: 24px; border-bottom: 1px solid #e5e7eb;">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <h2 style="font-size: 24px; font-weight: bold; color: #1f2937; margin: 0;">${data.title}</h2>
-                        <button onclick="closeServicePopup()" style="background: none; border: none; font-size: 24px; color: #6b7280; cursor: pointer; padding: 4px;">×</button>
-                    </div>
-                    <p style="color: #6b7280; margin: 8px 0 0 0; font-size: 16px;">${data.description}</p>
-                </div>
-                
-                <div style="padding: 24px;">
-                    <div style="margin-bottom: 24px;">
-                        <h3 style="font-size: 18px; font-weight: 600; color: #374151; margin-bottom: 12px;">✨ Fitur Utama:</h3>
-                        <div style="background: #f9fafb; padding: 16px; border-radius: 8px; border-left: 4px solid #3b82f6;">
-                            ${data.features.map(feature => `<div style="color: #4b5563; margin-bottom: 4px; line-height: 1.5;">${feature}</div>`).join('')}
-                        </div>
-                    </div>
-                    
-                    <div style="margin-bottom: 24px;">
-                        <h3 style="font-size: 18px; font-weight: 600; color: #374151; margin-bottom: 12px;">🎯 Manfaat Bisnis:</h3>
-                        <div style="background: #ecfdf5; padding: 16px; border-radius: 8px; border-left: 4px solid #10b981;">
-                            <p style="color: #065f46; margin: 0; line-height: 1.6;">${data.benefits}</p>
-                        </div>
-                    </div>
-                    
-                    <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-                        <button onclick="alert('Tim sales akan menghubungi Anda untuk konsultasi gratis dalam 1 jam!'); closeServicePopup();" 
-                                style="background: #3b82f6; color: white; padding: 12px 20px; border: none; border-radius: 6px; font-weight: 500; cursor: pointer; flex: 1; min-width: 140px;">
-                            💬 Konsultasi Gratis
-                        </button>
-                        <button onclick="alert('Proposal detail akan dikirim ke email Anda!'); closeServicePopup();" 
-                                style="background: #10b981; color: white; padding: 12px 20px; border: none; border-radius: 6px; font-weight: 500; cursor: pointer; flex: 1; min-width: 140px;">
-                            📄 Minta Proposal
-                        </button>
-                    </div>
-                </div>
-            `;
-            
-            overlay.appendChild(popup);
-            document.body.appendChild(overlay);
-            
-            // Add animation styles
-            const style = document.createElement('style');
-            style.textContent = `
-                @keyframes popupOpen {
-                    from {
-                        opacity: 0;
-                        transform: scale(0.9) translateY(-20px);
-                    }
-                    to {
-                        opacity: 1;
-                        transform: scale(1) translateY(0);
-                    }
-                }
-            `;
-            document.head.appendChild(style);
-            
-            // Close on overlay click
-            overlay.addEventListener('click', function(e) {
-                if (e.target === overlay) {
-                    closeServicePopup();
-                }
-            });
-            
-            // Store reference for closing
-            window.currentServicePopup = overlay;
-        }
-
-        function closeServicePopup() {
-            if (window.currentServicePopup) {
-                window.currentServicePopup.remove();
-                window.currentServicePopup = null;
-            }
-        }
-
-        // Calculator functions
-        function calculateCost() {
-            const employees = parseInt(document.getElementById('employees')?.value || 0);
-            const managed = document.getElementById('managed')?.checked ? 500000 : 0;
-            const cloud = document.getElementById('cloud')?.checked ? 200000 : 0;
-            const security = document.getElementById('security')?.checked ? 300000 : 0;
-            const backup = document.getElementById('backup')?.checked ? 150000 : 0;
-            
-            const totalPerUser = managed + cloud + security + backup;
-            const totalCost = totalPerUser * employees;
-            
-            const costElement = document.getElementById('totalCost');
-            if (costElement) {
-                costElement.textContent = 'Rp ' + totalCost.toLocaleString('id-ID');
-            }
-        }
-
-        // Quiz game functions
-        let currentQuestion = 0;
-        let score = 0;
-        const questions = [
-            {
-                question: "Apa kepanjangan dari CPU?",
-                answers: ["Central Processing Unit", "Computer Personal Unit", "Central Program Unit", "Computer Processing Unit"],
-                correct: 0
+        // File content data
+        const fileContents = {
+            'services/managed': {
+                title: 'IT Managed Services',
+                content: 'Complete IT infrastructure management, monitoring, and support services for businesses of all sizes.'
             },
-            {
-                question: "Protokol keamanan mana yang paling aman untuk WiFi?",
-                answers: ["WEP", "WPA", "WPA2", "WPA3"],
-                correct: 3
+            'services/cloud': {
+                title: 'Cloud Solutions',
+                content: 'Scalable cloud migration, management, and optimization services to modernize your infrastructure.'
             },
-            {
-                question: "Apa fungsi utama firewall?",
-                answers: ["Mempercepat internet", "Melindungi dari virus", "Mengontrol lalu lintas jaringan", "Menyimpan data"],
-                correct: 2
+            'services/security': {
+                title: 'Cybersecurity',
+                content: 'Advanced security solutions to protect your digital assets and ensure compliance with industry standards.'
             },
-            {
-                question: "Cloud computing memberikan keuntungan utama berupa:",
-                answers: ["Harga lebih murah", "Skalabilitas dan fleksibilitas", "Kecepatan internet", "Desain yang bagus"],
-                correct: 1
-            },
-            {
-                question: "Backup data sebaiknya dilakukan:",
-                answers: ["Sekali setahun", "Setiap bulan", "Setiap minggu", "Setiap hari"],
-                correct: 3
+            'services/digital': {
+                title: 'Digital Business',
+                content: 'Strategic digital transformation initiatives to optimize business processes and drive growth.'
             }
-        ];
-
-        function selectAnswer(answerIndex) {
-            const buttons = document.querySelectorAll('.quiz-btn');
-            buttons.forEach(btn => {
-                btn.style.borderColor = '#e5e7eb';
-                btn.style.background = 'white';
-            });
-            
-            if (buttons[answerIndex]) {
-                buttons[answerIndex].style.borderColor = '#3b82f6';
-                buttons[answerIndex].style.background = '#dbeafe';
-            }
-            
-            const nextBtn = document.getElementById('nextBtn');
-            if (nextBtn) {
-                nextBtn.disabled = false;
-                nextBtn.onclick = () => checkAnswer(answerIndex);
-            }
-        }
-
-        function checkAnswer(selectedAnswer) {
-            const correct = questions[currentQuestion].correct;
-            const buttons = document.querySelectorAll('.quiz-btn');
-            
-            if (selectedAnswer === correct) {
-                score++;
-                if (buttons[selectedAnswer]) {
-                    buttons[selectedAnswer].style.background = '#dcfce7';
-                    buttons[selectedAnswer].style.borderColor = '#10b981';
-                }
-            } else {
-                if (buttons[selectedAnswer]) {
-                    buttons[selectedAnswer].style.background = '#fee2e2';
-                    buttons[selectedAnswer].style.borderColor = '#ef4444';
-                }
-                if (buttons[correct]) {
-                    buttons[correct].style.background = '#dcfce7';
-                    buttons[correct].style.borderColor = '#10b981';
-                }
-            }
-            
-            setTimeout(() => {
-                nextQuestion();
-            }, 1500);
-        }
-
-        function nextQuestion() {
-            currentQuestion++;
-            const scoreElement = document.getElementById('score');
-            if (scoreElement) {
-                scoreElement.textContent = score;
-            }
-            
-            if (currentQuestion >= questions.length) {
-                showQuizResult();
-                return;
-            }
-            
-            const questionTitle = document.getElementById('questionTitle');
-            const answers = document.getElementById('answers');
-            const nextBtn = document.getElementById('nextBtn');
-            
-            if (questionTitle && answers && nextBtn) {
-                questionTitle.textContent = `Pertanyaan ${currentQuestion + 1}: ${questions[currentQuestion].question}`;
-                
-                answers.innerHTML = questions[currentQuestion].answers.map((answer, index) => 
-                    `<button class="quiz-btn" onclick="selectAnswer(${index})" style="padding: 12px; text-align: left; background: white; border: 2px solid #e5e7eb; border-radius: 6px; cursor: pointer;">${String.fromCharCode(65 + index)}. ${answer}</button>`
-                ).join('');
-                
-                nextBtn.disabled = true;
-                nextBtn.textContent = 'Selanjutnya';
-            }
-        }
-
-        function showQuizResult() {
-            const container = document.getElementById('quizContainer');
-            if (container) {
-                const percentage = Math.round((score / questions.length) * 100);
-                let message = '';
-                let color = '';
-                
-                if (percentage >= 80) {
-                    message = 'Excellent! Anda sangat paham IT! 🏆';
-                    color = '#10b981';
-                } else if (percentage >= 60) {
-                    message = 'Good job! Pengetahuan IT Anda cukup baik! 👍';
-                    color = '#3b82f6';
-                } else {
-                    message = 'Perlu belajar lagi! Konsultasi dengan expert kami? 📚';
-                    color = '#f59e0b';
-                }
-                
-                container.innerHTML = `
-                    <div style="text-align: center; padding: 40px;">
-                        <h3 style="font-size: 24px; margin-bottom: 16px; color: ${color};">Quiz Selesai!</h3>
-                        <div style="font-size: 48px; font-weight: bold; color: ${color}; margin-bottom: 16px;">${score}/${questions.length}</div>
-                        <p style="font-size: 18px; margin-bottom: 24px; color: #374151;">${message}</p>
-                        <button onclick="restartQuiz()" style="background: #3b82f6; color: white; padding: 12px 24px; border: none; border-radius: 6px; margin-right: 8px; cursor: pointer;">🔄 Main Lagi</button>
-                        <button onclick="alert('Tim expert kami akan menghubungi Anda untuk konsultasi gratis!')" style="background: #10b981; color: white; padding: 12px 24px; border: none; border-radius: 6px; cursor: pointer;">💬 Konsultasi Expert</button>
-                    </div>
-                `;
-            }
-        }
-
-        function restartQuiz() {
-            currentQuestion = 0;
-            score = 0;
-            nextQuestion();
-        }
-
-        // Chat functions
-        function sendMessage() {
-            const input = document.getElementById('chatInput');
-            if (input && input.value.trim()) {
-                addChatMessage(input.value, 'user');
-                input.value = '';
-                
-                setTimeout(() => {
-                    const responses = [
-                        'Terima kasih atas pertanyaannya! Tim technical expert kami akan segera merespons.',
-                        'Saya akan menghubungkan Anda dengan specialist yang tepat. Mohon tunggu sebentar.',
-                        'Pertanyaan yang bagus! Mari kita jadwalkan konsultasi gratis untuk membahas lebih detail.',
-                        'Saya catat kebutuhan Anda. Tim sales akan menghubungi dalam 1 jam untuk follow up.'
-                    ];
-                    const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-                    addChatMessage(randomResponse, 'agent');
-                }, 1000);
-            }
-        }
-
-        function sendQuickReply(message) {
-            addChatMessage(message, 'user');
-            
-            setTimeout(() => {
-                let response = '';
-                if (message.includes('konsultasi')) {
-                    response = 'Excellent! Konsultasi gratis tersedia setiap hari. Tim expert kami akan menghubungi Anda dalam 30 menit. Bisa share nomor WhatsApp?';
-                } else if (message.includes('harga')) {
-                    response = 'Harga bervariasi sesuai kebutuhan. Untuk estimasi akurat, silakan coba IT Cost Calculator di desktop atau chat langsung dengan sales team kami.';
-                } else if (message.includes('demo')) {
-                    response = 'Demo produk bisa dijadwalkan hari ini! Kami akan tunjukkan semua fitur secara live. Kapan waktu yang tepat untuk Anda?';
-                }
-                addChatMessage(response, 'agent');
-            }, 1000);
-        }
-
-        function addChatMessage(message, sender) {
-            const messagesContainer = document.getElementById('chatMessages');
-            if (messagesContainer) {
-                const time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-                const isUser = sender === 'user';
-                
-                const messageDiv = document.createElement('div');
-                messageDiv.style.cssText = `
-                    background: ${isUser ? '#3b82f6' : 'white'};
-                    color: ${isUser ? 'white' : '#374151'};
-                    padding: 12px;
-                    border-radius: 8px;
-                    margin-bottom: 12px;
-                    margin-left: ${isUser ? '20%' : '0'};
-                    margin-right: ${isUser ? '0' : '20%'};
-                    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-                `;
-                
-                messageDiv.innerHTML = `
-                    ${!isUser ? `<div style="font-weight: 500; color: #3b82f6; margin-bottom: 4px;">ClueForIT Support</div>` : ''}
-                    <div>${message}</div>
-                    <div style="font-size: 11px; color: ${isUser ? 'rgba(255,255,255,0.7)' : '#9ca3af'}; margin-top: 4px;">${time}</div>
-                `;
-                
-                messagesContainer.appendChild(messageDiv);
-                messagesContainer.scrollTop = messagesContainer.scrollHeight;
-            }
-        }
-
-        function showNotification(message) {
-            const notification = document.createElement('div');
-            notification.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                background: rgba(0, 0, 0, 0.8);
-                color: white;
-                padding: 12px 16px;
-                border-radius: 6px;
-                font-size: 14px;
-                z-index: 2000;
-                backdrop-filter: blur(10px);
-            `;
-            notification.textContent = message;
-            document.body.appendChild(notification);
-            
-            setTimeout(() => {
-                notification.remove();
-            }, 2000);
-        }
-
-        function toggleStartMenu() {
-            const existingMenu = document.getElementById('startMenu');
-            if (existingMenu) {
-                existingMenu.remove();
-                return;
-            }
-            
-            createStartMenu();
-        }
-
-        function createStartMenu() {
-            const menu = document.createElement('div');
-            menu.id = 'startMenu';
-            menu.style.cssText = `
-                position: fixed;
-                bottom: 60px;
-                left: 12px;
-                width: 350px;
-                max-height: 500px;
-                background: rgba(255, 255, 255, 0.95);
-                backdrop-filter: blur(20px);
-                border: 1px solid rgba(255, 255, 255, 0.3);
-                border-radius: 12px;
-                box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
-                z-index: 2000;
-                overflow: hidden;
-                animation: menuSlideUp 0.3s ease-out;
-            `;
-            
-            menu.innerHTML = `
-                <div style="background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white; padding: 16px; display: flex; align-items: center; justify-content: space-between;">
-                    <div style="display: flex; align-items: center;">
-                        <div style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; margin-right: 8px; animation: pulse 2s infinite;"></div>
-                        <span style="font-weight: 600;">ClueForIT Assistant</span>
-                    </div>
-                    <button onclick="closeStartMenu()" style="background: none; border: none; color: white; font-size: 18px; cursor: pointer; padding: 4px;">×</button>
-                </div>
-                
-                <div id="chatbotMessages" style="height: 300px; overflow-y: auto; padding: 16px; background: #f9fafb;">
-                    <div style="background: white; padding: 12px; border-radius: 8px; margin-bottom: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
-                        <div style="font-weight: 500; color: #3b82f6; margin-bottom: 4px;">🤖 ClueForIT Bot</div>
-                        <div style="color: #374151; line-height: 1.5;">Halo! 👋 Saya asisten virtual ClueForIT. Saya bisa membantu Anda dengan informasi tentang:</div>
-                    </div>
-                </div>
-                
-                <div style="padding: 12px; background: white; border-top: 1px solid #e5e7eb;">
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 12px;">
-                        <button onclick="askBot('alamat')" style="background: #f3f4f6; border: 1px solid #d1d5db; padding: 8px; border-radius: 6px; font-size: 11px; cursor: pointer; transition: all 0.2s;">📍 Alamat</button>
-                        <button onclick="askBot('kontak')" style="background: #f3f4f6; border: 1px solid #d1d5db; padding: 8px; border-radius: 6px; font-size: 11px; cursor: pointer; transition: all 0.2s;">📞 Kontak</button>
-                        <button onclick="askBot('produk')" style="background: #f3f4f6; border: 1px solid #d1d5db; padding: 8px; border-radius: 6px; font-size: 11px; cursor: pointer; transition: all 0.2s;">💼 Produk</button>
-                        <button onclick="askBot('portofolio')" style="background: #f3f4f6; border: 1px solid #d1d5db; padding: 8px; border-radius: 6px; font-size: 11px; cursor: pointer; transition: all 0.2s;">⭐ Portfolio</button>
-                    </div>
-                    <div style="display: flex; gap: 6px;">
-                        <input type="text" id="botInput" placeholder="Tanya apa saja..." style="flex: 1; padding: 8px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 12px;" onkeypress="if(event.key==='Enter') sendBotMessage()">
-                        <button onclick="sendBotMessage()" style="background: #3b82f6; color: white; padding: 8px 12px; border: none; border-radius: 6px; cursor: pointer; font-size: 12px;">Kirim</button>
-                    </div>
-                </div>
-            `;
-            
-            document.body.appendChild(menu);
-            
-            // Add animation styles
-            const style = document.createElement('style');
-            style.textContent = `
-                @keyframes menuSlideUp {
-                    from {
-                        opacity: 0;
-                        transform: translateY(20px) scale(0.95);
-                    }
-                    to {
-                        opacity: 1;
-                        transform: translateY(0) scale(1);
-                    }
-                }
-                @keyframes pulse {
-                    0%, 100% { opacity: 1; }
-                    50% { opacity: 0.5; }
-                }
-                #startMenu button:hover {
-                    background: #e5e7eb !important;
-                }
-            `;
-            document.head.appendChild(style);
-            
-            // Close menu when clicking outside
-            setTimeout(() => {
-                document.addEventListener('click', handleMenuClick);
-            }, 100);
-        }
-
-        function closeStartMenu() {
-            const menu = document.getElementById('startMenu');
-            if (menu) {
-                menu.remove();
-                document.removeEventListener('click', handleMenuClick);
-            }
-        }
-
-        function handleMenuClick(event) {
-            const menu = document.getElementById('startMenu');
-            const startButton = document.querySelector('.start-button');
-            
-            if (menu && !menu.contains(event.target) && !startButton.contains(event.target)) {
-                closeStartMenu();
-            }
-        }
-
-        function askBot(topic) {
-            const questions = {
-                alamat: 'Dimana alamat kantor ClueForIT?',
-                kontak: 'Bagaimana cara menghubungi ClueForIT?',
-                produk: 'Apa saja produk dan layanan ClueForIT?',
-                portofolio: 'Bisa ceritakan tentang portfolio ClueForIT?'
-            };
-            
-            const question = questions[topic];
-            if (question) {
-                addBotMessage(question, 'user');
-                setTimeout(() => {
-                    respondToQuestion(topic);
-                }, 800);
-            }
-        }
-
-        function sendBotMessage() {
-            const input = document.getElementById('botInput');
-            if (input && input.value.trim()) {
-                const message = input.value.trim().toLowerCase();
-                addBotMessage(input.value, 'user');
-                input.value = '';
-                
-                setTimeout(() => {
-                    if (message.includes('alamat') || message.includes('kantor') || message.includes('lokasi')) {
-                        respondToQuestion('alamat');
-                    } else if (message.includes('kontak') || message.includes('telepon') || message.includes('hubungi') || message.includes('whatsapp')) {
-                        respondToQuestion('kontak');
-                    } else if (message.includes('produk') || message.includes('layanan') || message.includes('service')) {
-                        respondToQuestion('produk');
-                    } else if (message.includes('portfolio') || message.includes('portofolio') || message.includes('klien') || message.includes('project')) {
-                        respondToQuestion('portofolio');
-                    } else if (message.includes('harga') || message.includes('biaya') || message.includes('cost')) {
-                        addBotMessage('💰 Untuk informasi harga yang akurat, silakan gunakan IT Cost Calculator di desktop atau hubungi tim sales kami. Setiap solusi disesuaikan dengan kebutuhan spesifik perusahaan Anda.', 'bot');
-                    } else if (message.includes('demo') || message.includes('trial')) {
-                        addBotMessage('🚀 Demo gratis tersedia! Kami bisa tunjukkan semua fitur secara live. Klik tombol "Live Chat Support" di desktop untuk jadwalkan demo dengan tim technical kami.', 'bot');
-                    } else if (message.includes('jam') || message.includes('buka') || message.includes('operasional')) {
-                        addBotMessage('⏰ Jam operasional kami:\n• Senin-Jumat: 09:00-18:00 WIB\n• Sabtu: 09:00-15:00 WIB\n• Emergency Support: 24/7', 'bot');
-                    } else {
-                        addBotMessage('🤔 Maaf, saya belum mengerti pertanyaan Anda. Coba gunakan tombol quick reply di atas atau tanya tentang alamat, kontak, produk, atau portfolio kami.', 'bot');
-                    }
-                }, 1000);
-            }
-        }
-
-        function respondToQuestion(topic) {
-            const responses = {
-                alamat: `📍 **Meet Point ClueForIT:**
-                
-Gading Serpong
-Tangerang
-Indonesia
-
-Meet point kami berlokasi strategis di Gading Serpong dengan akses mudah transportasi umum. Lokasi nyaman dengan fasilitas lengkap untuk meeting dan presentasi.`,
-
-                kontak: `📞 **Kontak ClueForIT:**
-                
-• **Telepon:** +62 21 1234 5678
-• **Email:** henry.suryaman@gmail.com  
-• **WhatsApp:** +62 897 23 5030
-• **Website:** www.clueforit.com
-
-Tim customer service kami siap membantu Anda 24/7 untuk emergency support!`,
-
-                produk: `💼 **Produk & Layanan ClueForIT:**
-
-🔧 **IT Managed Services**
-• Monitoring 24/7 • Help desk • Maintenance
-
-☁️ **Cloud Solutions** 
-• Migration • Architecture • Security
-
-🛡️ **Cybersecurity**
-• Firewall • Audit • Training
-
-🚀 **Digital Transformation**
-• Automation • CRM/ERP • Mobile apps
-
-📊 **Business Intelligence**
-• Dashboard • Analytics • Reporting
-
-💬 **Support & Consulting**
-• Strategy • Implementation • Training`,
-
-                portofolio: `⭐ **Portfolio ClueForIT:**
-
-🏢 **PT. Teknologi Maju**
-• Cloud migration → 40% cost saving
-• Zero downtime achievement
-
-🏥 **RS. Sehat Sentosa** 
-• 100% data protection
-• Full compliance security
-
-🏪 **Retail Chain ABC**
-• 60% efficiency boost
-• 50+ branches integrated  
-
-🏭 **Manufaktur XYZ**
-• Real-time BI dashboard
-• 35% productivity increase
-
-**500+ proyek sukses** dalam 10+ tahun pengalaman!`
-            };
-            
-            addBotMessage(responses[topic], 'bot');
-        }
-
-        function addBotMessage(message, sender) {
-            const messagesContainer = document.getElementById('chatbotMessages');
-            if (messagesContainer) {
-                const time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-                const isUser = sender === 'user';
-                
-                const messageDiv = document.createElement('div');
-                messageDiv.style.cssText = `
-                    background: ${isUser ? '#3b82f6' : 'white'};
-                    color: ${isUser ? 'white' : '#374151'};
-                    padding: 12px;
-                    border-radius: 8px;
-                    margin-bottom: 12px;
-                    margin-left: ${isUser ? '15%' : '0'};
-                    margin-right: ${isUser ? '0' : '15%'};
-                    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-                    white-space: pre-line;
-                    line-height: 1.5;
-                `;
-                
-                messageDiv.innerHTML = `
-                    ${!isUser ? `<div style="font-weight: 500; color: #3b82f6; margin-bottom: 4px;">🤖 ClueForIT Bot</div>` : ''}
-                    <div style="font-size: 13px;">${message}</div>
-                    <div style="font-size: 10px; color: ${isUser ? 'rgba(255,255,255,0.7)' : '#9ca3af'}; margin-top: 6px;">${time}</div>
-                `;
-                
-                messagesContainer.appendChild(messageDiv);
-                messagesContainer.scrollTop = messagesContainer.scrollHeight;
-            }
-        }
-
-        // Click to focus windows
-        document.addEventListener('click', function(event) {
-            const window = event.target.closest('.window');
-            if (window) {
-                bringToFront(window);
-            }
-        });
-
-        // Mobile layout handling
-        function handleMobileLayout() {
-            const isMobile = window.innerWidth <= 768;
-            const mobileContainer = document.querySelector('.desktop-icons-container');
-            const desktopContainer = document.querySelector('.desktop-icons-desktop');
-            
-            if (isMobile) {
-                mobileContainer.style.display = 'grid';
-                desktopContainer.style.display = 'none';
-            } else {
-                mobileContainer.style.display = 'none';
-                desktopContainer.style.display = 'block';
-            }
-        }
-
-        // Background slideshow functionality
-        let currentSlide = 0;
-        const slides = document.querySelectorAll('.background-slide');
-        
-        function nextSlide() {
-            if (slides.length === 0) return;
-            
-            slides[currentSlide].classList.remove('active');
-            currentSlide = (currentSlide + 1) % slides.length;
-            slides[currentSlide].classList.add('active');
-        }
-        
-        function startSlideshow() {
-            if (slides.length > 1) {
-                setInterval(nextSlide, 5000); // Change slide every 5 seconds
-            }
-        }
+        };
 
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
-            handleMobileLayout();
-            startSlideshow();
+            updateAddressBar();
+            updateNavigationButtons();
+            updateStatusBar();
+        });
+
+        // Navigation functions
+        function navigateToPath(path) {
+            if (path === currentPath) return;
             
-            // Auto-open file manager on startup (only on desktop)
-            if (window.innerWidth > 768) {
-                setTimeout(() => {
-                    openWindow('fileManager');
-                }, 1000);
+            // Add to history
+            navigationHistory = navigationHistory.slice(0, historyIndex + 1);
+            navigationHistory.push(path);
+            historyIndex = navigationHistory.length - 1;
+            
+            currentPath = path;
+            showDirectory(path);
+            updateAddressBar();
+            updateNavigationButtons();
+            updateStatusBar();
+            updateTreeSelection();
+        }
+
+        function showDirectory(path) {
+            // Hide all directory contents
+            document.querySelectorAll('.directory-content').forEach(el => el.classList.add('hidden'));
+            
+            // Show target directory
+            const targetId = path.replace('/', '-') + '-content';
+            const targetElement = document.getElementById(targetId);
+            if (targetElement) {
+                targetElement.classList.remove('hidden');
+            }
+        }
+
+        function updateAddressBar() {
+            const addressBar = document.getElementById('addressBar');
+            const pathParts = currentPath.split('/');
+            let breadcrumbHTML = '';
+            let currentBreadcrumbPath = '';
+            
+            pathParts.forEach((part, index) => {
+                if (index > 0) currentBreadcrumbPath += '/';
+                currentBreadcrumbPath += part;
+                
+                const displayName = part === 'home' ? 'Clueforit' : 
+                                 part === 'case-studies' ? 'Case Studies' :
+                                 part.charAt(0).toUpperCase() + part.slice(1);
+                
+                breadcrumbHTML += `<span class="breadcrumb-separator cursor-pointer hover:text-blue-600" data-path="${currentBreadcrumbPath}">${displayName}</span>`;
+            });
+            
+            addressBar.innerHTML = breadcrumbHTML;
+        }
+
+        function updateNavigationButtons() {
+            const backBtn = document.getElementById('backBtn');
+            const forwardBtn = document.getElementById('forwardBtn');
+            
+            backBtn.disabled = historyIndex === 0;
+            forwardBtn.disabled = historyIndex === navigationHistory.length - 1;
+        }
+
+        function updateStatusBar() {
+            const currentContent = document.querySelector('.directory-content:not(.hidden)');
+            const itemCount = currentContent ? currentContent.querySelectorAll('.file-item').length : 0;
+            document.getElementById('statusLeft').textContent = `${itemCount} items`;
+        }
+
+        function updateTreeSelection() {
+            document.querySelectorAll('.tree-item').forEach(item => {
+                item.classList.remove('selected');
+                if (item.dataset.path === currentPath) {
+                    item.classList.add('selected');
+                }
+            });
+        }
+
+        // Event listeners
+        document.getElementById('backBtn').addEventListener('click', () => {
+            if (historyIndex > 0) {
+                historyIndex--;
+                currentPath = navigationHistory[historyIndex];
+                showDirectory(currentPath);
+                updateAddressBar();
+                updateNavigationButtons();
+                updateStatusBar();
+                updateTreeSelection();
             }
         });
 
-        // Handle window resize
-        window.addEventListener('resize', handleMobileLayout);
+        document.getElementById('forwardBtn').addEventListener('click', () => {
+            if (historyIndex < navigationHistory.length - 1) {
+                historyIndex++;
+                currentPath = navigationHistory[historyIndex];
+                showDirectory(currentPath);
+                updateAddressBar();
+                updateNavigationButtons();
+                updateStatusBar();
+                updateTreeSelection();
+            }
+        });
+
+        document.getElementById('upBtn').addEventListener('click', () => {
+            if (currentPath !== 'home') {
+                const parentPath = currentPath.includes('/') ? 
+                    currentPath.substring(0, currentPath.lastIndexOf('/')) : 'home';
+                navigateToPath(parentPath);
+            }
+        });
+
+        document.getElementById('refreshBtn').addEventListener('click', () => {
+            showDirectory(currentPath);
+            updateStatusBar();
+        });
+
+        // Tree navigation
+        document.querySelectorAll('.tree-item').forEach(item => {
+            item.addEventListener('click', () => {
+                navigateToPath(item.dataset.path);
+            });
+        });
+
+        // File/folder double-click
+        document.addEventListener('click', (e) => {
+            const fileItem = e.target.closest('.file-item');
+            if (fileItem) {
+                const path = fileItem.dataset.path;
+                const type = fileItem.dataset.type;
+                
+                if (type === 'folder') {
+                    navigateToPath(path);
+                } else {
+                    openFile(path);
+                }
+            }
+        });
+
+        // Breadcrumb navigation
+        document.addEventListener('click', (e) => {
+            if (e.target.hasAttribute('data-path')) {
+                navigateToPath(e.target.dataset.path);
+            }
+        });
+
+        // Context menu
+        document.addEventListener('contextmenu', (e) => {
+            const fileItem = e.target.closest('.file-item');
+            if (fileItem) {
+                e.preventDefault();
+                const contextMenu = document.getElementById('contextMenu');
+                contextMenu.style.display = 'block';
+                contextMenu.style.left = e.pageX + 'px';
+                contextMenu.style.top = e.pageY + 'px';
+                contextMenu.dataset.targetPath = fileItem.dataset.path;
+            }
+        });
+
+        document.addEventListener('click', () => {
+            document.getElementById('contextMenu').style.display = 'none';
+        });
+
+        document.querySelectorAll('.context-menu-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                const action = e.target.dataset.action;
+                const targetPath = document.getElementById('contextMenu').dataset.targetPath;
+                
+                if (action === 'open') {
+                    openFile(targetPath);
+                } else if (action === 'info') {
+                    alert(`File: ${targetPath}\nType: Clueforit Content\nSize: 1.2 KB`);
+                } else if (action === 'contact') {
+                    openFile('contact');
+                }
+            });
+        });
+
+        // Client and Career data
+        const clientData = {
+            'clients/healthcare-corp': {
+                title: 'Healthcare Corp',
+                content: `
+                    <h3 class="font-semibold mb-3 text-blue-600">Healthcare Corp</h3>
+                    <div class="space-y-3 text-sm">
+                        <div>
+                            <h4 class="font-medium mb-1">Industry:</h4>
+                            <p class="text-gray-600">Healthcare & Medical Services</p>
+                        </div>
+                        <div>
+                            <h4 class="font-medium mb-1">Services Provided:</h4>
+                            <ul class="list-disc list-inside text-gray-600 space-y-1">
+                                <li>IT Infrastructure Management</li>
+                                <li>HIPAA Compliance Solutions</li>
+                                <li>Cloud Migration & Management</li>
+                                <li>24/7 Technical Support</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-medium mb-1">Partnership Duration:</h4>
+                            <p class="text-gray-600">5+ years of successful collaboration</p>
+                        </div>
+                        <div>
+                            <h4 class="font-medium mb-1">Key Achievements:</h4>
+                            <p class="text-gray-600">99.9% uptime, 50% cost reduction, enhanced patient data security</p>
+                        </div>
+                    </div>
+                `
+            },
+            'clients/tech-industries': {
+                title: 'Tech Industries',
+                content: `
+                    <h3 class="font-semibold mb-3 text-blue-600">Tech Industries</h3>
+                    <div class="space-y-3 text-sm">
+                        <div>
+                            <h4 class="font-medium mb-1">Industry:</h4>
+                            <p class="text-gray-600">Technology & Software Development</p>
+                        </div>
+                        <div>
+                            <h4 class="font-medium mb-1">Services Provided:</h4>
+                            <ul class="list-disc list-inside text-gray-600 space-y-1">
+                                <li>DevOps & CI/CD Implementation</li>
+                                <li>Cloud Architecture Design</li>
+                                <li>Cybersecurity Solutions</li>
+                                <li>Scalability Optimization</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-medium mb-1">Partnership Duration:</h4>
+                            <p class="text-gray-600">3+ years of innovative solutions</p>
+                        </div>
+                        <div>
+                            <h4 class="font-medium mb-1">Key Achievements:</h4>
+                            <p class="text-gray-600">300% faster deployment, improved scalability, enhanced security posture</p>
+                        </div>
+                    </div>
+                `
+            },
+            'clients/financial-services': {
+                title: 'Financial Services',
+                content: `
+                    <h3 class="font-semibold mb-3 text-blue-600">Financial Services Group</h3>
+                    <div class="space-y-3 text-sm">
+                        <div>
+                            <h4 class="font-medium mb-1">Industry:</h4>
+                            <p class="text-gray-600">Banking & Financial Services</p>
+                        </div>
+                        <div>
+                            <h4 class="font-medium mb-1">Services Provided:</h4>
+                            <ul class="list-disc list-inside text-gray-600 space-y-1">
+                                <li>Regulatory Compliance Management</li>
+                                <li>Advanced Threat Protection</li>
+                                <li>Disaster Recovery Solutions</li>
+                                <li>Risk Assessment & Monitoring</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-medium mb-1">Partnership Duration:</h4>
+                            <p class="text-gray-600">7+ years of trusted partnership</p>
+                        </div>
+                        <div>
+                            <h4 class="font-medium mb-1">Key Achievements:</h4>
+                            <p class="text-gray-600">Zero security breaches, 100% compliance, enhanced customer trust</p>
+                        </div>
+                    </div>
+                `
+            },
+            'clients/manufacturing': {
+                title: 'Manufacturing Group',
+                content: `
+                    <h3 class="font-semibold mb-3 text-blue-600">Manufacturing Group</h3>
+                    <div class="space-y-3 text-sm">
+                        <div>
+                            <h4 class="font-medium mb-1">Industry:</h4>
+                            <p class="text-gray-600">Industrial Manufacturing</p>
+                        </div>
+                        <div>
+                            <h4 class="font-medium mb-1">Services Provided:</h4>
+                            <ul class="list-disc list-inside text-gray-600 space-y-1">
+                                <li>IoT Implementation & Management</li>
+                                <li>Predictive Analytics Solutions</li>
+                                <li>Industrial Network Security</li>
+                                <li>Process Automation</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-medium mb-1">Partnership Duration:</h4>
+                            <p class="text-gray-600">4+ years of digital transformation</p>
+                        </div>
+                        <div>
+                            <h4 class="font-medium mb-1">Key Achievements:</h4>
+                            <p class="text-gray-600">40% downtime reduction, $2M cost savings, improved efficiency</p>
+                        </div>
+                    </div>
+                `
+            }
+        };
+
+        const careerData = {
+            'careers/cloud-engineer': {
+                title: 'Senior Cloud Engineer',
+                content: `
+                    <h3 class="font-semibold mb-3 text-blue-600">Senior Cloud Engineer</h3>
+                    <div class="space-y-3 text-sm">
+                        <div>
+                            <h4 class="font-medium mb-1">Position Details:</h4>
+                            <p class="text-gray-600">Full-time • Remote • $90,000 - $120,000</p>
+                        </div>
+                        <div>
+                            <h4 class="font-medium mb-1">Responsibilities:</h4>
+                            <ul class="list-disc list-inside text-gray-600 space-y-1">
+                                <li>Design and implement cloud infrastructure solutions</li>
+                                <li>Manage multi-cloud environments (AWS, Azure, GCP)</li>
+                                <li>Optimize cloud costs and performance</li>
+                                <li>Ensure security and compliance standards</li>
+                                <li>Mentor junior team members</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-medium mb-1">Requirements:</h4>
+                            <ul class="list-disc list-inside text-gray-600 space-y-1">
+                                <li>5+ years of cloud engineering experience</li>
+                                <li>AWS/Azure/GCP certifications preferred</li>
+                                <li>Experience with Infrastructure as Code</li>
+                                <li>Strong scripting skills (Python, Bash)</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-medium mb-1">Benefits:</h4>
+                            <p class="text-gray-600">Health insurance, 401k matching, flexible PTO, professional development budget</p>
+                        </div>
+                    </div>
+                `
+            },
+            'careers/security-analyst': {
+                title: 'Cybersecurity Analyst',
+                content: `
+                    <h3 class="font-semibold mb-3 text-blue-600">Cybersecurity Analyst</h3>
+                    <div class="space-y-3 text-sm">
+                        <div>
+                            <h4 class="font-medium mb-1">Position Details:</h4>
+                            <p class="text-gray-600">Full-time • Hybrid • $75,000 - $95,000</p>
+                        </div>
+                        <div>
+                            <h4 class="font-medium mb-1">Responsibilities:</h4>
+                            <ul class="list-disc list-inside text-gray-600 space-y-1">
+                                <li>Monitor security events and incidents</li>
+                                <li>Conduct vulnerability assessments</li>
+                                <li>Develop security policies and procedures</li>
+                                <li>Respond to security incidents</li>
+                                <li>Maintain compliance with security standards</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-medium mb-1">Requirements:</h4>
+                            <ul class="list-disc list-inside text-gray-600 space-y-1">
+                                <li>3+ years of cybersecurity experience</li>
+                                <li>Security certifications (CISSP, CEH, etc.)</li>
+                                <li>Knowledge of SIEM tools</li>
+                                <li>Understanding of compliance frameworks</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-medium mb-1">Benefits:</h4>
+                            <p class="text-gray-600">Comprehensive benefits package, certification reimbursement, career growth opportunities</p>
+                        </div>
+                    </div>
+                `
+            },
+            'careers/support-specialist': {
+                title: 'IT Support Specialist',
+                content: `
+                    <h3 class="font-semibold mb-3 text-blue-600">IT Support Specialist</h3>
+                    <div class="space-y-3 text-sm">
+                        <div>
+                            <h4 class="font-medium mb-1">Position Details:</h4>
+                            <p class="text-gray-600">Full-time • On-site • $45,000 - $60,000</p>
+                        </div>
+                        <div>
+                            <h4 class="font-medium mb-1">Responsibilities:</h4>
+                            <ul class="list-disc list-inside text-gray-600 space-y-1">
+                                <li>Provide technical support to end users</li>
+                                <li>Troubleshoot hardware and software issues</li>
+                                <li>Maintain IT equipment and systems</li>
+                                <li>Document support procedures</li>
+                                <li>Assist with IT projects and deployments</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-medium mb-1">Requirements:</h4>
+                            <ul class="list-disc list-inside text-gray-600 space-y-1">
+                                <li>2+ years of IT support experience</li>
+                                <li>CompTIA A+ certification preferred</li>
+                                <li>Strong communication skills</li>
+                                <li>Experience with Windows/Mac environments</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-medium mb-1">Benefits:</h4>
+                            <p class="text-gray-600">Health benefits, training opportunities, supportive team environment</p>
+                        </div>
+                    </div>
+                `
+            }
+        };
+
+        // File opening
+        function openFile(path) {
+            if (path === 'about') {
+                document.getElementById('aboutWindow').style.display = 'block';
+            } else if (path === 'contact') {
+                document.getElementById('contactWindow').style.display = 'block';
+            } else if (path === 'services/managed') {
+                document.getElementById('managedWindow').style.display = 'block';
+            } else if (path === 'services/cloud') {
+                document.getElementById('cloudWindow').style.display = 'block';
+            } else if (path === 'services/security') {
+                document.getElementById('securityWindow').style.display = 'block';
+            } else if (path === 'services/digital') {
+                document.getElementById('digitalWindow').style.display = 'block';
+            } else if (path === 'case-studies/healthcare') {
+                document.getElementById('healthcareWindow').style.display = 'block';
+            } else if (path === 'case-studies/manufacturing') {
+                document.getElementById('manufacturingWindow').style.display = 'block';
+            } else if (path === 'case-studies/finance') {
+                document.getElementById('financeWindow').style.display = 'block';
+            } else if (clientData[path]) {
+                const client = clientData[path];
+                document.getElementById('clientWindowTitle').textContent = `${client.title}.client - Clueforit`;
+                document.getElementById('clientWindowContent').innerHTML = client.content;
+                document.getElementById('clientWindow').style.display = 'block';
+            } else if (careerData[path]) {
+                const career = careerData[path];
+                document.getElementById('careerWindowTitle').textContent = `${career.title}.job - Clueforit`;
+                document.getElementById('careerWindowContent').innerHTML = career.content;
+                document.getElementById('careerWindow').style.display = 'block';
+            } else {
+                alert(`Opening: ${path}\n\nThis would contain detailed information about ${path.split('/').pop()}.`);
+            }
+        }
+
+        function closeWindow(windowId) {
+            document.getElementById(windowId).style.display = 'none';
+        }
+
+        // Contact form
+        document.getElementById('contactForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Thank you for your message! We\'ll get back to you soon.');
+        });
+
+        // Chatbot functionality
+        const chatContainer = document.getElementById('chatContainer');
+        const chatInput = document.getElementById('chatInput');
+        const sendChatBtn = document.getElementById('sendChatBtn');
+
+        // Knowledge base from website content
+        const knowledgeBase = {
+            services: {
+                keywords: ['service', 'services', 'what do you do', 'offerings', 'solutions'],
+                response: "Clueforit offers four main services:\n\n• **IT Managed Services** - 24/7 network monitoring, system maintenance, help desk support, and infrastructure management\n• **Cloud Solutions** - Cloud migration, multi-cloud management, security, and cost optimization\n• **Cybersecurity** - Threat detection, vulnerability assessment, compliance management, and incident response\n• **Digital Business Transformation** - Process automation, customer experience enhancement, and IoT integration\n\nWould you like to know more about any specific service?"
+            },
+            about: {
+                keywords: ['about', 'company', 'who are you', 'clueforit', 'mission', 'vision'],
+                response: "Clueforit is a technology partner specializing in comprehensive IT managed services and digital business solutions. We have over 10+ years of experience helping businesses thrive in the digital age.\n\n**Our Mission:** To deliver cutting-edge IT solutions that drive business success and digital transformation.\n\n**Our Vision:** To be the leading provider of innovative IT managed services, setting new standards for excellence.\n\n**Why Choose Us:**\n• 10+ Years of Experience\n• 24/7 Technical Support\n• 99.9% Uptime Guarantee\n• Industry Compliance"
+            },
+            contact: {
+                keywords: ['contact', 'phone', 'email', 'address', 'reach', 'call', 'location'],
+                response: "Here's how you can reach Clueforit:\n\n📧 **Email:** contact@clueforit.com\n📞 **Phone:** +1 (555) 123-4567\n📍 **Address:** 123 Tech Street, Digital City, DC 12345\n🕒 **Hours:** Mon-Fri: 8AM-6PM EST\n\n**Emergency Support:** Available 24/7 for critical IT issues\n\nWould you like me to help you with anything specific about our services?"
+            },
+            casestudies: {
+                keywords: ['case study', 'case studies', 'examples', 'clients', 'success', 'results'],
+                response: "We've helped many clients achieve great results:\n\n**Healthcare Network Modernization:**\n• 99.9% system uptime achieved\n• 50% reduction in IT incidents\n• HIPAA compliance maintained\n• 30% cost savings\n\n**Manufacturing Digital Transformation:**\n• 40% reduction in unplanned downtime\n• 25% increase in equipment effectiveness\n• $2M annual savings in maintenance\n\n**Financial Services Security:**\n• Zero security breaches in 24 months\n• 100% compliance with SOX and PCI-DSS\n• 90% reduction in security incidents\n\nWould you like details about any specific case study?"
+            },
+            pricing: {
+                keywords: ['price', 'pricing', 'cost', 'how much', 'budget', 'rates'],
+                response: "Our pricing is customized based on your specific needs and requirements. Factors include:\n\n• Size of your organization\n• Complexity of IT infrastructure\n• Required service levels\n• Compliance requirements\n\nWe typically help clients **reduce IT costs by 30-40%** while improving service quality.\n\nFor a personalized quote, I'd recommend speaking with our team. Would you like me to connect you with a specialist?"
+            },
+            careers: {
+                keywords: ['job', 'jobs', 'career', 'careers', 'hiring', 'work', 'employment'],
+                response: "We're always looking for talented professionals! Current openings:\n\n**Senior Cloud Engineer**\n• Remote • $90k-120k\n• 5+ years experience required\n\n**Cybersecurity Analyst**\n• Hybrid • $75k-95k\n• Security certifications preferred\n\n**IT Support Specialist**\n• On-site • $45k-60k\n• Entry to mid-level position\n\nWe offer competitive benefits, professional development, and a supportive team environment. Interested in learning more about any position?"
+            },
+            support: {
+                keywords: ['support', 'help', 'assistance', 'technical', 'issue', 'problem'],
+                response: "Clueforit provides comprehensive support:\n\n**24/7 Technical Support** - Always available for critical issues\n**Proactive Monitoring** - We identify problems before they impact you\n**Help Desk Services** - Quick resolution for day-to-day IT needs\n**Emergency Response** - Immediate assistance for urgent situations\n\nOur average response time is under 15 minutes for critical issues. Need help with something specific?"
+            }
+        };
+
+        function addMessage(message, isUser = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `chat-message ${isUser ? 'user-message' : 'bot-message'} mb-3`;
+            
+            if (isUser) {
+                messageDiv.innerHTML = `
+                    <div class="flex items-start space-x-2 justify-end">
+                        <div class="bg-green-600 text-white p-3 rounded-lg shadow-sm max-w-xs">
+                            <p class="text-sm">${message}</p>
+                        </div>
+                        <div class="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center text-white text-xs">👤</div>
+                    </div>
+                `;
+            } else {
+                messageDiv.innerHTML = `
+                    <div class="flex items-start space-x-2">
+                        <div class="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-white text-xs">🤖</div>
+                        <div class="bg-white p-3 rounded-lg shadow-sm max-w-xs">
+                            <p class="text-sm whitespace-pre-line">${message}</p>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            chatContainer.appendChild(messageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function getBotResponse(userMessage) {
+            const message = userMessage.toLowerCase();
+            
+            // Check each category in knowledge base
+            for (const [category, data] of Object.entries(knowledgeBase)) {
+                if (data.keywords.some(keyword => message.includes(keyword))) {
+                    return data.response;
+                }
+            }
+            
+            // Default responses for common greetings and unmatched queries
+            if (message.includes('hello') || message.includes('hi') || message.includes('hey')) {
+                return "Hello! I'm here to help you learn about Clueforit's services and solutions. What would you like to know?";
+            }
+            
+            if (message.includes('thank') || message.includes('thanks')) {
+                return "You're welcome! Is there anything else you'd like to know about Clueforit?";
+            }
+            
+            // Default fallback
+            return "I'd be happy to help! I can provide information about:\n\n• Our services (IT Managed Services, Cloud Solutions, Cybersecurity, Digital Business)\n• Company information and mission\n• Case studies and success stories\n• Contact details and support\n• Career opportunities\n• Pricing information\n\nWhat would you like to learn more about?";
+        }
+
+        function sendMessage() {
+            const message = chatInput.value.trim();
+            if (!message) return;
+            
+            // Add user message
+            addMessage(message, true);
+            chatInput.value = '';
+            
+            // Show typing indicator
+            setTimeout(() => {
+                const response = getBotResponse(message);
+                addMessage(response);
+            }, 500);
+        }
+
+        // Event listeners for chatbot
+        sendChatBtn.addEventListener('click', sendMessage);
+        
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        // Quick question buttons
+        document.querySelectorAll('.quick-question').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const question = btn.dataset.question;
+                chatInput.value = question;
+                sendMessage();
+            });
+        });
+
+        // Mobile menu functionality
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        const closeSidebarBtn = document.getElementById('closeSidebarBtn');
+
+        function showSidebar() {
+            sidebar.classList.remove('-translate-x-full');
+            sidebar.classList.add('translate-x-0');
+            sidebarOverlay.classList.remove('hidden');
+        }
+
+        function hideSidebar() {
+            sidebar.classList.remove('translate-x-0');
+            sidebar.classList.add('-translate-x-full');
+            sidebarOverlay.classList.add('hidden');
+        }
+
+        // Mobile menu button click
+        mobileMenuBtn.addEventListener('click', showSidebar);
+
+        // Close sidebar button click
+        closeSidebarBtn.addEventListener('click', hideSidebar);
+
+        // Overlay click to close sidebar
+        sidebarOverlay.addEventListener('click', hideSidebar);
+
+        // Close sidebar when clicking on tree items on mobile
+        document.querySelectorAll('.tree-item').forEach(item => {
+            item.addEventListener('click', () => {
+                // Close sidebar on mobile after navigation
+                if (window.innerWidth < 768) {
+                    setTimeout(hideSidebar, 100);
+                }
+            });
+        });
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            const fileItems = document.querySelectorAll('.file-item');
+            
+            fileItems.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                if (query === '' || text.includes(query)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'987cc371c1d8823d',t:'MTc1OTMzMDEzMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'987d3cf50702fe18',t:'MTc1OTMzNTExMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
