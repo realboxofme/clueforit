@@ -1,0 +1,11 @@
+nis,name,className,gender,birthPlace,birthDate,phone,email,address,parentName,parentPhone
+"2024001","Ahmad Rizki Pratama","X IPA 1","Laki-laki","Jakarta","2008-01-15","08123456789","ahmad@email.com","Jl. Merdeka No. 123 Jakarta","Bapak H. Pratama","08123456788"
+"2024002","Siti Nurhaliza","X IPA 1","Perempuan","Bandung","2008-03-22","08234567890","siti@email.com","Jl. Sudirman No. 456 Bandung","Ibu Hj. Nurhaliza","08234567891"
+"2024003","Budi Santoso","X IPA 2","Laki-laki","Surabaya","2008-05-10","08345678901","budi@email.com","Jl. Gubernur Suryo No. 789 Surabaya","Bapak Santoso","08345678902"
+"2024004","Dewi Lestari","X IPA 2","Perempuan","Yogyakarta","2008-07-18","08456789012","dewi@email.com","Jl. Malioboro No. 321 Yogyakarta","Ibu Lestari","08456789013"
+"2024005","Eko Prasetyo","X IPS 1","Laki-laki","Semarang","2008-09-25","08567890123","eko@email.com","Jl. Pemuda No. 654 Semarang","Bapak Prasetyo","08567890124"
+"2024006","Fitri Handayani","X IPS 1","Perempuan","Malang","2008-11-30","08678901234","fitri@email.com","Jl. Ijen No. 987 Malang","Ibu Handayani","08678901235"
+"2024007","Gunawan Wijaya","X IPS 2","Laki-laki","Medan","2008-02-14","08789012345","gunawan@email.com","Jl. Gatot Subroto No. 246 Medan","Bapak Wijaya","08789012346"
+"2024008","Hana Permata Sari","X IPS 2","Perempuan","Palembang","2008-04-08","08890123456","hana@email.com","Jl. Sudirman No. 135 Palembang","Ibu Permata","08890123457"
+"2024009","Irfan Hakim","X Bahasa 1","Laki-laki","Makassar","2008-06-20","08901234567","irfan@email.com","Jl. Pettarani No. 579 Makassar","Bapak Hakim","08901234568"
+"2024010","Juli Astuti","X Bahasa 1","Perempuan","Denpasar","2008-08-12","09012345678","juli@email.com","Jl. Raya Ubud No. 801 Denpasar","Ibu Astuti","09012345679"

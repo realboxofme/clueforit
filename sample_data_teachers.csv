@@ -1,0 +1,11 @@
+nip,name,subject,gender,birthPlace,birthDate,phone,email,address,education,teachingYear
+"198001012005011001","Dr. Ahmad Wijaya, M.Pd.","Matematika","Laki-laki","Jakarta","1980-01-01","08123456789","ahmad.wijaya@sekolah.sch.id","Jl. Pendidikan No. 1 Jakarta","S3 Pendidikan Matematika","2005"
+"198502152008022002","Dra. Siti Rahayu, M.Si.","Fisika","Perempuan","Bandung","1985-02-15","08234567890","siti.rahayu@sekolah.sch.id","Jl. Ilmu Pengetahuan No. 2 Bandung","S2 Pendidikan Fisika","2008"
+"198303202010033003","Budi Santoso, S.Pd.","Kimia","Laki-laki","Surabaya","1983-03-20","08345678901","budi.santoso@sekolah.sch.id","Jl. Laboratorium No. 3 Surabaya","S1 Pendidikan Kimia","2010"
+"198704102012044004","Dewi Lestari, S.Si.","Biologi","Perempuan","Yogyakarta","1987-04-10","08456789012","dewi.lestari@sekolah.sch.id","Jl. Kehidupan No. 4 Yogyakarta","S1 Biologi","2012"
+"198205252005055005","Eko Prasetyo, S.H., M.H.","PKN","Laki-laki","Semarang","1982-05-25","08567890123","eko.prasetyo@sekolah.sch.id","Jl. Kewarganegaraan No. 5 Semarang","S2 Hukum","2005"
+"198906302013066006","Fitri Handayani, S.Pd., M.Pd.","Bahasa Indonesia","Perempuan","Malang","1989-06-30","08678901234","fitri.handayani@sekolah.sch.id","Jl. Sastra No. 6 Malang","S2 Pendidikan Bahasa","2013"
+"198408122009077007","Gunawan Wijaya, S.E., M.M.","Ekonomi","Laki-laki","Medan","1984-08-12","08789012345","gunawan.wijaya@sekolah.sch.id","Jl. Ekonomi No. 7 Medan","S2 Manajemen","2009"
+"198610182011088008","Hana Permata Sari, S.Pd.","Geografi","Perempuan","Palembang","1986-10-18","08890123456","hana.permata@sekolah.sch.id","Jl. Geografi No. 8 Palembang","S1 Pendidikan Geografi","2011"
+"198112152006099009","Irfan Hakim, S.Kom.","TIK","Laki-laki","Makassar","1981-12-15","08901234567","irfan.hakim@sekolah.sch.id","Jl. Teknologi No. 9 Makassar","S1 Teknik Informatika","2006"
+"198307202007110010","Juli Astuti, S.Pd.","Seni Budaya","Perempuan","Denpasar","1983-07-20","09012345678","juli.astuti@sekolah.sch.id","Jl. Seni No. 10 Denpasar","S1 Pendidikan Seni","2007"
