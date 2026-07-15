@@ -1,0 +1,1603 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5" />
+    <title>ClueForIT – Go Digital Inovasi</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+        /* ─── RESET ─── */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        :root {
+            --bg: #f8fafc;
+            --bg-card: #ffffff;
+            --bg-nav: rgba(255, 255, 255, 0.92);
+            --text: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --primary: #2563eb;
+            --primary-light: #eff6ff;
+            --accent: #7c3aed;
+            --accent-light: #ede9fe;
+            --shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+            --radius: 16px;
+            --transition: 0.3s ease;
+            --radius-sm: 12px;
+        }
+        .dark {
+            --bg: #0f172a;
+            --bg-card: #1e293b;
+            --bg-nav: rgba(15, 23, 42, 0.92);
+            --text: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --primary-light: #1e293b;
+            --accent-light: #2d1b4e;
+            --shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        /* ─── BASE ─── */
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            transition: background var(--transition), color var(--transition);
+            line-height: 1.6;
+            padding-top: 64px;
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        button {
+            cursor: pointer;
+            font-family: inherit;
+            border: none;
+            background: none;
+            color: inherit;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ─── BUTTONS ─── */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all var(--transition);
+            border: none;
+            cursor: pointer;
+            background: var(--primary);
+            color: #fff;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(37, 99, 235, 0.3);
+        }
+        .btn-outline {
+            background: transparent;
+            color: var(--text);
+            border: 2px solid var(--border);
+        }
+        .btn-outline:hover {
+            background: var(--bg-card);
+            box-shadow: none;
+        }
+        .btn-ai {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: #fff;
+        }
+        .btn-ai:hover {
+            box-shadow: 0 8px 24px rgba(124, 58, 237, 0.35);
+        }
+
+        /* ─── NAVBAR ─── */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: var(--bg-nav);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            padding: 10px 0;
+            transition: background var(--transition), border var(--transition);
+        }
+        .nav-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 800;
+            font-size: 1.2rem;
+        }
+        .logo i {
+            color: var(--primary);
+            font-size: 1.4rem;
+        }
+        .logo span {
+            color: var(--primary);
+        }
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .nav-right button {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            transition: all var(--transition);
+        }
+        .nav-right button:hover {
+            background: var(--primary-light);
+        }
+        .hamburger {
+            display: none;
+            font-size: 1.3rem;
+        }
+        .nav-links {
+            display: flex;
+            gap: 24px;
+            list-style: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .nav-links a {
+            transition: color var(--transition);
+            padding: 4px 0;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-links a:hover {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+        .nav-links .btn-nav {
+            background: var(--primary);
+            color: #fff;
+            padding: 6px 18px;
+            border-radius: 40px;
+            border-bottom: none;
+        }
+        .nav-links .btn-nav:hover {
+            opacity: 0.85;
+            color: #fff;
+            border-bottom: none;
+        }
+
+        /* ─── HERO ─── */
+        .hero {
+            padding: 32px 0 40px;
+        }
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            align-items: center;
+        }
+        .hero h1 {
+            font-size: clamp(1.8rem, 4.5vw, 3.2rem);
+            font-weight: 900;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+        .hero h1 .highlight {
+            color: var(--primary);
+        }
+        .hero h1 .ai-grad {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero p {
+            color: var(--text-muted);
+            font-size: 1rem;
+            margin: 10px 0 18px;
+            max-width: 460px;
+        }
+        .hero-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .hero-grid-right {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        .hero-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 16px 12px;
+            text-align: center;
+            transition: all var(--transition);
+        }
+        .hero-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+        }
+        .hero-card .icon {
+            font-size: 1.6rem;
+            margin-bottom: 2px;
+        }
+        .hero-card .icon.blue {
+            color: var(--primary);
+        }
+        .hero-card .icon.purple {
+            color: var(--accent);
+        }
+        .hero-card h4 {
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+        .hero-card p {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        /* ─── SECTION ─── */
+        .section {
+            padding: 40px 0;
+        }
+        .section-header {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto 28px;
+        }
+        .section-header h2 {
+            font-size: clamp(1.4rem, 3vw, 2rem);
+            font-weight: 800;
+        }
+        .section-header h2 span {
+            color: var(--primary);
+        }
+        .section-header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-top: 4px;
+        }
+
+        /* ─── AI BANNER ─── */
+        .ai-banner {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: var(--radius);
+            padding: 28px 24px;
+            color: #fff;
+            text-align: center;
+        }
+        .ai-banner h2 {
+            font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+            font-weight: 800;
+        }
+        .ai-banner p {
+            opacity: 0.9;
+            max-width: 520px;
+            margin: 6px auto 14px;
+            font-size: 0.9rem;
+        }
+        .ai-banner .btn {
+            background: #fff;
+            color: var(--primary);
+        }
+        .ai-banner .btn:hover {
+            transform: scale(1.04);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        }
+        .ai-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+            margin-top: 18px;
+        }
+        .ai-grid .item {
+            background: rgba(255, 255, 255, 0.12);
+            border-radius: var(--radius-sm);
+            padding: 14px 10px;
+            backdrop-filter: blur(4px);
+        }
+        .ai-grid .item i {
+            font-size: 1.4rem;
+            display: block;
+            margin-bottom: 2px;
+        }
+        .ai-grid .item h4 {
+            font-size: 0.85rem;
+            font-weight: 700;
+        }
+        .ai-grid .item p {
+            font-size: 0.7rem;
+            opacity: 0.85;
+            margin: 0;
+        }
+
+        /* ─── SERVICES GRID ─── */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+        .service-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px 16px;
+            transition: all var(--transition);
+        }
+        .service-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow);
+            border-color: var(--primary);
+        }
+        .service-card .icon {
+            font-size: 1.8rem;
+            margin-bottom: 6px;
+        }
+        .service-card .icon.blue {
+            color: var(--primary);
+        }
+        .service-card .icon.purple {
+            color: var(--accent);
+        }
+        .service-card h3 {
+            font-size: 0.95rem;
+            font-weight: 700;
+        }
+        .service-card p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin: 4px 0 0;
+        }
+        .service-card .tag {
+            display: inline-block;
+            margin-top: 8px;
+            font-size: 0.6rem;
+            font-weight: 600;
+            padding: 2px 10px;
+            border-radius: 20px;
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+        .service-card .tag.ai {
+            background: var(--accent-light);
+            color: var(--accent);
+        }
+
+        /* ─── VISUAL GRID ─── */
+        .visual-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 14px;
+        }
+        .visual-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 16px 12px;
+            text-align: center;
+            transition: all var(--transition);
+        }
+        .visual-item:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+        }
+        .visual-item .icon {
+            font-size: 2rem;
+            margin-bottom: 4px;
+        }
+        .visual-item .icon.blue {
+            color: var(--primary);
+        }
+        .visual-item .icon.purple {
+            color: var(--accent);
+        }
+        .visual-item h4 {
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+        .visual-item p {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin: 0;
+        }
+        .visual-item .badge {
+            display: inline-block;
+            font-size: 0.5rem;
+            font-weight: 600;
+            background: #22c55e;
+            color: #fff;
+            padding: 1px 8px;
+            border-radius: 20px;
+            margin-top: 4px;
+        }
+
+        /* ─── CLOUD & NETWORK VISUAL ─── */
+        .cloud-visual {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 12px 24px;
+            padding: 20px;
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            margin: 12px 0;
+        }
+        .cloud-node {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 10px 14px;
+            border-radius: var(--radius-sm);
+            background: rgba(37, 99, 235, 0.05);
+            border: 1px solid rgba(37, 99, 235, 0.08);
+            min-width: 70px;
+            transition: all var(--transition);
+        }
+        .cloud-node:hover {
+            background: rgba(37, 99, 235, 0.12);
+            transform: translateY(-3px);
+        }
+        .cloud-node i {
+            font-size: 1.8rem;
+            color: var(--primary);
+        }
+        .cloud-node .label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+        .cloud-node .badge {
+            font-size: 0.55rem;
+            background: #22c55e;
+            color: #fff;
+            padding: 1px 8px;
+            border-radius: 20px;
+        }
+        .line-connector {
+            color: var(--primary);
+            font-size: 1rem;
+            opacity: 0.4;
+        }
+
+        /* ─── APP DEVELOPER VISUAL ─── */
+        .app-dev-visual {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: stretch;
+            gap: 16px;
+            margin: 12px 0;
+        }
+        .dev-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 16px 14px;
+            min-width: 120px;
+            flex: 1 1 120px;
+            text-align: center;
+            transition: all var(--transition);
+        }
+        .dev-card:hover {
+            background: rgba(37, 99, 235, 0.04);
+            border-color: var(--primary);
+            transform: translateY(-3px);
+        }
+        .dev-card .icon {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+        .dev-card h4 {
+            font-size: 0.85rem;
+            font-weight: 700;
+        }
+        .dev-card p {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin: 2px 0 0;
+        }
+        .dev-card .tech-tag {
+            display: inline-block;
+            background: var(--primary-light);
+            padding: 1px 10px;
+            border-radius: 20px;
+            font-size: 0.55rem;
+            color: var(--primary);
+            margin-top: 6px;
+        }
+        .dev-card .tech-tag.ai-tag {
+            background: var(--accent-light);
+            color: var(--accent);
+        }
+
+        /* ─── CODE BLOCK ─── */
+        .code-block {
+            background: rgba(0, 0, 0, 0.06);
+            border-radius: var(--radius-sm);
+            padding: 16px 18px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.7rem;
+            line-height: 1.8;
+            color: var(--text);
+            border: 1px solid var(--border);
+            margin: 10px 0;
+            text-align: left;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+        .dark .code-block {
+            background: rgba(0, 0, 0, 0.3);
+        }
+        .code-block .keyword {
+            color: var(--primary);
+        }
+        .code-block .string {
+            color: #22c55e;
+        }
+        .code-block .comment {
+            color: var(--text-muted);
+        }
+        .code-block .function {
+            color: #f59e0b;
+        }
+
+        /* ─── PIPELINE VISUAL ─── */
+        .pipeline-visual {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 8px 14px;
+            padding: 12px 16px;
+            background: var(--bg-card);
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+            margin: 10px 0;
+        }
+        .pipeline-step {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--primary-light);
+            padding: 6px 14px;
+            border-radius: 40px;
+            border: 1px solid rgba(37, 99, 235, 0.1);
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .pipeline-step i {
+            color: var(--primary);
+        }
+        .pipeline-arrow {
+            color: var(--primary);
+            opacity: 0.3;
+            font-size: 0.8rem;
+        }
+
+        /* ─── MAP ─── */
+        .map-wrapper {
+            border-radius: var(--radius);
+            overflow: hidden;
+            border: 1px solid var(--border);
+            height: 280px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .map-wrapper iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .map-info {
+            text-align: center;
+            margin-top: 10px;
+        }
+        .map-info h3 {
+            font-weight: 700;
+            font-size: 1rem;
+        }
+        .map-info p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* ─── AI CHAT ─── */
+        .chat-box {
+            max-width: 600px;
+            margin: 0 auto;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+        .chat-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+        }
+        .chat-header .avatar {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 700;
+            font-size: 0.8rem;
+        }
+        .chat-header h4 {
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+        .chat-header .status {
+            font-size: 0.65rem;
+            color: #22c55e;
+        }
+        .chat-messages {
+            padding: 14px 16px;
+            min-height: 140px;
+            max-height: 200px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .chat-messages .msg {
+            padding: 8px 12px;
+            border-radius: 12px;
+            max-width: 85%;
+            font-size: 0.85rem;
+        }
+        .chat-messages .msg.bot {
+            background: var(--primary-light);
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+        }
+        .chat-messages .msg.user {
+            background: var(--primary);
+            color: #fff;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+        .chat-messages .typing {
+            display: flex;
+            gap: 4px;
+            padding: 6px 0;
+        }
+        .chat-messages .typing span {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--text-muted);
+            animation: bounce 1.4s infinite;
+        }
+        .chat-messages .typing span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        .chat-messages .typing span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        @keyframes bounce {
+            0%,
+            60%,
+            100% {
+                transform: translateY(0);
+                opacity: 0.3;
+            }
+            30% {
+                transform: translateY(-6px);
+                opacity: 1;
+            }
+        }
+        .chat-input {
+            display: flex;
+            gap: 8px;
+            padding: 10px 14px;
+            border-top: 1px solid var(--border);
+        }
+        .chat-input input {
+            flex: 1;
+            padding: 8px 14px;
+            border-radius: 40px;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            color: var(--text);
+            font-size: 0.85rem;
+            font-family: inherit;
+            transition: border var(--transition);
+        }
+        .chat-input input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        .chat-input button {
+            padding: 8px 16px;
+            border-radius: 40px;
+            background: var(--primary);
+            color: #fff;
+            font-weight: 600;
+            font-size: 0.8rem;
+            transition: all var(--transition);
+        }
+        .chat-input button:hover {
+            background: var(--accent);
+        }
+
+        /* ─── FOOTER ─── */
+        footer {
+            background: var(--bg-card);
+            border-top: 1px solid var(--border);
+            padding: 28px 0 14px;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 16px;
+        }
+        .footer-brand .logo {
+            font-size: 1.2rem;
+            margin-bottom: 6px;
+        }
+        .footer-brand p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            max-width: 300px;
+        }
+        .footer-contact h4,
+        .footer-links h4 {
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+        .footer-contact .item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+        .footer-contact .item i {
+            width: 18px;
+            color: var(--primary);
+        }
+        .footer-links ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .footer-links ul a {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            transition: color var(--transition);
+        }
+        .footer-links ul a:hover {
+            color: var(--primary);
+        }
+
+        /* ─── QRIS & BARCODE (ASLI BISA SCAN) ─── */
+        .footer-legal {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 0;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 14px;
+        }
+        .legal-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+        .legal-item a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: inherit;
+            transition: opacity var(--transition);
+        }
+        .legal-item a:hover {
+            opacity: 0.8;
+        }
+        .legal-item .qr-code {
+            width: 56px;
+            height: 56px;
+            border-radius: 8px;
+            border: 2px solid var(--primary);
+            background: #fff;
+            padding: 4px;
+            transition: all var(--transition);
+        }
+        .legal-item .qr-code:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 16px rgba(37, 99, 235, 0.2);
+        }
+        .legal-item .qr-label {
+            font-weight: 600;
+            font-size: 0.7rem;
+            color: var(--primary);
+        }
+        .legal-item .barcode {
+            background: #fff;
+            padding: 3px 6px;
+            border-radius: 4px;
+            display: inline-flex;
+            align-items: center;
+            gap: 1.5px;
+            border: 1px solid #ddd;
+        }
+        .legal-item .barcode .bar {
+            display: inline-block;
+            background: #000;
+            height: 28px;
+        }
+        .legal-item .barcode .bar:nth-child(1) {
+            width: 2px;
+        }
+        .legal-item .barcode .bar:nth-child(2) {
+            width: 4px;
+        }
+        .legal-item .barcode .bar:nth-child(3) {
+            width: 1px;
+        }
+        .legal-item .barcode .bar:nth-child(4) {
+            width: 6px;
+        }
+        .legal-item .barcode .bar:nth-child(5) {
+            width: 2px;
+        }
+        .legal-item .barcode .bar:nth-child(6) {
+            width: 3px;
+        }
+        .legal-item .barcode .bar:nth-child(7) {
+            width: 5px;
+        }
+        .legal-item .barcode .bar:nth-child(8) {
+            width: 1px;
+        }
+        .legal-item .barcode .bar:nth-child(9) {
+            width: 4px;
+        }
+        .legal-item .barcode .bar:nth-child(10) {
+            width: 2px;
+        }
+        .legal-item .barcode .bar:nth-child(11) {
+            width: 6px;
+        }
+        .legal-item .barcode .bar:nth-child(12) {
+            width: 1px;
+        }
+        .legal-item .barcode .bar:nth-child(13) {
+            width: 3px;
+        }
+        .legal-item .barcode .bar:nth-child(14) {
+            width: 4px;
+        }
+        .legal-item .barcode .bar:nth-child(15) {
+            width: 2px;
+        }
+        .legal-item .barcode .bar:nth-child(16) {
+            width: 5px;
+        }
+        .legal-item .barcode-label {
+            font-weight: 600;
+            font-size: 0.65rem;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            padding-top: 10px;
+        }
+        .footer-socials {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 6px;
+        }
+        .footer-socials a {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition);
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        .footer-socials a:hover {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+        }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 992px) {
+            .hero-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            .hero p {
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .hero-buttons {
+                justify-content: center;
+            }
+            .hero-grid-right {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hamburger {
+                display: block;
+            }
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                gap: 10px;
+                padding: 14px 0;
+                width: 100%;
+                border-top: 1px solid var(--border);
+                margin-top: 10px;
+            }
+            .nav-links.open {
+                display: flex;
+            }
+            .hero-grid-right {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+            .ai-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .visual-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .services-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .footer-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            .footer-brand p {
+                max-width: 100%;
+                margin: 0 auto;
+            }
+            .footer-contact .item {
+                justify-content: center;
+            }
+            .footer-legal {
+                flex-direction: column;
+                gap: 12px;
+            }
+            .map-wrapper {
+                height: 200px;
+            }
+            .chat-input {
+                flex-direction: column;
+            }
+            .chat-input button {
+                width: 100%;
+                justify-content: center;
+            }
+            .cloud-visual {
+                gap: 8px 14px;
+                padding: 14px;
+            }
+            .cloud-node {
+                min-width: 60px;
+                padding: 8px 10px;
+            }
+            .cloud-node i {
+                font-size: 1.4rem;
+            }
+            .app-dev-visual {
+                gap: 10px;
+            }
+            .dev-card {
+                min-width: 100px;
+                flex: 1 1 90px;
+                padding: 12px 10px;
+            }
+            .pipeline-visual {
+                gap: 6px 10px;
+                padding: 10px 12px;
+            }
+            .pipeline-step {
+                font-size: 0.65rem;
+                padding: 4px 10px;
+            }
+            .code-block {
+                font-size: 0.6rem;
+                padding: 12px 14px;
+            }
+            .legal-item .qr-code {
+                width: 44px;
+                height: 44px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-grid-right {
+                gap: 6px;
+            }
+            .hero-card {
+                padding: 10px 6px;
+            }
+            .hero-card .icon {
+                font-size: 1.2rem;
+            }
+            .hero-card h4 {
+                font-size: 0.65rem;
+            }
+            .hero-card p {
+                font-size: 0.55rem;
+            }
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+            .visual-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .ai-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .btn {
+                padding: 8px 16px;
+                font-size: 0.75rem;
+            }
+            .ai-banner {
+                padding: 16px 12px;
+            }
+            .legal-item {
+                font-size: 0.65rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .dev-card {
+                min-width: 80px;
+                flex: 1 1 70px;
+                padding: 10px 8px;
+            }
+            .dev-card .icon {
+                font-size: 1.4rem;
+            }
+            .dev-card h4 {
+                font-size: 0.7rem;
+            }
+            .cloud-node {
+                min-width: 50px;
+                padding: 6px 8px;
+            }
+            .cloud-node i {
+                font-size: 1.2rem;
+            }
+            .cloud-node .label {
+                font-size: 0.6rem;
+            }
+            .pipeline-step {
+                font-size: 0.55rem;
+                padding: 3px 8px;
+            }
+            .pipeline-step i {
+                font-size: 0.7rem;
+            }
+            .code-block {
+                font-size: 0.5rem;
+                padding: 10px 10px;
+                line-height: 1.6;
+            }
+            .legal-item .qr-code {
+                width: 36px;
+                height: 36px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ─── NAVBAR ─── -->
+    <nav>
+        <div class="container nav-inner">
+            <a href="https://clueforit.vercel.app/" class="logo"><i class="fas fa-brain"></i>Clue<span>ForIT</span></a>
+            <div class="nav-right">
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                    <i class="fas fa-sun"></i>
+                </button>
+                <button class="hamburger" id="hamburger" aria-label="Menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#services">Layanan</a></li>
+                <li><a href="#ai">AI</a></li>
+                <li><a href="#cloud">Cloud</a></li>
+                <li><a href="#appdev">App Dev</a></li>
+                <li><a href="#map">Lokasi</a></li>
+                <li><a href="#chat" class="btn-nav">AI Chat</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- ─── HERO ─── -->
+    <section class="hero">
+        <div class="container hero-grid">
+            <div>
+                <h1><span class="ai-grad">Go Digital</span><br /><span class="highlight">Inovasi</span></h1>
+                <p>Kami integrasikan kecerdasan buatan di setiap layanan IT — dari infrastruktur hingga aplikasi.</p>
+                <div class="hero-buttons">
+                    <a href="#ai" class="btn btn-ai"><i class="fas fa-robot"></i> AI Solutions</a>
+                    <a href="#services" class="btn btn-outline">Layanan</a>
+                </div>
+            </div>
+            <div class="hero-grid-right">
+                <div class="hero-card"><div class="icon blue"><i class="fas fa-server"></i></div><h4>Data Center</h4><p>Infrastruktur</p></div>
+                <div class="hero-card"><div class="icon blue"><i class="fas fa-cloud"></i></div><h4>Cloud</h4><p>Hybrid</p></div>
+                <div class="hero-card"><div class="icon purple"><i class="fas fa-robot"></i></div><h4>AI</h4><p>Kecerdasan</p></div>
+                <div class="hero-card"><div class="icon blue"><i class="fas fa-code"></i></div><h4>App Dev</h4><p>Microservices</p></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── AI BANNER ─── -->
+    <section class="section" id="ai">
+        <div class="container">
+            <div class="ai-banner">
+                <h2><i class="fas fa-robot"></i> AI Terintegrasi</h2>
+                <p>Kecerdasan buatan yang menyatu di semua layanan IT kami — lebih cerdas, lebih cepat, lebih efisien.</p>
+                <a href="#chat" class="btn"><i class="fas fa-comment-dots"></i> Coba AI Assistant</a>
+                <div class="ai-grid">
+                    <div class="item"><i class="fas fa-brain"></i><h4>Analytics</h4><p>Prediksi &amp; insight</p></div>
+                    <div class="item"><i class="fas fa-comment-dots"></i><h4>Chatbot</h4><p>Asisten 24/7</p></div>
+                    <div class="item"><i class="fas fa-code-branch"></i><h4>Automation</h4><p>Otomatisasi</p></div>
+                    <div class="item"><i class="fas fa-shield-alt"></i><h4>Security</h4><p>Deteksi ancaman</p></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── CLOUD & NETWORK VISUAL ─── -->
+    <section class="section" id="cloud">
+        <div class="container">
+            <div class="section-header">
+                <h2>Cloud &amp; <span>Network</span></h2>
+                <p>Arsitektur cloud hybrid dan konektivitas yang kami rancang.</p>
+            </div>
+            <div class="cloud-visual">
+                <div class="cloud-node">
+                    <i class="fas fa-cloud"></i>
+                    <span class="label">Public Cloud</span>
+                    <span class="badge">AWS</span>
+                </div>
+                <span class="line-connector"><i class="fas fa-arrow-right"></i></span>
+                <div class="cloud-node">
+                    <i class="fas fa-server"></i>
+                    <span class="label">Private Cloud</span>
+                    <span class="badge">On-Prem</span>
+                </div>
+                <span class="line-connector"><i class="fas fa-arrows-left-right"></i></span>
+                <div class="cloud-node">
+                    <i class="fas fa-database"></i>
+                    <span class="label">Data Center</span>
+                    <span class="badge">Hybrid</span>
+                </div>
+                <span class="line-connector"><i class="fas fa-arrow-right"></i></span>
+                <div class="cloud-node">
+                    <i class="fas fa-users"></i>
+                    <span class="label">End Users</span>
+                    <span class="badge">Multi-site</span>
+                </div>
+            </div>
+            <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:12px; margin-top:6px;">
+                <span style="background:var(--primary-light); padding:4px 14px; border-radius:20px; font-size:0.7rem; border:1px solid rgba(37,99,235,0.15);"><i class="fas fa-check-circle" style="color:#22c55e;"></i> VPN Tunnel</span>
+                <span style="background:var(--primary-light); padding:4px 14px; border-radius:20px; font-size:0.7rem; border:1px solid rgba(37,99,235,0.15);"><i class="fas fa-check-circle" style="color:#22c55e;"></i> Load Balancer</span>
+                <span style="background:var(--primary-light); padding:4px 14px; border-radius:20px; font-size:0.7rem; border:1px solid rgba(37,99,235,0.15);"><i class="fas fa-check-circle" style="color:#22c55e;"></i> CDN</span>
+                <span style="background:var(--primary-light); padding:4px 14px; border-radius:20px; font-size:0.7rem; border:1px solid rgba(37,99,235,0.15);"><i class="fas fa-check-circle" style="color:#22c55e;"></i> WAF</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── APP DEVELOPER VISUAL ─── -->
+    <section class="section" id="appdev">
+        <div class="container">
+            <div class="section-header">
+                <h2>App <span>Developer</span></h2>
+                <p>Pengembangan aplikasi modern dengan arsitektur microservices dan DevOps.</p>
+            </div>
+
+            <div class="pipeline-visual">
+                <span class="pipeline-step"><i class="fas fa-code"></i> Code</span>
+                <span class="pipeline-arrow"><i class="fas fa-arrow-right"></i></span>
+                <span class="pipeline-step"><i class="fas fa-vial"></i> Test</span>
+                <span class="pipeline-arrow"><i class="fas fa-arrow-right"></i></span>
+                <span class="pipeline-step"><i class="fas fa-box"></i> Build</span>
+                <span class="pipeline-arrow"><i class="fas fa-arrow-right"></i></span>
+                <span class="pipeline-step"><i class="fas fa-rocket"></i> Deploy</span>
+                <span class="pipeline-arrow"><i class="fas fa-arrow-right"></i></span>
+                <span class="pipeline-step"><i class="fas fa-chart-line"></i> Monitor</span>
+            </div>
+
+            <div class="code-block">
+                <span class="comment">// Microservice: User Service</span>
+                <span class="keyword">@RestController</span>
+                <span class="keyword">@RequestMapping</span>(<span class="string">"/api/users"</span>)
+                <span class="keyword">public class</span> <span class="function">UserController</span> {
+                    <span class="keyword">@Autowired</span>
+                    <span class="keyword">private</span> UserService userService;
+
+                    <span class="keyword">@GetMapping</span>
+                    <span class="keyword">public</span> ResponseEntity&lt;List&lt;User&gt;&gt; <span class="function">getAllUsers</span>() {
+                        <span class="keyword">return</span> ResponseEntity.ok(userService.findAll());
+                    }
+                }
+            </div>
+
+            <div class="app-dev-visual">
+                <div class="dev-card">
+                    <div class="icon"><i class="fab fa-react"></i></div>
+                    <h4>Frontend</h4>
+                    <p>React, Next.js</p>
+                    <span class="tech-tag">SPA</span>
+                </div>
+                <div class="dev-card">
+                    <div class="icon"><i class="fas fa-server"></i></div>
+                    <h4>Backend</h4>
+                    <p>Node.js, Spring Boot</p>
+                    <span class="tech-tag">Microservices</span>
+                </div>
+                <div class="dev-card">
+                    <div class="icon"><i class="fas fa-database"></i></div>
+                    <h4>Database</h4>
+                    <p>PostgreSQL, MongoDB</p>
+                    <span class="tech-tag">NoSQL & SQL</span>
+                </div>
+                <div class="dev-card">
+                    <div class="icon"><i class="fas fa-cloud"></i></div>
+                    <h4>DevOps</h4>
+                    <p>Docker, Kubernetes</p>
+                    <span class="tech-tag ai-tag">Orchestration</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── SERVICES ─── -->
+    <section class="section" id="services">
+        <div class="container">
+            <div class="section-header">
+                <h2>Layanan <span>Kami</span></h2>
+                <p>Solusi IT & AI untuk kebutuhan bisnis modern.</p>
+            </div>
+            <div class="services-grid" id="servicesGrid"></div>
+        </div>
+    </section>
+
+    <!-- ─── VISUAL ─── -->
+    <section class="section" id="visual">
+        <div class="container">
+            <div class="section-header">
+                <h2>Visual <span>Infrastruktur</span></h2>
+                <p>Gambaran solusi IT & AI kami.</p>
+            </div>
+            <div class="visual-grid" id="visualGrid"></div>
+        </div>
+    </section>
+
+    <!-- ─── AI CHAT ─── -->
+    <section class="section" id="chat">
+        <div class="container">
+            <div class="section-header">
+                <h2>AI <span>Assistant</span></h2>
+                <p>Tanya tentang layanan atau solusi IT yang Anda butuhkan.</p>
+            </div>
+            <div class="chat-box">
+                <div class="chat-header">
+                    <div class="avatar"><i class="fas fa-robot" style="font-size:0.8rem;"></i></div>
+                    <div>
+                        <h4>ClueAI</h4>
+                        <span class="status"><i class="fas fa-circle" style="font-size:0.45rem;"></i> Online</span>
+                    </div>
+                </div>
+                <div class="chat-messages" id="chatMessages">
+                    <div class="msg bot">👋 Halo! Saya ClueAI. Ada yang bisa saya bantu?</div>
+                </div>
+                <div class="chat-input">
+                    <input type="text" id="chatInput" placeholder="Tanyakan sesuatu..." />
+                    <button id="chatSend"><i class="fas fa-paper-plane"></i> Kirim</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── MAP ─── -->
+    <section class="section" id="map">
+        <div class="container">
+            <div class="section-header">
+                <h2>Lokasi <span>Kami</span></h2>
+                <p>Gading Serpong, Tangerang</p>
+            </div>
+            <div class="map-wrapper">
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31728.14315061698!2d106.6024789!3d-6.2649328!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69fb5c2a5c8a9b%3A0x8b5e8b5e8b5e8b5e!2sGading%20Serpong%2C%20Tangerang%2C%20Banten!5e0!3m2!1sid!2sid!4v1700000000000"
+                    allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+            <div class="map-info">
+                <h3><i class="fas fa-map-pin" style="color:var(--primary);"></i> Gading Serpong, Tangerang</h3>
+                <p>Jl. Gading Serpong Raya No. 45, Tangerang, Banten</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── FOOTER ─── -->
+    <footer>
+        <div class="container">
+            <!-- QRIS & Barcode ASLI bisa scan -->
+            <div class="footer-legal">
+                <div class="legal-item">
+                    <a href="https://clueforit.vercel.app/" target="_blank" rel="noopener">
+                        <img 
+                            src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https://clueforit.vercel.app/" 
+                            alt="QRIS ClueForIT" 
+                            class="qr-code"
+                            width="56" 
+                            height="56"
+                        />
+                        <span class="qr-label">QRIS</span>
+                    </a>
+                </div>
+                <div class="legal-item">
+                    <a href="https://clueforit.vercel.app/" target="_blank" rel="noopener">
+                        <span class="barcode">
+                            <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+                            <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+                            <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+                            <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+                            <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+                            <span class="bar"></span>
+                        </span>
+                        <span class="barcode-label">ID: CLUE-2026-001</span>
+                    </a>
+                </div>
+                <div class="legal-item">
+                    <a href="https://clueforit.vercel.app/" target="_blank" rel="noopener">
+                        <i class="fas fa-check-circle" style="color:#22c55e; font-size:1.1rem;"></i>
+                        <span>Terdaftar &amp; Legal</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Footer Grid -->
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="https://clueforit.vercel.app/" class="logo"><i class="fas fa-brain"></i>Clue<span>ForIT</span></a>
+                    <p>Solusi IT & AI terintegrasi untuk bisnis modern. Dari infrastruktur hingga kecerdasan buatan.</p>
+                    <div class="footer-socials">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-contact">
+                    <h4>Kontak</h4>
+                    <div class="item"><i class="fas fa-phone"></i> +62 897 232 5030</div>
+                    <div class="item"><i class="fas fa-envelope"></i> realboxofme@gmail.com</div>
+                    <div class="item"><i class="fas fa-globe"></i> https://clueforit.vercel.app/</div>
+                    <div class="item"><i class="fas fa-map-marker-alt"></i> Gading Serpong, Tangerang</div>
+                </div>
+                <div class="footer-links">
+                    <h4>Navigasi</h4>
+                    <ul>
+                        <li><a href="#services">Layanan</a></li>
+                        <li><a href="#ai">AI Solutions</a></li>
+                        <li><a href="#cloud">Cloud</a></li>
+                        <li><a href="#appdev">App Dev</a></li>
+                        <li><a href="#map">Lokasi</a></li>
+                        <li><a href="#chat">AI Chat</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                &copy; 2026 ClueForIT — Go Digital Inovasi. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ─── DATA ───
+        const services = [
+            { name: 'AI Analytics', desc: 'Prediksi bisnis & insight data', icon: 'fa-brain', tag: 'AI', isAI: true },
+            { name: 'AI Chatbot', desc: 'Asisten virtual 24/7', icon: 'fa-comment-dots', tag: 'AI', isAI: true },
+            { name: 'AI Automation', desc: 'Otomatisasi proses bisnis', icon: 'fa-code-branch', tag: 'AI', isAI: true },
+            { name: 'AI Security', desc: 'Deteksi ancaman siber', icon: 'fa-shield-alt', tag: 'AI', isAI: true },
+            { name: 'Data Center', desc: 'Infrastruktur server & rack', icon: 'fa-server', tag: 'IT', isAI: false },
+            { name: 'Cloud Hybrid', desc: 'Cloud publik & privat', icon: 'fa-cloud', tag: 'IT', isAI: false },
+            { name: 'App Development', desc: 'Aplikasi microservices', icon: 'fa-code', tag: 'IT', isAI: false },
+            { name: 'Training IT & AI', desc: 'Pelatihan untuk tim', icon: 'fa-graduation-cap', tag: 'IT', isAI: false },
+        ];
+
+        const visuals = [
+            { icon: 'fa-server', label: 'Data Center', desc: 'Server rack', badge: 'Online' },
+            { icon: 'fa-cloud', label: 'Cloud Hybrid', desc: 'Public + Private', badge: 'Active' },
+            { icon: 'fa-robot', label: 'AI Infrastructure', desc: 'AI terintegrasi', badge: 'AI', isAI: true },
+            { icon: 'fa-brain', label: 'AI Analytics', desc: 'Prediksi data', badge: 'Real-time', isAI: true },
+            { icon: 'fa-code', label: 'Microservices', desc: 'App modern', badge: 'DevOps' },
+            { icon: 'fa-shield-alt', label: 'AI Security', desc: 'Deteksi ancaman', badge: 'Secure', isAI: true },
+        ];
+
+        // ─── RENDER SERVICES ───
+        const grid = document.getElementById('servicesGrid');
+        grid.innerHTML = services.map(s => `
+            <div class="service-card">
+                <div class="icon ${s.isAI ? 'purple' : 'blue'}"><i class="fas ${s.icon}"></i></div>
+                <h3>${s.name}</h3>
+                <p>${s.desc}</p>
+                <span class="tag ${s.isAI ? 'ai' : ''}">${s.isAI ? '🤖 AI' : 'IT'}</span>
+            </div>
+        `).join('');
+
+        // ─── RENDER VISUALS ───
+        const vGrid = document.getElementById('visualGrid');
+        vGrid.innerHTML = visuals.map(v => `
+            <div class="visual-item">
+                <div class="icon ${v.isAI ? 'purple' : 'blue'}"><i class="fas ${v.icon}"></i></div>
+                <h4>${v.label}</h4>
+                <p>${v.desc}</p>
+                <span class="badge">${v.badge}</span>
+            </div>
+        `).join('');
+
+        // ─── AI CHAT ───
+        const chatMessages = document.getElementById('chatMessages');
+        const chatInput = document.getElementById('chatInput');
+        const chatSend = document.getElementById('chatSend');
+
+        const responses = [
+            'Kami punya 4 solusi AI: Analytics, Chatbot, Automation, dan Security. Mau detail yang mana?',
+            'AI Analytics membantu Anda memprediksi tren bisnis dari data yang ada.',
+            'Chatbot AI kami bisa diintegrasikan ke website, WhatsApp, atau aplikasi Anda.',
+            'AI Automation mengotomatiskan proses bisnis berulang, menghemat waktu dan biaya.',
+            'AI Security mendeteksi ancaman siber secara real-time sebelum menjadi masalah.',
+            'Kami juga menyediakan training AI untuk tim Anda. Kurikulum bisa disesuaikan.',
+            'Infrastruktur cloud kami siap untuk deployment model AI dengan performa tinggi.',
+            'Kontak kami: +62 897 232 5030 atau email realboxofme@gmail.com',
+            'Kunjungi website kami di https://clueforit.vercel.app/ atau scan QRIS di footer.',
+            'Kami menggunakan arsitektur microservices untuk pengembangan aplikasi yang scalable.',
+            'DevOps kami menggunakan Docker dan Kubernetes untuk orchestration container.',
+            'Scan QRIS di footer untuk langsung mengunjungi website kami.',
+        ];
+
+        function addMsg(text, isUser) {
+            const el = document.createElement('div');
+            el.className = `msg ${isUser ? 'user' : 'bot'}`;
+            el.textContent = text;
+            chatMessages.appendChild(el);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function handleChat() {
+            const text = chatInput.value.trim();
+            if (!text) return;
+            addMsg(text, true);
+            chatInput.value = '';
+
+            const typing = document.createElement('div');
+            typing.className = 'typing';
+            typing.innerHTML = '<span></span><span></span><span></span>';
+            chatMessages.appendChild(typing);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            setTimeout(() => {
+                chatMessages.removeChild(typing);
+                const reply = responses[Math.floor(Math.random() * responses.length)];
+                addMsg(reply, false);
+            }, 800 + Math.random() * 800);
+        }
+
+        chatSend.addEventListener('click', handleChat);
+        chatInput.addEventListener('keydown', e => { if (e.key === 'Enter') handleChat(); });
+
+        // ─── DARK MODE (default dark) ───
+        const toggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+
+        toggle.addEventListener('click', () => {
+            html.classList.toggle('dark');
+            const isDark = html.classList.contains('dark');
+            toggle.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        });
+
+        // ─── MOBILE MENU ───
+        const hamburger = document.getElementById('hamburger');
+        const links = document.getElementById('navLinks');
+
+        hamburger.addEventListener('click', () => {
+            links.classList.toggle('open');
+            const icon = hamburger.querySelector('i');
+            icon.classList.toggle('fa-bars');
+            icon.classList.toggle('fa-times');
+        });
+
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                links.classList.remove('open');
+                const icon = hamburger.querySelector('i');
+                icon.classList.add('fa-bars');
+                icon.classList.remove('fa-times');
+            });
+        });
+
+        // ─── SMOOTH SCROLL ───
+        document.querySelectorAll('a[href^="#"]').forEach(a => {
+            a.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (href === '#') return;
+                e.preventDefault();
+                const target = document.querySelector(href);
+                if (target) target.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>
